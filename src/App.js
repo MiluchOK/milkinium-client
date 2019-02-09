@@ -7,6 +7,7 @@ import PageNotFound from './screens/PageNotFound';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
+import _ from 'lodash';
 import { getProjects } from './redux/actions/projectsActions';
 import { getCurrentUser} from './redux/actions/usersActions';
 
@@ -22,21 +23,33 @@ class App extends Component {
 
     render() {
 
-        return (
-            <div className="App">
-                <NavBar>
-                    <Switch>
-                        {NavBarRoutes.map((route) => (
-                            <Route key={route.path} path={route.path} exact component={route.component} />
-                        ))}
-                        <Route path="/cases/:caseId" exact component={Case} />
-                        <Route path="/profile" exact component={Profile}/>
-                        {/*TODO Fix 404 rendering with NavBar*/}
-                        <Route component={PageNotFound}/>
-                    </Switch>
-                </NavBar>
-            </div>
-        );
+      let appScreen = (
+         <div className="App">
+            <NavBar>
+                <Switch>
+                    {NavBarRoutes.map((route) => (
+                        <Route key={route.path} path={route.path} exact component={route.component} />
+                    ))}
+                    <Route path="/cases/:caseId" exact component={Case} />
+                    <Route path="/profile" exact component={Profile}/>
+                    {/*TODO Fix 404 rendering with NavBar*/}
+                    <Route component={PageNotFound}/>
+                </Switch>
+            </NavBar>
+        </div>
+      )
+
+      console.log(this.props.allProjects)
+      if (_.isEmpty(this.props.allProjects)) {
+        console.log('No projects')
+        appScreen = (
+          <div>
+            <span>No projects created so far</span>
+          </div>
+        )
+      }
+
+      return (appScreen);
     }
 }
 
@@ -49,10 +62,10 @@ function matchDispatchToProps(dispatch){
 
 //TODO remove
 const mapStateToProps = (state) => {
-    const pbid = state.projects.get('projectsById');
+    const allProjects = state.projects.get('projectsById');
     const currentProject = state.projects.get('currentProject');
     return {
-        allProjects: pbid
+        allProjects: allProjects
     }
 };
 
