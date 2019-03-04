@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Menu, { MenuItem } from '@material-ui/core/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import authClient from '../clients/authClient';

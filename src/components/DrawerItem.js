@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import {Link} from 'react-router-dom'
 
 class DrawerItem extends Component {

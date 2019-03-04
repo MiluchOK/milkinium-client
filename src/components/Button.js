@@ -2,8 +2,8 @@
  * Created by alexeymilyukov on 4/8/18.
  */
 import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
-import MIButton from 'material-ui/Button';
+import {withStyles} from '@material-ui/core/styles';
+import MIButton from '@material-ui/core/Button';
 
 class Button extends Component {
 

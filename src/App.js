@@ -22,7 +22,6 @@ class App extends Component {
     }
 
     render() {
-
       let appScreen = (
          <div className="App">
             <NavBar>

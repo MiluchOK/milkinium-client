@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '../components/Button';
-import Grid from 'material-ui/Grid';
-import Dialog from 'material-ui/Dialog';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Slide from 'material-ui/transitions/Slide';
+import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import List, { ListItem, ListItemText } from '@material-ui/core/List';
+import Slide from '@material-ui/core/Slide';
 import NewTestCaseForm from '../components/NewTestCaseForm';
 
 

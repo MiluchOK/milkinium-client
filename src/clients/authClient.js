@@ -13,7 +13,7 @@ class AuthClient {
   saveToken(token) {
     localStorage.setItem('token', token);
     //TODO Find a better place for this call
-    return httpClient.get('/whoAmI');
+    return httpClient.get('/v1/whoAmI');
   }
 
   getToken() {
