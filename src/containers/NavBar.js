@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/List';
 import AppBar from '../components/AppBar';
 import Drawer from '../components/Drawer';
 
@@ -85,5 +85,3 @@ export default compose(
     withStyles(styles, { withTheme: true }),
     connect(mapStateToProps)
 )(NavBar);
-
-

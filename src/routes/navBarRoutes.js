@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import ListIcon from 'material-ui-icons/List';
-import LinearIcon from 'material-ui-icons/LinearScale';
-import FeedIcon from 'material-ui-icons/RssFeed';
-import DashboardIcon from 'material-ui-icons/Dashboard';
+import ListIcon from '@material-ui/icons/List';
+import LinearIcon from '@material-ui/icons/LinearScale';
+import FeedIcon from '@material-ui/icons/RssFeed';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import Dashboard from '../screens/Dashboard';
 import Executions from '../screens/Executions';
 import Feed from '../screens/Feed';

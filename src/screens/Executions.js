@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
-import List from 'material-ui/List';
-import Grid from 'material-ui/Grid';
+import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
 import Execution from './../components/ExecutionRow';
-import InboxIcon from 'material-ui-icons/Inbox';
+import InboxIcon from '@material-ui/icons/Inbox';
 
 class Executions extends Component {
 

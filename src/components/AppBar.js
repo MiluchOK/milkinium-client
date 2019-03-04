@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
-import MatUIAppBar from 'material-ui/AppBar';
+import { withStyles } from '@material-ui/core/styles';
+import MatUIAppBar from '@material-ui/core/AppBar';
 import classNames from 'classnames';
-import Toolbar from 'material-ui/Toolbar';
+import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom'
-import Avatar from 'material-ui/Avatar';
-import Typography from 'material-ui/Typography';
-import MenuIcon from 'material-ui-icons/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import MenuIcon from '@material-ui/icons/Menu';
 import CornerMenu from './CornerMenu';
 import ProjectSelector from '../containers/ProjectSelector';
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
-import IconButton from 'material-ui/IconButton';
-import DeleteIcon from 'material-ui-icons/Delete';
+import {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} from '@material-ui/core/List';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class ExecutionRow extends Component {
 
