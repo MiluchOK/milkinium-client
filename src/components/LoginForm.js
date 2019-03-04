@@ -35,26 +35,47 @@ const renderTextField = ({
   meta: { touched, invalid, error },
   ...custom
 }) => (
-  <TextField
-    label={label}
-    placeholder={label}
-    fullWidth={true}
-    required={true}
-    margin={"normal"}
-    error={touched && invalid}
-    helperText={touched && error}
-    {...input}
-    {...custom}
-  />
+  <div>
+    <TextField
+      label={label}
+      placeholder={label}
+      fullWidth={true}
+      required={true}
+      margin={"normal"}
+      error={touched && invalid}
+      helperText={touched && error}
+      {...input}
+      {...custom}
+    />
+  </div>
 )
 
+const validate = values => {
+  const errors = {}
+  const requiredFields = [
+    'email',
+    'password'
+  ]
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Required'
+    }
+  })
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = 'Invalid email address'
+  }
+  return errors
+}
 
 function LoginForm(props) {
 
-    const { classes } = props;
+    const { error, classes } = props;
 
     return (
-      <form className={classes.form} onSubmit={props.handleSubmit}>
+      <form className={classes.form} onSubmit={props.handleSubmit(props.handleSignIn)}>
         <div>
           <Field
             name="email"
@@ -69,6 +90,7 @@ function LoginForm(props) {
             component={renderTextField}
             type='password' />
         </div>
+        {error && <strong style={{color:'red'}}>{error}</strong>}
           <Button
             type="submit"
             fullWidth
@@ -84,7 +106,8 @@ function LoginForm(props) {
 
 LoginForm = reduxForm({
     // a unique name for the form
-    form: 'login'
+    form: 'login',
+    validate
 })(LoginForm);
 
 export default withStyles(styles)(LoginForm);

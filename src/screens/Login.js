@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import LoginForm from '../components/LoginForm';
 import {signIn, getCurrentUser} from '../redux/actions/usersActions';
-
+import { SubmissionError } from 'redux-form'
 
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -54,14 +54,14 @@ class Login extends Component {
     }
 
     handleSignIn(values) {
-        this.props.signIn(values)
-            .then((res) => {
-                console.log(res);
-                this.props.history.push('/')
-            })
-            .then(() => {
-                this.props.getCurrentUser();
-            })
+      return this.props.signIn(values)
+      .then((res) => {
+          console.log(res);
+          this.props.history.push('/')
+      })
+      .then(() => {
+          this.props.getCurrentUser();
+      })
     }
 
     render() {
@@ -78,7 +78,7 @@ class Login extends Component {
                     Sign In
                 </Typography>
 
-                <LoginForm onSubmit={this.handleSignIn}/>
+                <LoginForm handleSignIn={this.handleSignIn}/>
             </Paper>
           </main>
         );
