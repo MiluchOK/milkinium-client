@@ -27,7 +27,7 @@ class CheckBox extends Component {
                 onDragStart={input.onDragStart}
                 onDrop={input.onDrop}
                 onFocus={input.onFocus}
-                value={input.value || ""}
+                value={input.value || this.props.defaultValue || ""}
                 {...custom}
             >
 

@@ -10,7 +10,9 @@ export default function stuff(state = initialState.projects, action) {
         const h = _.keyBy(action.payload, 'id');
         return state.set('projectsById', h);
       case actionTypes.SELECT_PROJECT:
-        return state.set('currentProject', action.payload);
+        const projectId = action.payload
+        localStorage.setItem('currentProject', projectId);
+        return state.set('currentProject', projectId);
     default:
       return state;
   }

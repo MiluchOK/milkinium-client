@@ -22,6 +22,7 @@ class ProjectSelector extends Component {
     render() {
 
         const projects = this.props.allProjects;
+        const currentProject = this.props.currentProject
 
         return (
             <form>
@@ -33,6 +34,7 @@ class ProjectSelector extends Component {
                     label="Projects"
                     onChange={(e, newValue) => {this.props.selectProject(newValue)}}
                     type="string"
+                    defaultValue={currentProject}
                     margin="none"
                 />
             </form>
@@ -47,8 +49,10 @@ ProjectSelector = reduxForm({
 
 const mapStateToProps = (state) => {
     const pbid = state.projects.get('projectsById');
+    const currentProject = state.projects.get('currentProject');
     return {
-        allProjects: pbid
+        allProjects: pbid,
+        currentProject: currentProject
     }
 };
 
