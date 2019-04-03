@@ -8,6 +8,6 @@ export default {
     users: List(),
     current_user: Map(),
     cases: Map({
-        casesById: {}
+        casesById: Map()
     })
 };

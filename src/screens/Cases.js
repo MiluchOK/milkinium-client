@@ -85,18 +85,20 @@ class Cases extends Component {
 
     renderCases() {
         const cases = this.props.cases;
-
-        if (_.isEmpty(cases)) {
+        console.log(cases)
+        console.log("fooo")
+        console.log(cases.size)
+        if (cases.size == 0) {
             return <NoResults/>
         }
 
-        const elements = _.map(cases, (c => (
-            <Link style={{ textDecoration: 'none' }} to={`/cases/${c._id}`}>
+        const elements = _.map(cases.toJS(), (c => (
+            <Link style={{ textDecoration: 'none' }} to={`/cases/${c.id}`}>
                 <Case
                     title={c.title}
                     icon={<DescriptionIcon />}
                     key={c.id}
-                    handleDelete={() => {this.handleCaseDeletion(c._id)}}
+                    handleDelete={() => {this.handleCaseDeletion(c.id)}}
                 />
             </Link>
         )));

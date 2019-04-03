@@ -25,3 +25,11 @@ export const deleteCase = (caseId) => {
         .then((res) => res.data)
     }
 };
+
+export const getCase = (caseId) => {
+  return {
+    type: actionTypes.GET_CASE,
+    payload: httpClient.get(`/v1/cases/${caseId}`)
+    .then((res) => res.data)
+  }
+}

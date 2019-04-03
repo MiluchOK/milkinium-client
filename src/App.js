@@ -38,9 +38,7 @@ class App extends Component {
         </div>
       )
 
-      console.log(this.props.allProjects)
       if (_.isEmpty(this.props.allProjects)) {
-        console.log('No projects')
         appScreen = (
           <div>
             <span>No projects created so far</span>
