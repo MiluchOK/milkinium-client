@@ -6,12 +6,10 @@ import Typography from '@material-ui/core/Typography'
 import SimpleLineChart from './../containers/SimpleLineChart';
 
 const styles = theme => ({
-  root: {
-    display: 'flex',
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3,
   },
-  tableContainer: {
-    height: 320,
-  }
 });
 
 class Dashboard extends Component {
@@ -21,11 +19,11 @@ class Dashboard extends Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
+      <div className={classes.content}>
         <Typography variant="h4" gutterBottom component="h2">
             Executions
         </Typography>
-        <div className={classes.tableContainer}>
+        <div>
           <SimpleLineChart />
         </div>
       </div>

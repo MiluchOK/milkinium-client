@@ -27,13 +27,6 @@ class AuthClient {
       let base64 = base64Url.replace('-', '+').replace('_', '/');
       const data =  JSON.parse(window.atob(base64));
       return data.data;
-      // return {
-      //   name: {
-      //     first: "Alex",
-      //     last: "Milk"
-      //   },
-      //   email: "amilyukov@gmail.com"
-      // }
   }
 
   logOut() {
