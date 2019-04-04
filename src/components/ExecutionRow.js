@@ -5,29 +5,34 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Link } from 'react-router-dom';
 
 class ExecutionRow extends Component {
+
+    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} to={`/cases/${this.props.id}`} {...itemProps} />
 
     render() {
 
         const handleDelete = this.props.handleDelete;
         const title = this.props.title;
         const icon = this.props.icon;
-        // const itemId = this.props.itemId;
 
         return (
-            <ListItem button>
-                <ListItemIcon>
-                    {icon}
-                </ListItemIcon>
-                <ListItemText primary={title}/>
+                <ListItem button component={this.renderLink}>
 
-                <ListItemSecondaryAction>
-                    <IconButton onClick={handleDelete}>
-                        <DeleteIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
-            </ListItem>
+                    <ListItemIcon>
+                        {icon}
+                    </ListItemIcon>
+
+                    
+                    <ListItemText primary={title}/>
+
+                    <ListItemSecondaryAction>
+                        <IconButton onClick={handleDelete}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
         );
     }
 }

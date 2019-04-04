@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import List from '@material-ui/core/List';
-import { Link } from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {bindActionCreators} from 'redux';
@@ -43,7 +42,6 @@ class Cases extends Component {
     }
 
     handleAddCase() {
-        console.log("Adding a new case!");
         this.setState({creatorOpen: true})
     }
 
@@ -59,7 +57,6 @@ class Cases extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log(prevProps);
         if(prevProps.currentProject != this.props.currentProject){
             this.fetchCases();
         }
@@ -69,7 +66,6 @@ class Cases extends Component {
         const projectId = this.props.currentProject;
         this.props.createCase(projectId, data)
             .then((data) => {
-                console.log(`Case created: ${data}`);
                 this.fetchCases();
                 this.setState({creatorOpen: false})
             })
@@ -78,29 +74,24 @@ class Cases extends Component {
     handleCaseDeletion(caseId){
         this.props.deleteCase(caseId)
             .then((data) => {
-                console.log(`Case ${data} deleted`);
                 this.fetchCases();
             })
     }
 
     renderCases() {
         const cases = this.props.cases;
-        console.log(cases)
-        console.log("fooo")
-        console.log(cases.size)
         if (cases.size == 0) {
             return <NoResults/>
         }
 
         const elements = _.map(cases.toJS(), (c => (
-            <Link style={{ textDecoration: 'none' }} to={`/cases/${c.id}`}>
-                <Case
-                    title={c.title}
-                    icon={<DescriptionIcon />}
-                    key={c.id}
-                    handleDelete={() => {this.handleCaseDeletion(c.id)}}
-                />
-            </Link>
+            <Case
+                title={c.title}
+                icon={<DescriptionIcon />}
+                key={c.id}
+                id={c.id}
+                handleDelete={() => {this.handleCaseDeletion(c.id)}}
+            />
         )));
         return elements;
     }

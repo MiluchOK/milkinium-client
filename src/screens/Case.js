@@ -25,10 +25,7 @@ class Case extends Component {
 
     render(){
         const id = this.props.match.params.caseId
-        console.log(this.props.cases)
         const caze = this.props.cases.get(id) || defaultCaze
-        console.log("Render is called")
-        console.log(caze)
         const title = caze.title
 
         return (
