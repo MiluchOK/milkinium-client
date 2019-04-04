@@ -5,10 +5,20 @@ import Immutable from 'immutable';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
+import CaseIcon from '@material-ui/icons/InsertDriveFile';
 import {getCase, deleteCase} from '../redux/actions/casesActions';
 
 const styles = theme => ({
-
+    icon: {
+        margin: theme.spacing.unit,
+        fontSize: 60,
+      },
+      root: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+      }
 });
 
 const defaultCaze = {title: "Unknown"}
@@ -24,16 +34,19 @@ class Case extends Component {
     }
 
     render(){
+        const { classes } = this.props;
         const id = this.props.match.params.caseId
         const caze = this.props.cases.get(id) || defaultCaze
         const title = caze.title
 
         return (
-            <div>
-                <h1>Foo</h1>
+            <div className={classes.root}>
+                <CaseIcon className={classes.icon} />
                 <Typography
-                  color="secondary"
+                  color="primary"
                   variant="h4"
+                  inline
+                //   align="right"
                 >
                   {title}
                 </Typography>
