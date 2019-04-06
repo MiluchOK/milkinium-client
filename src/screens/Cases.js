@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import List from '@material-ui/core/List';
@@ -90,6 +89,7 @@ class Cases extends Component {
                 icon={<DescriptionIcon />}
                 key={c.id}
                 id={c.id}
+                to={`/cases/${c.id}`}
                 handleDelete={() => {this.handleCaseDeletion(c.id)}}
             />
         )));

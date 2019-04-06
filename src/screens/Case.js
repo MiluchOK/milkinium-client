@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
-import Immutable from 'immutable';
+import _ from 'lodash';
+import { List } from 'immutable';
+import ListElement from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem'
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import CaseIcon from '@material-ui/icons/InsertDriveFile';
+import ReorderIcon from '@material-ui/icons/Reorder';
 import {getCase, deleteCase} from '../redux/actions/casesActions';
+import ExecutionRow from './../components/ExecutionRow';
 
 const styles = theme => ({
     icon: {
@@ -17,11 +22,20 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexWrap: 'wrap',
         width: '100%',
+      },
+      title: {
+          width: '100%',
+          flexBasis: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          marginBottom: '50px'
       }
 });
 
-const defaultCaze = {title: "Unknown"}
+const defaultCaze = {title: "Unknown", steps: List(["govno", "dooo"])}
 
 class Case extends Component {
 
@@ -33,23 +47,44 @@ class Case extends Component {
         return this.props.getCase(id);
     }
 
+    renderSteps(steps){
+        const stepsElements = steps.map(s => (
+            <ExecutionRow
+                title={s}
+                icon={<ReorderIcon />}
+                to={''}
+            />
+        ));
+        return(
+            <ListElement>
+                {stepsElements}
+            </ListElement>
+        )
+    }
+
     render(){
         const { classes } = this.props;
         const id = this.props.match.params.caseId
-        const caze = this.props.cases.get(id) || defaultCaze
+        const caze = defaultCaze || this.props.cases.get(id) || defaultCaze
         const title = caze.title
+        const steps = caze.steps
+        console.log("Shalalalalal")
+        console.log(steps)
 
         return (
             <div className={classes.root}>
-                <CaseIcon className={classes.icon} />
-                <Typography
-                  color="primary"
-                  variant="h4"
-                  inline
-                //   align="right"
-                >
-                  {title}
-                </Typography>
+                <div className={classes.title}>
+                    <CaseIcon className={classes.icon} />
+                    <Typography
+                    color="primary"
+                    variant="h4"
+                    inline
+                    //   align="right"
+                    >
+                    {title}
+                    </Typography>
+                </div>
+                {this.renderSteps(steps)}
             </div>
         )
     }

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 class ExecutionRow extends Component {
 
-    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} to={`/cases/${this.props.id}`} {...itemProps} />
+    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} to={`${this.props.to}`} {...itemProps} />
 
     render() {
 
