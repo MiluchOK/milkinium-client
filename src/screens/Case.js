@@ -53,6 +53,7 @@ class Case extends Component {
                 title={s}
                 icon={<ReorderIcon />}
                 to={''}
+                handleDelete={() => {console.log("Deleting step")}}
             />
         ));
         return(

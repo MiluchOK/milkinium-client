@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import Avatar from '@material-ui/core/Avatar';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { withStyles } from '@material-ui/core/styles';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '../components/Button';
-import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
-import List, { ListItem, ListItemText } from '@material-ui/core/List';
 import Slide from '@material-ui/core/Slide';
 import NewTestCaseForm from '../components/NewTestCaseForm';
 
@@ -13,6 +17,10 @@ import NewTestCaseForm from '../components/NewTestCaseForm';
 const styles = theme => ({
     root: {
         flexGrow: 1,
+    },
+    avatar: {
+        justifyContent: "center",
+        backgroundColor: theme.palette.secondary.main
     },
 });
 
@@ -35,16 +43,23 @@ class Creator extends Component {
         return (
             <div>
                 <Dialog
-                    fullScreen
                     open={this.props.open}
                     onClose={this.props.handleClose}
                     transition={Transition}
+                    aria-labelledby="form-dialog-title"
                 >
-                    <div>Create a new test case.</div>
-                    <NewTestCaseForm onSubmit={this.props.handleSubmit}>
-                        <Button type="submit" color="primary">Save</Button>
-                        <Button onClick={this.props.handleClose}>Close the shit</Button>
-                    </NewTestCaseForm>
+                    <DialogTitle id="form-dialog-title">New Test Case</DialogTitle>
+                    <DialogContent>
+                        <Avatar className={classes.avatar}>
+                            <AssignmentIcon />
+                        </Avatar>
+                        <NewTestCaseForm onSubmit={this.props.handleSubmit}>
+                            <DialogActions>
+                                <Button type="submit" color="primary">Save</Button>
+                                <Button onClick={this.props.handleClose}>Close</Button>
+                            </DialogActions>
+                        </NewTestCaseForm>
+                    </DialogContent>
                 </Dialog>
             </div>
         )
