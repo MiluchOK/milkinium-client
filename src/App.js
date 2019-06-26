@@ -7,6 +7,7 @@ import PageNotFound from './screens/PageNotFound';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
+import EditCase from './screens/EditCase';
 import _ from 'lodash';
 import { getProjects } from './redux/actions/projectsActions';
 import { getCurrentUser} from './redux/actions/usersActions';
@@ -30,6 +31,7 @@ class App extends Component {
                         <Route key={route.path} path={route.path} exact component={route.component} />
                     ))}
                     <Route path="/cases/:caseId" exact component={Case} />
+                    <Route path="/cases/:caseId/edit" exact component={EditCase} />
                     <Route path="/profile" exact component={Profile}/>
                     {/*TODO Fix 404 rendering with NavBar*/}
                     <Route component={PageNotFound}/>

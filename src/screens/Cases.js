@@ -137,7 +137,7 @@ function matchDispatchToProps(dispatch) {
 
 const mapStateToProps = (state) => {
     return {
-        cases: state.cases.get('casesById'),
+        cases: state.cases,
         currentProject: state.projects.get('currentProject')
     }
 };

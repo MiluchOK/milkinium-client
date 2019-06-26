@@ -7,7 +7,5 @@ export default {
     }),
     users: List(),
     current_user: Map(),
-    cases: Map({
-        casesById: Map()
-    })
+    cases: Map()
 };

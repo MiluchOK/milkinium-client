@@ -6,15 +6,14 @@ import { fromJS, Map } from 'immutable';
 export default function stuff(state = initialState.cases, action) {
     switch (action.type) {
         case actionTypes.GET_CASES_FULFILLED:
-            const h = fromJS(_.keyBy(action.payload.cases, 'id'));
-            state = state.set('casesById', h);
-            return state;
+            return fromJS(_.keyBy(action.payload.cases, 'id'))
         case actionTypes.GET_CASE_FULFILLED:
-            const caseData = action.payload
-            const cazes = state.get('casesById')
-                .set(caseData.id, caseData)
-            return state.set('casesById', cazes)
+            const caseData = fromJS(action.payload)
+            var newObj = Map()
+            newObj = newObj.set(caseData.get('id'), caseData)
+            const cazes = newObj.merge(state)
+            return cazes
         default:
-            return state;
+            return state
     }
 }
