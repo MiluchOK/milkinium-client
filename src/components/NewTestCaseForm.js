@@ -38,7 +38,7 @@ let NewTestCaseForm = props => {
         <form onSubmit={props.handleSubmit}>
             <div>
                 <Field
-                    name="Title"
+                    name="title"
                     label="Title"
                     component={renderTextField}
                     type="text" />
