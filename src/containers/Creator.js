@@ -16,7 +16,7 @@ import NewTestCaseForm from '../components/NewTestCaseForm';
 
 const styles = theme => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 1
     },
     avatar: {
         justifyContent: "center",
@@ -43,6 +43,7 @@ class Creator extends Component {
         return (
             <div>
                 <Dialog
+                    fullWidth={"70%"}
                     open={this.props.open}
                     onClose={this.props.handleClose}
                     transition={Transition}

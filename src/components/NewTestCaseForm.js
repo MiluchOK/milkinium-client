@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import _ from 'lodash';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Field, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 
 // TODO move it out and use the same render with Login Form
 const renderTextField = ({
@@ -30,6 +31,24 @@ const styles = theme => ({
 
 });
 
+const renderSteps = ({ fields, meta: { error, submitFailed } }) => (
+    <div>
+      <button type="button" onClick={() => fields.push({})}>
+        Add Step
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    
+    {fields.map((step, index) => (
+        <Field
+          name={`${step}.body`}
+          type="text"
+          component={renderTextField}
+          label={`Step ${index}`}
+        />
+    ))}
+    </div>
+)
+
 let NewTestCaseForm = props => {
 
     const { classes } = props;
@@ -42,6 +61,7 @@ let NewTestCaseForm = props => {
                     label="Title"
                     component={renderTextField}
                     type="text" />
+                <FieldArray name="steps" component={renderSteps} />
             </div>
             <div>
 
