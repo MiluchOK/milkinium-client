@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -45,7 +46,8 @@ const styles = theme => ({
         marginRight: 20
     },
     projectName: {
-        flex: 1
+        flex: 1,
+        marginLeft: '20px'
     }
 });
 
@@ -67,6 +69,7 @@ class AppBar extends Component {
     render() {
 
         const { classes } = this.props;
+        const AdapterLink = React.forwardRef((props, ref) => <Link innerRef={ref} {...props} />);
 
         return (
             <MatUIAppBar
@@ -82,8 +85,18 @@ class AppBar extends Component {
                     >
                         <MenuIcon />
                     </IconButton>
+                    <ProjectSelector/>
                     <Typography variant="title" color="inherit" noWrap className={classes.projectName}>
-                        <ProjectSelector/>
+                        <Button 
+                            color="secondary" 
+                            variant="contained"
+                            component={AdapterLink} to="/projects/new"
+                            >
+                            Create New Project
+                        </Button>
+
+                        
+
                     </Typography>
                     <Avatar
                         alt="Adelle Charles"
