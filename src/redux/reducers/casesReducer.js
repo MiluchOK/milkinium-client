@@ -11,7 +11,7 @@ export default function stuff(state = initialState.cases, action) {
             const caseData = fromJS(action.payload)
             var newObj = Map()
             newObj = newObj.set(caseData.get('id'), caseData)
-            const cazes = newObj.merge(state)
+            const cazes = state.merge(newObj)
             return cazes
         default:
             return state

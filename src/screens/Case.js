@@ -16,6 +16,7 @@ import CaseIcon from '@material-ui/icons/InsertDriveFile';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import {getCase, deleteCase} from '../redux/actions/casesActions';
 import ExecutionRow from './../components/ExecutionRow';
+import LoadingIndicator from './../components/LoadingIndicator';
 import { fromJS, Map } from 'immutable';
 
 const styles = theme => ({
@@ -46,8 +47,6 @@ const styles = theme => ({
     },
 });
 
-const defaultCaze = Map({title: "Unknown", steps: List(["govno", "dooo"])})
-
 class Case extends Component {
 
     renderLink = itemProps => <Link style={{ textDecoration: 'none' }} {...itemProps} />
@@ -65,14 +64,17 @@ class Case extends Component {
     }
 
     renderSteps(steps) {
-        const stepsElements = steps.map(s => (
-            <ExecutionRow
-                title={s}
-                icon={<ReorderIcon />}
-                to={''}
-                handleDelete={() => {console.log("Deleting step")}}
-            />
-        ));
+        const stepsElements = steps.map(s => {
+            console.log(s)
+            return(
+                <ExecutionRow
+                    title={s.get("body")}
+                    icon={<ReorderIcon />}
+                    to={''}
+                    handleDelete={() => {console.log("Deleting step")}}
+                />
+            )
+        });
         return(
             <ListElement>
                 {stepsElements}
@@ -80,42 +82,58 @@ class Case extends Component {
         )
     }
 
+    stepsLoaded(caze) {
+        if(caze.get('steps') == null) {
+            return false
+        }
+        console.log(typeof caze.get("steps").get(0))
+        if(caze.get("steps").size != 0 && typeof caze.get("steps").get(0) == "string") {
+            return false
+        }
+        return true
+    }
+
     render() {
-        console.log("Rendering case")
         const { classes } = this.props;
         const id = this.props.match.params.caseId
-        const caze = this.props.cases.get(id) || defaultCaze
-        const title = caze.get("title")
-        const steps = caze.get("steps")
+        const caze = this.props.cases.get(id)
 
-        return (
-            <div className={classes.root}>
-                <Paper className={classes.root}>
-                    <div className={classes.title}>
-                        <CaseIcon className={classes.icon} />
-                        <Typography
-                        color="primary"
-                        variant="h4"
-                        inline
-                        >
-                        {title}
-                        </Typography>
-                    </div>
-                    <div>
-                        {this.renderSteps(steps)}
-                    </div>
-                    <Button variant="fab"
-                            onClick={this.editCase}
-                            component={this.renderLink}
-                            to={`/cases/${id}/edit`}
+        if(caze && this.stepsLoaded(caze)) {
+            const title = caze.get("title")
+            const steps = caze.get("steps")
+
+            return (
+                <div className={classes.root}>
+                    <Paper className={classes.root}>
+                        <div className={classes.title}>
+                            <CaseIcon className={classes.icon} />
+                            <Typography
                             color="primary"
-                            aria-label="add"
-                            className={classes.fab}>
-                        <EditIcon />
-                    </Button>
-                </Paper>
-            </div>
-        )
+                            variant="h4"
+                            inline
+                            >
+                            {title}
+                            </Typography>
+                        </div>
+                        <div>
+                            {this.renderSteps(steps)}
+                        </div>
+                        <Button variant="fab"
+                                onClick={this.editCase}
+                                component={this.renderLink}
+                                to={`/cases/${id}/edit`}
+                                color="primary"
+                                aria-label="add"
+                                className={classes.fab}>
+                            <EditIcon />
+                        </Button>
+                    </Paper>
+                </div>
+            )
+        }
+        else {
+            return(<LoadingIndicator />)
+        }
     }
 }
 

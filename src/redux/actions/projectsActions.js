@@ -20,3 +20,12 @@ export const getProjects = () => {
         )
     }
 };
+
+export const createProject = (data) => {
+  return {
+    type: actionTypes.CREATE_PROJECT,
+    payload: httpClient.post('/v1/projects', data).then(
+      (res) => (res.data)
+    )
+  }
+}

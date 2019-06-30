@@ -7,6 +7,7 @@ import PageNotFound from './screens/PageNotFound';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
+import NewProjectScreen from './screens/NewProjectScreen';
 import EditCase from './screens/EditCase';
 import _ from 'lodash';
 import { getProjects } from './redux/actions/projectsActions';
@@ -32,6 +33,7 @@ class App extends Component {
                     ))}
                     <Route path="/cases/:caseId" exact component={Case} />
                     <Route path="/cases/:caseId/edit" exact component={EditCase} />
+                    <Route path="/projects/new" exact component={NewProjectScreen} />
                     <Route path="/profile" exact component={Profile}/>
                     {/*TODO Fix 404 rendering with NavBar*/}
                     <Route component={PageNotFound}/>
@@ -41,9 +43,10 @@ class App extends Component {
       )
 
       if (_.isEmpty(this.props.allProjects)) {
+          console.log(this.props.allProjects)
         appScreen = (
           <div>
-            <span>No projects created so far</span>
+            <NewProjectScreen />
           </div>
         )
       }

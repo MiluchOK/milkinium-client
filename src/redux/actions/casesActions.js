@@ -2,7 +2,6 @@ import actionTypes from './actionTypes';
 import httpClient from '../../clients/httpClient';
 
 export const createCase = (projectId, data) => {
-    console.log(data);
     return {
         type: actionTypes.CREATE_CASE,
         payload: httpClient.post(`/v1/projects/${projectId}/cases`, data)

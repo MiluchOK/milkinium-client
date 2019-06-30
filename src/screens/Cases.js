@@ -63,7 +63,6 @@ class Cases extends Component {
 
     handleNewCaseCreation(data){
         const projectId = this.props.currentProject;
-        console.log(data)
         this.props.createCase(projectId, data)
             .then((data) => {
                 this.fetchCases();
