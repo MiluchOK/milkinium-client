@@ -8,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import FolderIcon from '@material-ui/icons/Folder';
 import { Typography } from '@material-ui/core';
 import ProjectForm from './../components/ProjectForm';
-import {createProject} from '../redux/actions/projectsActions';
+import {createProject, getProjects, selectProject} from '../redux/actions/projectsActions';
 
 const styles = theme => ({
     main: {
@@ -44,8 +44,22 @@ const styles = theme => ({
 
 class NewProjectsScreen extends Component {
 
+    constructor(props) {
+        super(props);
+        this.handleCreateProject = this.handleCreateProject.bind(this);
+    }
+
     handleCreateProject(data) {
-        createProject(data)
+        let createdProject;
+        this.props.createProject(data)
+        .then(res => {
+            createdProject = res.action.payload.data.id
+            return this.props.getProjects()
+        })
+        .then(res => {
+            return this.props.selectProject(createdProject)
+        })
+        .then(res => this.props.history.push('/'))
     }
 
     render() {
@@ -71,7 +85,9 @@ class NewProjectsScreen extends Component {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        createProject: createProject
+        createProject: createProject,
+        getProjects: getProjects,
+        selectProject: selectProject
     }, dispatch)
 }
 

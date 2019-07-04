@@ -19,9 +19,9 @@ const renderTextField = ({
     input,
     meta: { touched, invalid, error },
     ...custom
-    }) => (
+  }) => (
     <div>
-        <TextField
+      <TextField
         label={label}
         placeholder={label}
         fullWidth={true}
@@ -31,9 +31,28 @@ const renderTextField = ({
         helperText={touched && error}
         {...input}
         {...custom}
-        />
+      />
     </div>
-)
+  )
+
+const validate = values => {
+    const errors = {}
+    const requiredFields = [
+      'name'
+    ]
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Required'
+      }
+    })
+    if (
+      values.name &&
+      !/^[a-zA-Z0-9 ]{3,22}$/i.test(values.name)
+    ) {
+      errors.name = 'Invalid project name'
+    }
+    return errors
+}
 
 function ProjectForm(props) {
     const { error, classes } = props;
@@ -48,6 +67,7 @@ function ProjectForm(props) {
                     type='text'
                 />
             </div>
+            {error && <strong style={{color:'red'}}>{error}</strong>}
             <Button
                 type="submit"
                 fullWidth
@@ -63,7 +83,8 @@ function ProjectForm(props) {
 
 ProjectForm = reduxForm({
     // a unique name for the form
-    form: 'project'
+    form: 'project',
+    validate
 })(ProjectForm);
 
 export default withStyles(styles)(ProjectForm);
