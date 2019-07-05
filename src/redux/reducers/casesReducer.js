@@ -13,6 +13,11 @@ export default function stuff(state = initialState.cases, action) {
             newObj = newObj.set(caseData.get('id'), caseData)
             const cazes = state.merge(newObj)
             return cazes
+        case actionTypes.EDIT_CASE_FULFILLED:
+            const newCaseData = action.payload.data
+            const caseId = newCaseData.id
+            return state.set(caseId, fromJS(newCaseData))
+
         default:
             return state
     }

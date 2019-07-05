@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import NavBar from './containers/NavBar';
 import PageNotFound from './screens/PageNotFound';
+import log from 'loglevel';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
@@ -24,6 +25,7 @@ class App extends Component {
     }
 
     render() {
+      log.enableAll();
       let appScreen = (
          <div className="App">
             <NavBar>

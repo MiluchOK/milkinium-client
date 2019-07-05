@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 import { List } from 'immutable';
 import ListElement from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem'
+import log from 'loglevel';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
@@ -64,26 +64,19 @@ class Case extends Component {
         const cazeData = this.props.cases.get(this.props.match.params.caseId)
         let newSteps = [];
         cazeData.get("steps").map(s => {
-            console.log(s)
-            console.log(stepId)
             if(s.get("id") != stepId){
                 s = s.get("id")
                 newSteps.push(s)
             }
         })
         newSteps = fromJS(newSteps)
-        console.log(newSteps)
         const data = cazeData.set('steps', newSteps)
         this.props.editCase(caseId, data)
-        .then(() => {
-            this.props.getCase(caseId)
-        })
     }
 
     renderSteps(steps) {
         const caseId = this.props.cases.get(this.props.match.params.caseId).get("id")
         const stepsElements = steps.map(s => {
-            console.log(s)
             return(
                 <ExecutionRow
                     title={s.get("body")}
@@ -102,10 +95,16 @@ class Case extends Component {
 
     stepsLoaded(caze) {
         if(caze.get('steps') == null) {
+            log.debug('No steps for case found.')
             return false
         }
-        console.log(typeof caze.get("steps").get(0))
-        if(caze.get("steps").size != 0 && typeof caze.get("steps").get(0) == "string") {
+        log.debug(typeof caze.get("steps").get(0))
+        const stepsAreNotEmpty = caze.get("steps").size != 0
+        const stepsAreNotStrings = typeof caze.get("steps").get(0) == "string"
+        if(stepsAreNotEmpty && stepsAreNotStrings) {
+            log.debug("Steps are not empty. ", stepsAreNotEmpty)
+            log.debug("Steps are not strings. ", stepsAreNotStrings)
+            log.debug("Steps type is: ", typeof caze.get("steps").get(0))
             return false
         }
         return true
