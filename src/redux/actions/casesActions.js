@@ -25,6 +25,13 @@ export const deleteCase = (caseId) => {
     }
 };
 
+export const editCase = (caseId, data) => {
+    return {
+        type: actionTypes.EDIT_CASE,
+        payload: httpClient.put(`/v1/cases/${caseId}`, data)
+    }
+}
+
 export const getCase = (caseId) => {
   return {
     type: actionTypes.GET_CASE,

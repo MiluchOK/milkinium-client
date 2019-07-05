@@ -14,7 +14,7 @@ import compose from 'recompose/compose';
 import { Link } from 'react-router-dom';
 import CaseIcon from '@material-ui/icons/InsertDriveFile';
 import ReorderIcon from '@material-ui/icons/Reorder';
-import {getCase, deleteCase} from '../redux/actions/casesActions';
+import {getCase, deleteCase, editCase} from '../redux/actions/casesActions';
 import ExecutionRow from './../components/ExecutionRow';
 import LoadingIndicator from './../components/LoadingIndicator';
 import { fromJS, Map } from 'immutable';
@@ -59,11 +59,29 @@ class Case extends Component {
         return this.props.getCase(id);
     }
 
-    editCase() {
-        console.log("Edit")
+    deleteStep(caseId, stepId) {
+        // Remove step from the case
+        const cazeData = this.props.cases.get(this.props.match.params.caseId)
+        let newSteps = [];
+        cazeData.get("steps").map(s => {
+            console.log(s)
+            console.log(stepId)
+            if(s.get("id") != stepId){
+                s = s.get("id")
+                newSteps.push(s)
+            }
+        })
+        newSteps = fromJS(newSteps)
+        console.log(newSteps)
+        const data = cazeData.set('steps', newSteps)
+        this.props.editCase(caseId, data)
+        .then(() => {
+            this.props.getCase(caseId)
+        })
     }
 
     renderSteps(steps) {
+        const caseId = this.props.cases.get(this.props.match.params.caseId).get("id")
         const stepsElements = steps.map(s => {
             console.log(s)
             return(
@@ -71,7 +89,7 @@ class Case extends Component {
                     title={s.get("body")}
                     icon={<ReorderIcon />}
                     to={''}
-                    handleDelete={() => {console.log("Deleting step")}}
+                    handleDelete={() => {this.deleteStep(caseId, s.get("id"))}}
                 />
             )
         });
@@ -139,7 +157,8 @@ class Case extends Component {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        getCase: getCase
+        getCase: getCase,
+        editCase: editCase
     }, dispatch)
 }
 
