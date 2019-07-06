@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import MiddleBox from './../components/MiddleBox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
@@ -11,24 +11,6 @@ import ProjectForm from './../components/ProjectForm';
 import {createProject, getProjects, selectProject} from '../redux/actions/projectsActions';
 
 const styles = theme => ({
-    main: {
-        width: 'auto',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing.unit * 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing.unit,
@@ -66,19 +48,17 @@ class NewProjectsScreen extends Component {
         const { classes } = this.props;
 
         return(
-            <main className={classes.main}>
-                <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <FolderIcon />
-                    </Avatar>
-                    <Typography variant="headline">
-                        Create New Project
-                    </Typography>
-                    <ProjectForm 
-                    handleCreateProject={this.handleCreateProject}
-                    />
-                </Paper>
-            </main>
+            <MiddleBox>
+                <Avatar className={classes.avatar}>
+                    <FolderIcon />
+                </Avatar>
+                <Typography variant="headline">
+                    Create New Project
+                </Typography>
+                <ProjectForm 
+                handleCreateProject={this.handleCreateProject}
+                />
+            </MiddleBox>
         )
     }
 }

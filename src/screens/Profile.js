@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import MiddleBox from './../components/MiddleBox';
 import { withStyles } from '@material-ui/core/styles';
-import ExpansionPanel, {
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-} from '@material-ui/core/ExpansionPanel';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
 
 class Profile extends Component {
 
@@ -16,14 +10,16 @@ class Profile extends Component {
         console.log(this.props.current_user);
 
         return (
-            <div>
+            <MiddleBox>
                 <div>
-                    Email: {this.props.current_user.get("email") || "John Doe"}
+                    <div>
+                        Email: {this.props.current_user.get("email") || "John Doe"}
+                    </div>
+                    <div>
+                        Name: {this.props.current_user.get("name") || "John Doe"}
+                    </div>
                 </div>
-                <div>
-                    Name: {this.props.current_user.get("name") || "John Doe"}
-                </div>
-            </div>
+            </MiddleBox>
         );
     }
 }

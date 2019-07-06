@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
-import { List } from 'immutable';
 import ListElement from '@material-ui/core/List';
 import log from 'loglevel';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import { Link } from 'react-router-dom';
-import CaseIcon from '@material-ui/icons/InsertDriveFile';
+import { Field, reduxForm } from 'redux-form'
 import ReorderIcon from '@material-ui/icons/Reorder';
 import {getCase, deleteCase, editCase} from '../redux/actions/casesActions';
 import ExecutionRow from './../components/ExecutionRow';
 import LoadingIndicator from './../components/LoadingIndicator';
+import { renderBasicTextField } from './../components/TextField';
 import { fromJS, Map } from 'immutable';
+import CaseForm from '../components/CaseForm';
 
 const styles = theme => ({
     icon: {
@@ -30,6 +30,7 @@ const styles = theme => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         width: '100%',
+        padding: '24px'
       },
       title: {
           width: '100%',
@@ -46,6 +47,27 @@ const styles = theme => ({
         right: 20,
     },
 });
+
+
+const validate = values => {
+    const errors = {}
+    const requiredFields = [
+      'email',
+      'password'
+    ]
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Required'
+      }
+    })
+    if (
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address'
+    }
+    return errors
+  }
 
 class Case extends Component {
 
@@ -122,16 +144,7 @@ class Case extends Component {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.root}>
-                        <div className={classes.title}>
-                            <CaseIcon className={classes.icon} />
-                            <Typography
-                            color="primary"
-                            variant="h4"
-                            inline
-                            >
-                            {title}
-                            </Typography>
-                        </div>
+                        <CaseForm />
                         <div>
                             {this.renderSteps(steps)}
                         </div>
@@ -166,7 +179,6 @@ const mapStateToProps = (state) => {
         cases: state.cases
     }
 };
-
 
 export default compose(
     withStyles(styles, {withTheme: true}),

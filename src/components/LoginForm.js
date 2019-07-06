@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Field, reduxForm } from 'redux-form'
+import { renderTextField } from './TextField';
 
 const styles = theme => ({
   form: {
@@ -13,27 +14,6 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
 });
-
-const renderTextField = ({
-  label,
-  input,
-  meta: { touched, invalid, error },
-  ...custom
-}) => (
-  <div>
-    <TextField
-      label={label}
-      placeholder={label}
-      fullWidth={true}
-      required={true}
-      margin={"normal"}
-      error={touched && invalid}
-      helperText={touched && error}
-      {...input}
-      {...custom}
-    />
-  </div>
-)
 
 const validate = values => {
   const errors = {}
