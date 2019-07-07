@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import log from 'loglevel';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Field, reduxForm } from 'redux-form'
-import { renderFlipperTextField } from './TextField';
+import { renderTextField } from './TextField';
+import { Field, FieldArray, reduxForm } from 'redux-form';
+import Button from '../components/Button';
 
 const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
@@ -36,6 +37,24 @@ const validate = values => {
   return errors
 }
 
+const renderSteps = ({ fields, meta: { error, submitFailed } }) => (
+  <div>
+    <button type="button" onClick={() => fields.push({})}>
+      Add Step
+    </button>
+    {submitFailed && error && <span>{error}</span>}
+  
+  {fields.map((step, index) => (
+      <Field
+        name={`${step}.body`}
+        type="text"
+        component={renderTextField}
+        label={`Step ${index}`}
+      />
+  ))}
+  </div>
+)
+
 function CaseForm(props) {
 
     const { error, classes } = props;
@@ -45,14 +64,15 @@ function CaseForm(props) {
         <Field
             name="title"
             label="Test Case Title"
-            component={renderFlipperTextField}
+            component={renderTextField}
             type='text'
             editState={false}
             onClick={() => {console.log('sdf')}}
         />
-        {log.debug("CaseForm error: ", error)}
         {error && <strong style={{color:'red'}}>{error}</strong>}
-        </form>
+        <FieldArray name="steps" component={renderSteps} />
+        <Button type="submit" color="primary" variant="contained">Save</Button>
+      </form>
     )
 };
 

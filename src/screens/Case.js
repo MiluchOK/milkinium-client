@@ -81,82 +81,18 @@ class Case extends Component {
         return this.props.getCase(id);
     }
 
-    deleteStep(caseId, stepId) {
-        // Remove step from the case
-        const cazeData = this.props.cases.get(this.props.match.params.caseId)
-        let newSteps = [];
-        cazeData.get("steps").map(s => {
-            if(s.get("id") != stepId){
-                s = s.get("id")
-                newSteps.push(s)
-            }
-        })
-        newSteps = fromJS(newSteps)
-        const data = cazeData.set('steps', newSteps)
-        this.props.editCase(caseId, data)
-    }
-
-    renderSteps(steps) {
-        const caseId = this.props.cases.get(this.props.match.params.caseId).get("id")
-        const stepsElements = steps.map(s => {
-            return(
-                <ExecutionRow
-                    title={s.get("body")}
-                    icon={<ReorderIcon />}
-                    to={''}
-                    handleDelete={() => {this.deleteStep(caseId, s.get("id"))}}
-                />
-            )
-        });
-        return(
-            <ListElement>
-                {stepsElements}
-            </ListElement>
-        )
-    }
-
-    stepsLoaded(caze) {
-        if(caze.get('steps') == null) {
-            log.debug('No steps for case found.')
-            return false
-        }
-        log.debug(typeof caze.get("steps").get(0))
-        const stepsAreNotEmpty = caze.get("steps").size != 0
-        const stepsAreNotStrings = typeof caze.get("steps").get(0) == "string"
-        if(stepsAreNotEmpty && stepsAreNotStrings) {
-            log.debug("Steps are not empty. ", stepsAreNotEmpty)
-            log.debug("Steps are not strings. ", stepsAreNotStrings)
-            log.debug("Steps type is: ", typeof caze.get("steps").get(0))
-            return false
-        }
-        return true
-    }
-
     render() {
         const { classes } = this.props;
         const id = this.props.match.params.caseId
         const caze = this.props.cases.get(id)
 
-        if(caze && this.stepsLoaded(caze)) {
-            const title = caze.get("title")
-            const steps = caze.get("steps")
-
+        if(caze) {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.root}>
-                        <CaseForm />
-                        <div>
-                            {this.renderSteps(steps)}
-                        </div>
-                        <Button variant="fab"
-                                onClick={this.editCase}
-                                component={this.renderLink}
-                                to={`/cases/${id}/edit`}
-                                color="primary"
-                                aria-label="add"
-                                className={classes.fab}>
-                            <EditIcon />
-                        </Button>
+                        <CaseForm 
+                            initialValues={caze.toJS()}
+                        />
                     </Paper>
                 </div>
             )

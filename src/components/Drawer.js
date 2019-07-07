@@ -8,6 +8,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import List, { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/List';
 import DrawerItem from './DrawerItem';
 import NavBarRoutes from '../routes/navBarRoutes';
+import { Typography } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -37,7 +38,7 @@ const styles = theme => ({
         justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
-    },
+    }
 });
 
 
@@ -56,6 +57,7 @@ class Drawer extends Component {
                 open={this.props.open}
             >
                 <div className={classes.toolbar}>
+                    <Typography>Milkinium</Typography>
                     <IconButton onClick={this.props.handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>

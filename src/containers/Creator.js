@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,10 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '../components/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import NewTestCaseForm from '../components/NewTestCaseForm';
+import CaseForm from '../components/CaseForm';
 
 
 const styles = theme => ({
@@ -54,12 +52,13 @@ class Creator extends Component {
                         <Avatar className={classes.avatar}>
                             <AssignmentIcon />
                         </Avatar>
-                        <NewTestCaseForm onSubmit={this.props.handleSubmit}>
+                        <CaseForm />
+                        {/* <NewTestCaseForm onSubmit={this.props.handleSubmit}>
                             <DialogActions>
                                 <Button type="submit" color="primary">Save</Button>
                                 <Button onClick={this.props.handleClose}>Close</Button>
                             </DialogActions>
-                        </NewTestCaseForm>
+                        </NewTestCaseForm> */}
                     </DialogContent>
                 </Dialog>
             </div>
