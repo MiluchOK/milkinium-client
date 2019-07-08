@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import log from 'loglevel';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Delete from '@material-ui/icons/Delete';
 
 export const renderTextField = ({
     label,
@@ -20,5 +22,33 @@ export const renderTextField = ({
         {...input}
         {...custom}
     />
+    </div>
+)
+
+export const renderDeletableTextField = ({
+    label,
+    input,
+    meta: { touched, invalid, error },
+    ...custom
+    }) => (
+    <div>
+        <Grid container spacing={1} alignItems="flex-end">
+            <Grid item>
+                <TextField
+                label={label}
+                placeholder={label}
+                fullWidth={true}
+                required={true}
+                margin={"normal"}
+                error={touched && invalid}
+                helperText={touched && error}
+                {...input}
+                {...custom}
+                />
+            </Grid>
+            <Grid item>
+                <Delete onClick={() => {custom.removeAction()}}/>
+            </Grid>
+        </Grid>
     </div>
 )

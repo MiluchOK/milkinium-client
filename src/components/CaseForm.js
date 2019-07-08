@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import log from 'loglevel';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { renderTextField } from './TextField';
+import { renderTextField , renderDeletableTextField} from './TextField';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import Button from '../components/Button';
 
@@ -52,13 +52,12 @@ const renderSteps = ({ fields, meta: { error, submitFailed } }) => {
           <Field
             name={`${step}.body`}
             type="text"
-            component={renderTextField}
+            component={renderDeletableTextField}
             label={`Step ${index+1}`}
+            removeAction={() => fields.remove(index)}
           />
       ))}
-      <button type="button" onClick={() => fields.push({})}>
-        Add Step
-      </button>
+      <Button variant="contained" onClick={() => fields.push({})}>Add Step</Button>
     </div>
   )
 }
