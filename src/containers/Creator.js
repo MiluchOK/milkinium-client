@@ -53,12 +53,6 @@ class Creator extends Component {
                             <AssignmentIcon />
                         </Avatar>
                         <CaseForm />
-                        {/* <NewTestCaseForm onSubmit={this.props.handleSubmit}>
-                            <DialogActions>
-                                <Button type="submit" color="primary">Save</Button>
-                                <Button onClick={this.props.handleClose}>Close</Button>
-                            </DialogActions>
-                        </NewTestCaseForm> */}
                     </DialogContent>
                 </Dialog>
             </div>

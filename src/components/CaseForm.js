@@ -7,12 +7,19 @@ import Button from '../components/Button';
 
 const styles = theme => ({
   form: {
+    display: 'flex',
+    flexDirection: 'column',
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
   submit: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3
   },
+  submitContainer: {
+    marginTop: theme.spacing.unit * 3,
+    display: 'flex',
+    justifyContent: 'center'
+  }
 });
 
 const validate = values => {
@@ -37,30 +44,36 @@ const validate = values => {
   return errors
 }
 
-const renderSteps = ({ fields, meta: { error, submitFailed } }) => (
-  <div>
-    <button type="button" onClick={() => fields.push({})}>
-      Add Step
-    </button>
-    {submitFailed && error && <span>{error}</span>}
-  
-  {fields.map((step, index) => (
-      <Field
-        name={`${step}.body`}
-        type="text"
-        component={renderTextField}
-        label={`Step ${index}`}
-      />
-  ))}
-  </div>
-)
+const renderSteps = ({ fields, meta: { error, submitFailed } }) => {
+  return(
+    <div>
+      {submitFailed && error && <span>{error}</span>}
+      {fields.map((step, index) => (
+          <Field
+            name={`${step}.body`}
+            type="text"
+            component={renderTextField}
+            label={`Step ${index+1}`}
+          />
+      ))}
+      <button type="button" onClick={() => fields.push({})}>
+        Add Step
+      </button>
+    </div>
+  )
+}
 
-function CaseForm(props) {
+const saveCase = () => {
+  console.log("sAve")
+}
 
-    const { error, classes } = props;
+class CaseForm extends Component {
+
+  render(){
+    const { error, classes } = this.props;
 
     return (
-      <form className={classes.form} onSubmit={() => {console.log("New form stuff")}}>
+      <form className={classes.form} onSubmit={this.props.handleSubmit(saveCase)}>
         <Field
             name="title"
             label="Test Case Title"
@@ -71,15 +84,25 @@ function CaseForm(props) {
         />
         {error && <strong style={{color:'red'}}>{error}</strong>}
         <FieldArray name="steps" component={renderSteps} />
-        <Button type="submit" color="primary" variant="contained">Save</Button>
+        <div className={classes.submitContainer}>
+          <Button className={classes.submit} type="submit" color="primary" variant="contained">
+            Save
+          </Button>
+        </div>
       </form>
     )
+  }
 };
+
 
 CaseForm = reduxForm({
     // a unique name for the form
     form: 'case',
-    validate
+    validate,
+    enableReinitialize: true,
+    initialValues: {
+      steps: [{}]
+    }
 })(CaseForm);
 
 export default withStyles(styles)(CaseForm);
