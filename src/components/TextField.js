@@ -33,7 +33,7 @@ export const renderDeletableTextField = ({
     }) => (
     <div>
         <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
+            <Grid item xs={11}>
                 <TextField
                 label={label}
                 placeholder={label}
@@ -46,7 +46,7 @@ export const renderDeletableTextField = ({
                 {...custom}
                 />
             </Grid>
-            <Grid item>
+            <Grid item xs={1}>
                 <Delete onClick={() => {custom.removeAction()}}/>
             </Grid>
         </Grid>

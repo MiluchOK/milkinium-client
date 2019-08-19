@@ -7,9 +7,9 @@ import Button from '@material-ui/core/Button';
 import {bindActionCreators} from 'redux';
 import compose from 'recompose/compose';
 import AddIcon from '@material-ui/icons/Add';
-import CaseForm from '../components/CaseForm';
-import Case from './../components/ExecutionRow';
-import {getCases, createCase, deleteCase} from '../redux/actions/casesActions';
+import Case from '../components/ExecutionRow';
+import SuiteForm from '../components/SuiteForm';
+import {getSuites, createSuite, deleteSuite} from '../redux/actions/suitesActions';
 import DescriptionIcon from '@material-ui/icons/Description';
 import NoResults from '../components/NoResults';
 import Creator from '../containers/Creator';
@@ -28,7 +28,7 @@ const styles = theme => ({
     },
 });
 
-class Cases extends Component {
+class Suites extends Component {
 
     constructor(props) {
         super(props);
@@ -37,61 +37,61 @@ class Cases extends Component {
             creatorOpen: false,
         };
 
-        this.handleAddCase = this.handleAddCase.bind(this);
-        this.handleNewCaseCreation = this.handleNewCaseCreation.bind(this);
+        this.handleAddSuite = this.handleAddSuite.bind(this);
+        this.handleNewSuiteCreation = this.handleNewSuiteCreation.bind(this);
     }
 
-    handleAddCase() {
+    handleAddSuite() {
         this.setState({creatorOpen: true})
     }
 
-    fetchCases(){
+    fetchSuites(){
         //TODO Not sure if it is any good
         if(this.props.currentProject){
-            this.props.getCases(this.props.currentProject);
+            this.props.getSuites(this.props.currentProject);
         }
     }
 
     componentDidMount() {
-        this.fetchCases()
+        this.fetchSuites()
     }
 
     componentDidUpdate(prevProps){
         if(prevProps.currentProject != this.props.currentProject){
-            this.fetchCases();
+            this.fetchSuites();
         }
     }
 
-    handleNewCaseCreation(data){
+    handleNewSuiteCreation(data){
         const projectId = this.props.currentProject;
-        this.props.createCase(projectId, data)
+        this.props.createSuite(projectId, data)
             .then((data) => {
-                this.fetchCases();
+                this.fetchSuites();
                 this.setState({creatorOpen: false})
             })
     }
 
-    handleCaseDeletion(caseId){
-        this.props.deleteCase(caseId)
+    handleSuiteDeletion(caseId){
+        this.props.deleteSuite(caseId)
             .then((data) => {
-                this.fetchCases();
+                this.fetchSuites();
             })
     }
 
-    renderCases() {
-        const cases = this.props.cases;
-        if (cases.size == 0) {
+    renderSuites() {
+        const suites = this.props.suites;
+        if (suites.size == 0) {
             return <NoResults/>
         }
 
-        const elements = _.map(cases.toJS(), (c => (
+        const elements = _.map(suites.toJS(), (c => (
             <Case
                 title={c.title}
                 icon={<DescriptionIcon />}
                 key={c.id}
                 id={c.id}
                 to={`/cases/${c.id}`}
-                handleDelete={() => {this.handleCaseDeletion(c.id)}}
+                handleDelete={() => {this.handleSuiteDeletion(c.id)}}
             />
         )));
         return elements;
@@ -105,21 +105,21 @@ class Cases extends Component {
 
                 <Creator
                     open={this.state.creatorOpen}
-                    title={'New Case'}
+                    title={'New Suite'}
                     handleClose={() => {this.setState({creatorOpen: false})}}
                 >
-                    <CaseForm 
-                            submitAction={(data) => {this.handleNewCaseCreation(data)}}
+                    <SuiteForm 
+                            submitAction={(data) => {this.handleNewSuiteCreation(data)}}
                     />
                 </Creator>
 
                 <div>
                     <List component="nav">
-                        {this.renderCases()}
+                        {this.renderSuites()}
                     </List>
 
                     <Button variant="fab"
-                            onClick={this.handleAddCase}
+                            onClick={this.handleAddSuite}
                             color="primary"
                             aria-label="add"
                             className={classes.fab}>
@@ -133,15 +133,15 @@ class Cases extends Component {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        getCases: getCases,
-        createCase: createCase,
-        deleteCase: deleteCase,
+        getSuites: getSuites,
+        createSuite: createSuite,
+        deleteSuite: deleteSuite,
     }, dispatch)
 }
 
 const mapStateToProps = (state) => {
     return {
-        cases: state.cases,
+        suites: state.suites,
         currentProject: state.projects.get('currentProject')
     }
 };
@@ -150,4 +150,4 @@ const mapStateToProps = (state) => {
 export default compose(
     withStyles(styles, {withTheme: true}),
     connect(mapStateToProps, matchDispatchToProps)
-)(Cases);
+)(Suites);

@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import NavBar from './containers/NavBar';
 import PageNotFound from './screens/PageNotFound';
+import GlobalError from './screens/GlobalError';
 import log from 'loglevel';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
@@ -45,12 +46,16 @@ class App extends Component {
       )
 
       if (_.isEmpty(this.props.allProjects)) {
-          console.log(this.props.allProjects)
         appScreen = (
           <div>
-            <NewProjectScreen />
+            <NewProjectScreen /> 
           </div>
         )
+      }
+
+      // Show global error if there is more that one critical error
+      if (this.props.errors.filter(e => e.critical).size > 0){
+          appScreen = <GlobalError />
       }
 
       return (appScreen);
@@ -64,12 +69,13 @@ function matchDispatchToProps(dispatch){
     }, dispatch)
 }
 
-//TODO remove
 const mapStateToProps = (state) => {
     const allProjects = state.projects.get('projectsById');
+    const errors = state.errors;
     const currentProject = state.projects.get('currentProject');
     return {
-        allProjects: allProjects
+        allProjects: allProjects,
+        errors: errors
     }
 };
 

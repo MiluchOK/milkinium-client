@@ -47,13 +47,16 @@ class Creator extends Component {
                     transition={Transition}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">New Test Case</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.props.title || ""}</DialogTitle>
+
+
                     <DialogContent>
                         <Avatar className={classes.avatar}>
                             <AssignmentIcon />
                         </Avatar>
-                        <CaseForm />
+                        {this.props.children}
                     </DialogContent>
+
                 </Dialog>
             </div>
         )

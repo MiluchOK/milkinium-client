@@ -7,5 +7,7 @@ export default {
     }),
     users: List(),
     current_user: Map(),
-    cases: Map()
+    cases: Map(),
+    suites: Map(),
+    errors: List()
 };

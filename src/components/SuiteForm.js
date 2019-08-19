@@ -44,25 +44,7 @@ const validate = values => {
   return errors
 }
 
-const renderSteps = ({ fields, meta: { error, submitFailed } }) => {
-  return(
-    <div>
-      {submitFailed && error && <span>{error}</span>}
-      {fields.map((step, index) => (
-          <Field
-            name={`${step}.body`}
-            type="text"
-            component={renderDeletableTextField}
-            label={`Step ${index+1}`}
-            removeAction={() => fields.remove(index)}
-          />
-      ))}
-      <Button variant="contained" onClick={() => fields.push({})}>Add Step</Button>
-    </div>
-  )
-}
-
-class CaseForm extends Component {
+class SuiteForm extends Component {
 
   render(){
     const { error, classes } = this.props;
@@ -71,14 +53,13 @@ class CaseForm extends Component {
       <form className={classes.form} onSubmit={this.props.handleSubmit(this.props.submitAction)}>
         <Field
             name="title"
-            label="Test Case Title"
+            label="Suite Title"
             component={renderTextField}
             type='text'
             editState={false}
             onClick={() => {console.log('sdf')}}
         />
         {error && <strong style={{color:'red'}}>{error}</strong>}
-        <FieldArray name="steps" component={renderSteps} />
         <div className={classes.submitContainer}>
           <Button className={classes.submit} type="submit" color="primary" variant="contained">
             Save
@@ -90,14 +71,11 @@ class CaseForm extends Component {
 };
 
 
-CaseForm = reduxForm({
+SuiteForm = reduxForm({
     // a unique name for the form
     form: 'case',
     validate,
-    enableReinitialize: true,
-    initialValues: {
-      steps: [{}]
-    }
-})(CaseForm);
+    enableReinitialize: true
+})(SuiteForm);
 
-export default withStyles(styles)(CaseForm);
+export default withStyles(styles)(SuiteForm);

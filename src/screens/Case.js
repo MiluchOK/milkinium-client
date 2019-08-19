@@ -2,21 +2,13 @@ import React, { Component } from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
-import ListElement from '@material-ui/core/List';
 import log from 'loglevel';
 import Paper from '@material-ui/core/Paper';
-import EditIcon from '@material-ui/icons/Edit';
-import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import { Link } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form'
-import ReorderIcon from '@material-ui/icons/Reorder';
 import {getCase, deleteCase, editCase} from '../redux/actions/casesActions';
-import ExecutionRow from './../components/ExecutionRow';
 import LoadingIndicator from './../components/LoadingIndicator';
-import { renderBasicTextField } from './../components/TextField';
-import { fromJS, Map } from 'immutable';
 import CaseForm from '../components/CaseForm';
 
 const styles = theme => ({
@@ -71,6 +63,11 @@ const validate = values => {
 
 class Case extends Component {
 
+    constructor(props) {
+        super(props)
+        this.editCase = this.editCase.bind(this);
+    }
+
     renderLink = itemProps => <Link style={{ textDecoration: 'none' }} {...itemProps} />
 
     componentDidMount() {
@@ -79,6 +76,12 @@ class Case extends Component {
 
     fetchCase(id) {
         return this.props.getCase(id);
+    }
+
+    editCase(values){
+        const caseId = this.props.match.params.caseId
+        log.debug("Submitting with caseID: " + caseId + " and data: ", values)
+        this.props.editCase(caseId, values)
     }
 
     render() {
@@ -92,6 +95,7 @@ class Case extends Component {
                     <Paper className={classes.root}>
                         <CaseForm 
                             initialValues={caze.toJS()}
+                            submitAction={this.editCase}
                         />
                     </Paper>
                 </div>

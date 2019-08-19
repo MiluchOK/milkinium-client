@@ -3,13 +3,17 @@ import { reducer as formReducer } from 'redux-form';
 import projects from './projects';
 import users from './users';
 import cases from './casesReducer';
+import suites from './suitesReducer';
+import errors from './errorsReducer';
 import current_user from './currentUser';
 
 const rootReducer = combineReducers({
   projects,
   cases,
+  suites,
   users,
   current_user,
+  errors,
   form: formReducer
 });
 
