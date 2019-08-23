@@ -90,7 +90,7 @@ class Suites extends Component {
                 icon={<DescriptionIcon />}
                 key={c.id}
                 id={c.id}
-                to={`/cases/${c.id}`}
+                to={`/suites/${c.id}`}
                 handleDelete={() => {this.handleSuiteDeletion(c.id)}}
             />
         )));

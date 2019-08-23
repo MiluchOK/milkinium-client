@@ -32,7 +32,7 @@ export const editSuite = (suiteId, data) => {
     }
 }
 
-export const getCase = (suiteId) => {
+export const getSuite = (suiteId) => {
   return {
     type: actionTypes.GET_SUITE,
     payload: httpClient.get(`/v1/suites/${suiteId}`)

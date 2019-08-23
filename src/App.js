@@ -9,8 +9,8 @@ import log from 'loglevel';
 import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
+import Suite from './screens/Suite';
 import NewProjectScreen from './screens/NewProjectScreen';
-import EditCase from './screens/EditCase';
 import _ from 'lodash';
 import { getProjects } from './redux/actions/projectsActions';
 import { getCurrentUser} from './redux/actions/usersActions';
@@ -35,7 +35,7 @@ class App extends Component {
                         <Route key={route.path} path={route.path} exact component={route.component} />
                     ))}
                     <Route path="/cases/:caseId" exact component={Case} />
-                    <Route path="/cases/:caseId/edit" exact component={EditCase} />
+                    <Route path="/suites/:suiteId" exact component={Suite} />
                     <Route path="/projects/new" exact component={NewProjectScreen} />
                     <Route path="/profile" exact component={Profile}/>
                     {/*TODO Fix 404 rendering with NavBar*/}
