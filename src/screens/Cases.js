@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import _ from 'lodash';
 import {connect} from 'react-redux';
 import List from '@material-ui/core/List';
 import {withStyles} from '@material-ui/core/styles';
@@ -8,11 +7,8 @@ import {bindActionCreators} from 'redux';
 import compose from 'recompose/compose';
 import AddIcon from '@material-ui/icons/Add';
 import CaseForm from '../components/CaseForm';
-import Case from './../components/ExecutionRow';
 import { renderCases } from "../components/ListRenders";
 import {getCases, createCase, deleteCase} from '../redux/actions/casesActions';
-import DescriptionIcon from '@material-ui/icons/Description';
-import NoResults from '../components/NoResults';
 import Creator from '../containers/Creator';
 
 const styles = theme => ({
@@ -37,6 +33,7 @@ class Cases extends Component {
             creatorOpen: false,
         };
         this.handleAddCase = this.handleAddCase.bind(this);
+        this.handleCaseDeletion = this.handleCaseDeletion.bind(this);
         this.handleNewCaseCreation = this.handleNewCaseCreation.bind(this);
     }
 
@@ -56,7 +53,7 @@ class Cases extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.currentProject != this.props.currentProject){
+        if(prevProps.currentProject !== this.props.currentProject){
             this.fetchCases();
         }
     }
@@ -114,7 +111,7 @@ class Cases extends Component {
 
                 <div>
                     <List component="nav">
-                        {renderCases(this.props.cases)}
+                        {renderCases(this.props.cases, this.handleCaseDeletion)}
                     </List>
 
                     <Button variant="fab"

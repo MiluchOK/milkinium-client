@@ -4,8 +4,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import NoResults from '../components/NoResults';
 import ExecutionRow from '../components/ExecutionRow';
 
-export const renderSuites = (suites) => {
-    // const suites = this.props.suites;
+export const renderSuites = (suites, handleDelete) => {
     if (suites.size === 0) {
         return <NoResults/>
     }
@@ -17,15 +16,14 @@ export const renderSuites = (suites) => {
             key={c.id}
             id={c.id}
             to={`/suites/${c.id}`}
-            handleDelete={() => {this.handleSuiteDeletion(c.id)}}
+            handleDelete={() => {handleDelete(c.id)}}
         />
     )));
     console.log(el);
     return el
 };
 
-export const renderCases = (cases) => {
-    // const cases = this.props.suites;
+export const renderCases = (cases, handleDelete) => {
     if (cases.size === 0) {
         return <NoResults/>
     }
@@ -37,7 +35,7 @@ export const renderCases = (cases) => {
             key={c.id}
             id={c.id}
             to={`/cases/${c.id}`}
-            handleDelete={() => {this.handleCaseDeletion(c.id)}}
+            handleDelete={() => {handleDelete(c.id)}}
         />
     )));
 };

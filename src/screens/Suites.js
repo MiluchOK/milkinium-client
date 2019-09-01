@@ -94,7 +94,7 @@ class Suites extends Component {
 
                 <div>
                     <List>
-                        { renderSuites(this.props.suites) }
+                        { renderSuites(this.props.suites, this.handleSuiteDeletion) }
                     </List>
 
                     <Button variant="fab"
