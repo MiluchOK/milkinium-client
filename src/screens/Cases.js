@@ -9,6 +9,7 @@ import compose from 'recompose/compose';
 import AddIcon from '@material-ui/icons/Add';
 import CaseForm from '../components/CaseForm';
 import Case from './../components/ExecutionRow';
+import { renderCases } from "../components/ListRenders";
 import {getCases, createCase, deleteCase} from '../redux/actions/casesActions';
 import DescriptionIcon from '@material-ui/icons/Description';
 import NoResults from '../components/NoResults';
@@ -32,11 +33,9 @@ class Cases extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             creatorOpen: false,
         };
-
         this.handleAddCase = this.handleAddCase.bind(this);
         this.handleNewCaseCreation = this.handleNewCaseCreation.bind(this);
     }
@@ -78,24 +77,24 @@ class Cases extends Component {
             })
     }
 
-    renderCases() {
-        const cases = this.props.cases;
-        if (cases.size == 0) {
-            return <NoResults/>
-        }
+    // renderCases() {
+    //     const cases = this.props.cases;
+    //     if (cases.size == 0) {
+    //         return <NoResults/>
+    //     }
 
-        const elements = _.map(cases.toJS(), (c => (
-            <Case
-                title={c.title}
-                icon={<DescriptionIcon />}
-                key={c.id}
-                id={c.id}
-                to={`/cases/${c.id}`}
-                handleDelete={() => {this.handleCaseDeletion(c.id)}}
-            />
-        )));
-        return elements;
-    }
+    //     const elements = _.map(cases.toJS(), (c => (
+    //         <Case
+    //             title={c.title}
+    //             icon={<DescriptionIcon />}
+    //             key={c.id}
+    //             id={c.id}
+    //             to={`/cases/${c.id}`}
+    //             handleDelete={() => {this.handleCaseDeletion(c.id)}}
+    //         />
+    //     )));
+    //     return elements;
+    // }
 
     render() {
         const {classes, theme} = this.props;
@@ -115,7 +114,7 @@ class Cases extends Component {
 
                 <div>
                     <List component="nav">
-                        {this.renderCases()}
+                        {renderCases(this.props.cases)}
                     </List>
 
                     <Button variant="fab"

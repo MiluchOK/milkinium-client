@@ -9,11 +9,24 @@ import { Link } from 'react-router-dom';
 
 class ExecutionRow extends Component {
 
-    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} to={`${this.props.to}`} {...itemProps} />
+    constructor(props) {
+        super(props);
+        this.renderLink = this.renderLink.bind(this);
+    }
+
+    renderLink(itemProps){
+        return <Link style={{ textDecoration: 'none' }} to={`${this.props.to}`} {...itemProps} />;
+    }
 
     render() {
 
         const handleDelete = this.props.handleDelete;
+        let deletion = <div/>;
+        if (typeof handleDelete !== 'undefined') {
+            deletion = <IconButton onClick={handleDelete}>
+                            <DeleteIcon />
+                        </IconButton>
+        }
         const title = this.props.title;
         const icon = this.props.icon;
 
@@ -28,9 +41,7 @@ class ExecutionRow extends Component {
                     <ListItemText primary={title}/>
 
                     <ListItemSecondaryAction>
-                        <IconButton onClick={handleDelete}>
-                            <DeleteIcon />
-                        </IconButton>
+                        {deletion}
                     </ListItemSecondaryAction>
                 </ListItem>
         );

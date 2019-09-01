@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 import {connect} from 'react-redux';
-import List from '@material-ui/core/List';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {bindActionCreators} from 'redux';
 import compose from 'recompose/compose';
+import List from '@material-ui/core/List';
+import { renderSuites } from "../components/ListRenders";
 import AddIcon from '@material-ui/icons/Add';
-import Case from '../components/ExecutionRow';
 import SuiteForm from '../components/SuiteForm';
 import {getSuites, createSuite, deleteSuite} from '../redux/actions/suitesActions';
-import DescriptionIcon from '@material-ui/icons/Description';
-import NoResults from '../components/NoResults';
 import Creator from '../containers/Creator';
 
 const styles = theme => ({
@@ -36,8 +34,8 @@ class Suites extends Component {
         this.state = {
             creatorOpen: false,
         };
-
         this.handleAddSuite = this.handleAddSuite.bind(this);
+        this.handleSuiteDeletion = this.handleSuiteDeletion.bind(this);
         this.handleNewSuiteCreation = this.handleNewSuiteCreation.bind(this);
     }
 
@@ -57,7 +55,7 @@ class Suites extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.currentProject != this.props.currentProject){
+        if(prevProps.currentProject !== this.props.currentProject){
             this.fetchSuites();
         }
     }
@@ -78,25 +76,6 @@ class Suites extends Component {
             })
     }
 
-    renderSuites() {
-        const suites = this.props.suites;
-        if (suites.size == 0) {
-            return <NoResults/>
-        }
-
-        const elements = _.map(suites.toJS(), (c => (
-            <Case
-                title={c.title}
-                icon={<DescriptionIcon />}
-                key={c.id}
-                id={c.id}
-                to={`/suites/${c.id}`}
-                handleDelete={() => {this.handleSuiteDeletion(c.id)}}
-            />
-        )));
-        return elements;
-    }
-
     render() {
         const {classes, theme} = this.props;
         return (
@@ -114,8 +93,8 @@ class Suites extends Component {
                 </Creator>
 
                 <div>
-                    <List component="nav">
-                        {this.renderSuites()}
+                    <List>
+                        { renderSuites(this.props.suites) }
                     </List>
 
                     <Button variant="fab"
