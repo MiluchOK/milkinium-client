@@ -1,4 +1,4 @@
-import {Map, List, fromJS} from 'immutable';
+    import {Map, List, fromJS} from 'immutable';
 
 export default {
     projects: Map({
@@ -9,5 +9,6 @@ export default {
     current_user: Map(),
     cases: Map(),
     suites: Map(),
-    errors: List()
+    runs: List(),
+    errors: List(),
 };

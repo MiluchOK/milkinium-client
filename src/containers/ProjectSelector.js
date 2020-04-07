@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Form, Field, reduxForm} from 'redux-form'
-import {withStyles} from '@material-ui/core/styles';
-import {InputLabel} from '@material-ui/core/Input';
-import {MenuItem} from '@material-ui/core/Menu';
-import {FormControl} from '@material-ui/core/FormControl';
-import {bindActionCreators} from 'redux';
-import {Input} from '@material-ui/core/Input';
+import { Field, reduxForm } from 'redux-form'
+import { withStyles } from '@material-ui/core/styles';
+import { bindActionCreators } from 'redux';
 import CheckBox from '../components/CheckBox';
 import { selectProject } from '../redux/actions/projectsActions'
 
@@ -22,7 +18,7 @@ class ProjectSelector extends Component {
     render() {
 
         const projects = this.props.allProjects;
-        const currentProject = this.props.currentProject
+        const currentProject = this.props.currentProject;
 
         return (
             <form>
@@ -42,17 +38,10 @@ class ProjectSelector extends Component {
     }
 }
 
-ProjectSelector = reduxForm({
-    // a unique name for the form
-    form: 'projectSelector'
-})(ProjectSelector);
-
 const mapStateToProps = (state) => {
-    const pbid = state.projects.get('projectsById');
-    const currentProject = state.projects.get('currentProject');
     return {
-        allProjects: pbid,
-        currentProject: currentProject
+        allProjects: state.projects.get('projectsById'),
+        currentProject: state.projects.get('currentProject')
     }
 };
 
@@ -62,5 +51,9 @@ function matchDispatchToProps(dispatch) {
     }, dispatch)
 }
 
+ProjectSelector = connect(mapStateToProps, matchDispatchToProps)(ProjectSelector);
 ProjectSelector = withStyles(styles)(ProjectSelector);
-export default connect(mapStateToProps, matchDispatchToProps)(ProjectSelector);
+export default ProjectSelector = reduxForm({
+    // a unique name for the form
+    form: 'projectSelector'
+})(ProjectSelector);

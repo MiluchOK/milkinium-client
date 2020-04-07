@@ -23,26 +23,26 @@ const styles = theme => ({
 });
 
 const validate = values => {
-  const errors = {}
+  const errors = {};
   const requiredFields = [
     'title',
     'password'
-  ]
+  ];
   requiredFields.forEach(field => {
     log.debug("Checking field ", field)
     if (!values[field]) {
       errors[field] = 'Required'
     }
-  })
+  });
   if (
     values.email &&
     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
   ) {
     errors.email = 'Invalid email address'
   }
-  log.debug("Errors: ", errors)
+  log.debug("Errors: ", errors);
   return errors
-}
+};
 
 class SuiteForm extends Component {
 
@@ -60,6 +60,7 @@ class SuiteForm extends Component {
             onClick={() => {console.log('sdf')}}
         />
         {error && <strong style={{color:'red'}}>{error}</strong>}
+        {this.props.children}
         <div className={classes.submitContainer}>
           <Button className={classes.submit} type="submit" color="primary" variant="contained">
             Save
@@ -68,12 +69,12 @@ class SuiteForm extends Component {
       </form>
     )
   }
-};
+}
 
 
 SuiteForm = reduxForm({
     // a unique name for the form
-    form: 'case',
+    form: 'suite',
     validate,
     enableReinitialize: true
 })(SuiteForm);

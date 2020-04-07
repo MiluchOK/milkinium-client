@@ -1,6 +1,7 @@
 import React from "react";
 import _ from 'lodash';
 import DescriptionIcon from '@material-ui/icons/Description';
+import CheckBox from "@material-ui/core/Checkbox";
 import NoResults from '../components/NoResults';
 import ExecutionRow from '../components/ExecutionRow';
 
@@ -40,3 +41,19 @@ export const renderCases = (cases, handleDelete) => {
     )));
 };
 
+export const renderExecutions = (executions, handleDelete) => {
+    if (executions.size === 0) {
+        return <NoResults/>
+    }
+
+    return _.map(executions, (c => (
+        <ExecutionRow
+            title={c.title}
+            icon={<DescriptionIcon />}
+            key={c.id}
+            id={c.id}
+            to={`/runs/${c.id}`}
+            handleDelete={() => {handleDelete(c.id)}}
+        />
+    )));
+};

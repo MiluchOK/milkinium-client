@@ -27,22 +27,22 @@ const validate = values => {
   const requiredFields = [
     'title',
     'password'
-  ]
+  ];
   requiredFields.forEach(field => {
     log.debug("Checking field ", field)
     if (!values[field]) {
       errors[field] = 'Required'
     }
-  })
+  });
   if (
     values.email &&
     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
   ) {
     errors.email = 'Invalid email address'
   }
-  log.debug("Errors: ", errors)
+  log.debug("Errors: ", errors);
   return errors
-}
+};
 
 const renderSteps = ({ fields, meta: { error, submitFailed } }) => {
   return(
@@ -60,7 +60,7 @@ const renderSteps = ({ fields, meta: { error, submitFailed } }) => {
       <Button variant="contained" onClick={() => fields.push({})}>Add Step</Button>
     </div>
   )
-}
+};
 
 class CaseForm extends Component {
 

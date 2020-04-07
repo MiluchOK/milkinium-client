@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import log from 'loglevel';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 import Delete from '@material-ui/icons/Delete';
+import CheckBox from "@material-ui/core/Checkbox/Checkbox";
 
 export const renderTextField = ({
     label,
@@ -23,7 +25,25 @@ export const renderTextField = ({
         {...custom}
     />
     </div>
-)
+);
+
+export const renderCheckBox = ({
+    label,
+    input,
+    meta: { touched, invalid, error },
+    ...custom
+    }) => (
+        <div name="imCheckbox">
+            <label>Foo</label>
+            <CheckBox
+                checked={input}
+                tabIndex={-1}
+                disableRipple
+                fullWidth={true}
+                margin={"normal"}
+            />
+        </div>
+);
 
 export const renderDeletableTextField = ({
     label,
@@ -51,4 +71,4 @@ export const renderDeletableTextField = ({
             </Grid>
         </Grid>
     </div>
-)
+);

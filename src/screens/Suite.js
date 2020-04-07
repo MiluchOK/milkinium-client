@@ -1,22 +1,19 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import SuiteForm from '../components/SuiteForm';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import List from '@material-ui/core/List';
-import { renderCases } from "../components/ListRenders";
-import DescriptionIcon from '@material-ui/icons/Description';
+import { renderCases, renderChekableCases } from "../components/ListRenders";
 import LoadingIndicator from './../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
-import NoResults from '../components/NoResults';
 import {getCases} from '../redux/actions/casesActions';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import Creator from '../containers/Creator';
 import {getSuite, editSuite} from '../redux/actions/suitesActions';
+import CaseListForm from "../components/CaseListForm";
 
 const styles = theme => ({
     icon: {
@@ -97,19 +94,20 @@ class Suite extends Component {
                         title={'Add Case To Suite'}
                         handleClose={() => {this.setState({creatorOpen: false})}}
                     >
-                        <List component="nav">
-                            {renderCases(this.props.cases)}
-                        </List>
+                        <CaseListForm
+                            cases={this.props.cases}
+                        />
                     </Creator>
 
                     <Paper className={classes.root}>
                         <SuiteForm 
                             initialValues={suite.toJS()}
                             submitAction={this.editSuite}
-                        />
-                        <List>
-                            {renderCases(suite.get('cases'))}
-                        </List>
+                        >
+                            <List>
+                                {renderCases(suite.get('cases'))}
+                            </List>
+                        </SuiteForm>
                     </Paper>
 
                     <Button variant="fab"

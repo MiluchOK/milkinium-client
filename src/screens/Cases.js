@@ -1,44 +1,19 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import List from '@material-ui/core/List';
-import {withStyles} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import {bindActionCreators} from 'redux';
-import compose from 'recompose/compose';
-import AddIcon from '@material-ui/icons/Add';
-import CaseForm from '../components/CaseForm';
-import { renderCases } from "../components/ListRenders";
-import {getCases, createCase, deleteCase} from '../redux/actions/casesActions';
-import Creator from '../containers/Creator';
-
-const styles = theme => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-        flexGrow: 1,
-    },
-
-    fab: {
-        position: 'fixed',
-        zIndex: 10000,
-        bottom: 30,
-        right: 20,
-    },
-});
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getCases, createCase, deleteCase } from '../redux/actions/casesActions';
+import WithAddFab from '../containers/WithAddFab';
+import Creator from "../containers/Creator";
+import CaseForm from "../components/CaseForm";
+import List from "@material-ui/core/List";
+import {renderCases} from "../components/ListRenders";
 
 class Cases extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            creatorOpen: false,
-        };
-        this.handleAddCase = this.handleAddCase.bind(this);
         this.handleCaseDeletion = this.handleCaseDeletion.bind(this);
         this.handleNewCaseCreation = this.handleNewCaseCreation.bind(this);
-    }
-
-    handleAddCase() {
-        this.setState({creatorOpen: true})
     }
 
     fetchCases(){
@@ -74,38 +49,19 @@ class Cases extends Component {
             })
     }
 
-    // renderCases() {
-    //     const cases = this.props.cases;
-    //     if (cases.size == 0) {
-    //         return <NoResults/>
-    //     }
-
-    //     const elements = _.map(cases.toJS(), (c => (
-    //         <Case
-    //             title={c.title}
-    //             icon={<DescriptionIcon />}
-    //             key={c.id}
-    //             id={c.id}
-    //             to={`/cases/${c.id}`}
-    //             handleDelete={() => {this.handleCaseDeletion(c.id)}}
-    //         />
-    //     )));
-    //     return elements;
-    // }
-
     render() {
-        const {classes, theme} = this.props;
+
+        let creatorOpen = this.props.creatorOpen;
+
         return (
-
-            <div className={classes.root}>
-
+            <div>
                 <Creator
-                    open={this.state.creatorOpen}
-                    title={'New Case'}
-                    handleClose={() => {this.setState({creatorOpen: false})}}
+                    open={creatorOpen}
+                    title={'New Entity'}
+                    handleClose={() => {this.props.closeCreator()}}
                 >
-                    <CaseForm 
-                            submitAction={(data) => {this.handleNewCaseCreation(data)}}
+                    <CaseForm
+                        submitAction={(data) => { this.handleNewCaseCreation(data) }}
                     />
                 </Creator>
 
@@ -113,17 +69,9 @@ class Cases extends Component {
                     <List component="nav">
                         {renderCases(this.props.cases, this.handleCaseDeletion)}
                     </List>
-
-                    <Button variant="fab"
-                            onClick={this.handleAddCase}
-                            color="primary"
-                            aria-label="add"
-                            className={classes.fab}>
-                        <AddIcon />
-                    </Button>
                 </div>
             </div>
-        );
+        )
     }
 }
 
@@ -142,8 +90,5 @@ const mapStateToProps = (state) => {
     }
 };
 
+export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Cases));
 
-export default compose(
-    withStyles(styles, {withTheme: true}),
-    connect(mapStateToProps, matchDispatchToProps)
-)(Cases);

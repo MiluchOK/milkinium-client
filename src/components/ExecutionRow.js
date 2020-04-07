@@ -29,9 +29,15 @@ class ExecutionRow extends Component {
         }
         const title = this.props.title;
         const icon = this.props.icon;
+        let comp = "a";
+        if ( this.props.to ) {
+            comp = this.renderLink
+        }
 
         return (
-                <ListItem button component={this.renderLink}>
+                <ListItem
+                    button
+                    component={comp}>
 
                     <ListItemIcon>
                         {icon}
