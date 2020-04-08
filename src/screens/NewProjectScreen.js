@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import Avatar from '@material-ui/core/Avatar';
 import FolderIcon from '@material-ui/icons/Folder';
 import { Typography } from '@material-ui/core';
-import ProjectForm from './../components/ProjectForm';
+import ProjectForm from '../components/forms/ProjectForm';
 import {createProject, getProjects, selectProject} from '../redux/actions/projectsActions';
 
 const styles = theme => ({

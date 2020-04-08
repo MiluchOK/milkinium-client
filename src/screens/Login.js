@@ -6,7 +6,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import compose from 'recompose/compose';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/forms/LoginForm';
 import {signIn, getCurrentUser} from '../redux/actions/usersActions';
 import MiddleBox from '../components/MiddleBox';
 

@@ -5,6 +5,26 @@ import CheckBox from "@material-ui/core/Checkbox";
 import NoResults from '../components/NoResults';
 import ExecutionRow from '../components/ExecutionRow';
 
+export const renderEntity = (entities) => {
+    if (entities === 0){
+        return <NoResults/>
+    }
+
+    return _.map(entities, (entity => {
+        const props = entity.props;
+        const component = entity.component;
+        return React.createElement(component, {...props})
+        // return <ExecutionRow
+        //     title={entity.title}
+        //     icon={<DescriptionIcon />}
+        //     key={entity.id}
+        //     id={entity.id}
+        //     to={entity.path}
+        //     {...props}
+        // />
+    }))
+};
+
 export const renderSuites = (suites, handleDelete) => {
     if (suites.size === 0) {
         return <NoResults/>

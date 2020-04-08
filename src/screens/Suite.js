@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
-import SuiteForm from '../components/SuiteForm';
+import SuiteForm from '../components/forms/SuiteForm';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -13,7 +13,7 @@ import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import Creator from '../containers/Creator';
 import {getSuite, editSuite} from '../redux/actions/suitesActions';
-import CaseListForm from "../components/CaseListForm";
+import CaseListForm from "../components/forms/CaseListForm";
 
 const styles = theme => ({
     icon: {

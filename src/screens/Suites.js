@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import List from '@material-ui/core/List';
 import WithAddFab from '../containers/WithAddFab';
 import { renderSuites } from "../components/ListRenders";
-import SuiteForm from '../components/SuiteForm';
+import SuiteForm from '../components/forms/SuiteForm';
 import {getSuites, createSuite, deleteSuite} from '../redux/actions/suitesActions';
 import Creator from '../containers/Creator';
 

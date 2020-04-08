@@ -6,7 +6,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Dashboard from '../screens/Dashboard';
-import Executions from '../screens/Executions';
+import Executions from '../screens/Runs';
 import Feed from '../screens/Feed';
 import Cases from '../screens/Cases';
 import Suits from '../screens/Suites';

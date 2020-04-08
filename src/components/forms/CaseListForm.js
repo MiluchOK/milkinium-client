@@ -1,9 +1,9 @@
-import {renderChekableCases} from "./ListRenders";
+import {renderChekableCases} from "../ListRenders";
 import List from "@material-ui/core/List/List";
 import { reduxForm, Field } from 'redux-form';
 import React from "react";
-import {renderCheckBox, renderTextField} from "./TextField";
-import ExecutionRow from "./ExecutionRow";
+import {renderCheckBox, renderTextField} from "../TextField";
+import ExecutionRow from "../ExecutionRow";
 import AddIcon from '@material-ui/icons/Add';
 
 class CaseListForm extends React.Component {

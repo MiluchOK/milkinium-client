@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Field, reduxForm } from 'redux-form'
-import { renderTextField } from './TextField';
+import { renderTextField } from '../TextField';
 
 const styles = theme => ({
   form: {

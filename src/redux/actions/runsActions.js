@@ -25,3 +25,11 @@ export const deleteRun = (runId) => {
             .then((res) => res.data)
     }
 };
+
+export const addCasesToRun = (runId, caseIds) => {
+    return {
+        type: actionTypes.ADD_CASES_TO_RUN,
+        payload: httpClient.post(`/v1/runs/${runId}/tests`, {cases: caseIds})
+            .then((res) => res.data)
+    }
+};

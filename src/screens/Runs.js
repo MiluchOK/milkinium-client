@@ -3,13 +3,13 @@ import List from '@material-ui/core/List';
 import { renderExecutions } from "../components/ListRenders";
 import WithAddFab from '../containers/WithAddFab';
 import {bindActionCreators} from "redux";
-import { createRun } from "../redux/actions/runsActions";
-import { getRuns } from "../redux/actions/runsActions";
+import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
 import {connect} from "react-redux";
 import Creator from "../containers/Creator";
+import RunForm from "../components/forms/RunForm";
 
 
-class Executions extends Component {
+class Runs extends Component {
 
     constructor(props){
         super(props);
@@ -17,12 +17,12 @@ class Executions extends Component {
         this.handleNewRunCreation = this.handleNewRunCreation.bind(this);
     }
 
-    fetchExecutions(projectId) {
+    fetchRuns(projectId) {
         return this.props.getRuns(projectId)
     }
 
     componentDidMount() {
-        this.fetchExecutions(this.props.currentProject)
+        this.fetchRuns(this.props.currentProject)
     }
 
     submitAction() {
@@ -34,7 +34,15 @@ class Executions extends Component {
     }
 
     handleNewRunCreation(data){
-        console.log(`Creating new run. ${data}`)
+        const projectId = this.props.currentProject;
+        this.props.createRun(projectId, data)
+        .then((responseData) => {
+            return this.props.addCasesToRun(responseData.action.payload.id, data.selectedCaseIds);
+        })
+        .then(() => {
+            return this.fetchRuns(projectId);
+        });
+        this.props.closeCreator();
     }
 
     render() {
@@ -48,7 +56,9 @@ class Executions extends Component {
                     title={'New Run'}
                     handleClose={() => { this.props.closeCreator() }}
                 >
-                    <div></div>
+                    <RunForm
+                        submitAction={(data) => { this.handleNewRunCreation(data) }}
+                    />
                 </Creator>
                 <div>
                     <List component="nav">
@@ -64,6 +74,7 @@ function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         getRuns: getRuns,
         createRun: createRun,
+        addCasesToRun: addCasesToRun
     }, dispatch)
 }
 
@@ -74,6 +85,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Executions));
+export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Runs));
 
 

@@ -9,7 +9,7 @@ import compose from 'recompose/compose';
 import { Link } from 'react-router-dom';
 import {getCase, deleteCase, editCase} from '../redux/actions/casesActions';
 import LoadingIndicator from './../components/LoadingIndicator';
-import CaseForm from '../components/CaseForm';
+import CaseForm from '../components/forms/CaseForm';
 
 const styles = theme => ({
     icon: {

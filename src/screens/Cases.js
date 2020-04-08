@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getCases, createCase, deleteCase } from '../redux/actions/casesActions';
 import WithAddFab from '../containers/WithAddFab';
 import Creator from "../containers/Creator";
-import CaseForm from "../components/CaseForm";
+import CaseForm from "../components/forms/CaseForm";
 import List from "@material-ui/core/List";
 import {renderCases} from "../components/ListRenders";
 
@@ -36,10 +36,10 @@ class Cases extends Component {
     handleNewCaseCreation(data){
         const projectId = this.props.currentProject;
         this.props.createCase(projectId, data)
-            .then((data) => {
-                this.fetchCases();
-                this.setState({creatorOpen: false})
-            })
+        .then((data) => {
+            this.fetchCases();
+            this.setState({creatorOpen: false})
+        })
     }
 
     handleCaseDeletion(caseId){
