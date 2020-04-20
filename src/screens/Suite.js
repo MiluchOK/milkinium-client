@@ -5,7 +5,7 @@ import SuiteForm from '../components/forms/SuiteForm';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
-import { renderCases, renderChekableCases } from "../components/ListRenders";
+import { renderCases } from "../components/ListRenders";
 import LoadingIndicator from './../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import {getCases} from '../redux/actions/casesActions';
@@ -65,7 +65,6 @@ class Suite extends Component {
     }
 
     fetchSuite(id) {
-        console.log("Fetching suite");
         return this.props.getSuite(id);
     }
 
@@ -74,18 +73,26 @@ class Suite extends Component {
     }
 
     componentDidMount() {
-        console.log("Component Did mount");
-        this.fetchSuite(this.props.match.params.suiteId);
         this.fetchCases()
+        .then(() => {
+            this.fetchSuite(this.props.match.params.suiteId)
+        })
     }
 
     render() {
         const { classes } = this.props;
         const id = this.props.match.params.suiteId;
-        const suite = this.props.suites.get(id);
-        console.log("Getting by suite id: " + id);
+        const suite = this.props.suites[id];
 
         if(suite) {
+            const caseIds = suite.cases;
+
+            console.log({targetIds: caseIds, allIds: this.props.cases})
+
+            const cases = caseIds.map(cazeId => {
+                return this.props.cases[cazeId]
+            });
+
             return (
                 <div className={classes.root}>
 
@@ -101,11 +108,11 @@ class Suite extends Component {
 
                     <Paper className={classes.root}>
                         <SuiteForm 
-                            initialValues={suite.toJS()}
+                            initialValues={suite}
                             submitAction={this.editSuite}
                         >
                             <List>
-                                {renderCases(suite.get('cases'))}
+                                {renderCases(cases)}
                             </List>
                         </SuiteForm>
                     </Paper>
@@ -139,7 +146,7 @@ const mapStateToProps = (state) => {
     return {
         suites: state.suites,
         cases: state.cases,
-        currentProject: state.projects.get('currentProject')
+        currentProject: state.projects.currentProject
     }
 };
 

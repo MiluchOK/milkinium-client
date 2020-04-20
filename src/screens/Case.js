@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
-import _ from 'lodash';
 import log from 'loglevel';
 import Paper from '@material-ui/core/Paper';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
 import { Link } from 'react-router-dom';
-import {getCase, deleteCase, editCase} from '../redux/actions/casesActions';
+import {getCase, editCase} from '../redux/actions/casesActions';
 import LoadingIndicator from './../components/LoadingIndicator';
 import CaseForm from '../components/forms/CaseForm';
 
@@ -42,16 +41,16 @@ const styles = theme => ({
 
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
     const requiredFields = [
       'email',
       'password'
-    ]
+    ];
     requiredFields.forEach(field => {
       if (!values[field]) {
         errors[field] = 'Required'
       }
-    })
+    });
     if (
       values.email &&
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
@@ -59,16 +58,16 @@ const validate = values => {
       errors.email = 'Invalid email address'
     }
     return errors
-  }
+  };
 
 class Case extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.editCase = this.editCase.bind(this);
     }
 
-    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} {...itemProps} />
+    renderLink = itemProps => <Link style={{ textDecoration: 'none' }} {...itemProps} />;
 
     componentDidMount() {
         this.fetchCase(this.props.match.params.caseId)
@@ -86,15 +85,15 @@ class Case extends Component {
 
     render() {
         const { classes } = this.props;
-        const id = this.props.match.params.caseId
-        const caze = this.props.cases.get(id)
+        const id = this.props.match.params.caseId;
+        const caze = this.props.cases[id];
 
         if(caze) {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.root}>
                         <CaseForm 
-                            initialValues={caze.toJS()}
+                            initialValues={caze}
                             submitAction={this.editCase}
                         />
                     </Paper>

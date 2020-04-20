@@ -3,10 +3,12 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import List from '@material-ui/core/List';
 import WithAddFab from '../containers/WithAddFab';
-import { renderSuites } from "../components/ListRenders";
-import SuiteForm from '../components/forms/SuiteForm';
+import {renderCases, renderSuites} from "../components/ListRenders";
+import RunForm from '../components/forms/RunForm';
+import EntityList from "../containers/EntityList";
 import {getSuites, createSuite, deleteSuite} from '../redux/actions/suitesActions';
 import Creator from '../containers/Creator';
+import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 
 
 class Suites extends Component {
@@ -36,11 +38,11 @@ class Suites extends Component {
 
     handleNewSuiteCreation(data){
         const projectId = this.props.currentProject;
-        this.props.createSuite(projectId, data)
-            .then((data) => {
-                this.fetchSuites();
-                this.setState({creatorOpen: false})
-            })
+        this.props.createSuite(projectId, {title: data.title, cases: data.selectedCaseIds})
+        .then((data) => {
+            this.fetchSuites();
+        });
+        this.props.closeCreator()
     }
 
     handleSuiteDeletion(caseId){
@@ -51,6 +53,9 @@ class Suites extends Component {
     }
 
     render() {
+
+        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
+
         return (
             <div>
                 <Creator
@@ -58,16 +63,15 @@ class Suites extends Component {
                     title={'New Suite'}
                     handleClose={() => { this.props.closeCreator() }}
                 >
-                    <SuiteForm
+                    <RunForm
                             submitAction={(data) => {this.handleNewSuiteCreation(data)}}
                     />
                 </Creator>
 
-                <div>
-                    <List>
-                        { renderSuites(this.props.suites, this.handleSuiteDeletion) }
-                    </List>
-                </div>
+                <EnhancedEntityList
+                    entities={this.props.suites}
+                    renderer={renderSuites}
+                />
             </div>
         );
     }
@@ -84,7 +88,7 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         suites: state.suites,
-        currentProject: state.projects.get('currentProject')
+        currentProject: state.projects.currentProject
     }
 };
 

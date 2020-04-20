@@ -5,8 +5,9 @@ import { getCases, createCase, deleteCase } from '../redux/actions/casesActions'
 import WithAddFab from '../containers/WithAddFab';
 import Creator from "../containers/Creator";
 import CaseForm from "../components/forms/CaseForm";
-import List from "@material-ui/core/List";
 import {renderCases} from "../components/ListRenders";
+import EntityList from "../containers/EntityList";
+import WithDefaultForEmptiness from '../containers/WithDefaultForEmptiness';
 
 class Cases extends Component {
 
@@ -38,20 +39,21 @@ class Cases extends Component {
         this.props.createCase(projectId, data)
         .then((data) => {
             this.fetchCases();
-            this.setState({creatorOpen: false})
         })
+        this.props.closeCreator()
     }
 
     handleCaseDeletion(caseId){
         this.props.deleteCase(caseId)
-            .then((data) => {
-                this.fetchCases();
-            })
+        .then((data) => {
+            this.fetchCases();
+        })
     }
 
     render() {
 
         let creatorOpen = this.props.creatorOpen;
+        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
             <div>
@@ -65,11 +67,10 @@ class Cases extends Component {
                     />
                 </Creator>
 
-                <div>
-                    <List component="nav">
-                        {renderCases(this.props.cases, this.handleCaseDeletion)}
-                    </List>
-                </div>
+                <EnhancedEntityList
+                    entities={this.props.cases}
+                    renderer={renderCases}
+                />
             </div>
         )
     }
@@ -86,7 +87,7 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         cases: state.cases,
-        currentProject: state.projects.get('currentProject')
+        currentProject: state.projects.currentProject
     }
 };
 

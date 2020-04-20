@@ -70,9 +70,9 @@ function matchDispatchToProps(dispatch){
 }
 
 const mapStateToProps = (state) => {
-    const allProjects = state.projects.get('projectsById');
+    const allProjects = state.projects.projectsById;
     const errors = state.errors;
-    const currentProject = state.projects.get('currentProject');
+    const currentProject = state.projects.currentProject;
     return {
         allProjects: allProjects,
         errors: errors

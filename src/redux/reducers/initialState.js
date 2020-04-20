@@ -1,14 +1,13 @@
-    import {Map, List, fromJS} from 'immutable';
 
 export default {
-    projects: Map({
+    projects: {
         projectsById: {},
         currentProject: localStorage.getItem('currentProject') || ""
-    }),
-    users: List(),
-    current_user: Map(),
-    cases: Map(),
-    suites: Map(),
-    runs: List(),
-    errors: List(),
+    },
+    users: [],
+    current_user: {},
+    cases: {},
+    suites: {},
+    runs: [],
+    errors: [],
 };

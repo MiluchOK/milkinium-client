@@ -88,7 +88,7 @@ class RunForm extends Component {
             <form className={classes.form} onSubmit={this.props.handleSubmit(this.myCustomFunction)}>
                 <Field
                     name="title"
-                    label="Test Run Title"
+                    label="Title"
                     component={renderTextField}
                     type='text'
                     editState={false}

@@ -30,7 +30,7 @@ export const renderSuites = (suites, handleDelete) => {
         return <NoResults/>
     }
 
-    const el = _.map(suites.toJS(), (c => (
+    const el = _.map(suites, (c => (
         <ExecutionRow
             title={c.title}
             icon={<DescriptionIcon />}
@@ -40,7 +40,6 @@ export const renderSuites = (suites, handleDelete) => {
             handleDelete={() => {handleDelete(c.id)}}
         />
     )));
-    console.log(el);
     return el
 };
 
@@ -49,7 +48,9 @@ export const renderCases = (cases, handleDelete) => {
         return <NoResults/>
     }
 
-    return _.map(cases.toJS(), (c => (
+    console.log({cases: cases});
+
+    return _.map(cases, (c => (
         <ExecutionRow
             title={c.title}
             icon={<DescriptionIcon />}

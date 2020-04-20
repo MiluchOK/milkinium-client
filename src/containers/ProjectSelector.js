@@ -40,8 +40,8 @@ class ProjectSelector extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        allProjects: state.projects.get('projectsById'),
-        currentProject: state.projects.get('currentProject')
+        allProjects: state.projects.projectsById,
+        currentProject: state.projects.currentProject
     }
 };
 

@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import List from '@material-ui/core/List';
-import { renderExecutions } from "../components/ListRenders";
+import {renderExecutions, renderSuites} from "../components/ListRenders";
 import WithAddFab from '../containers/WithAddFab';
 import {bindActionCreators} from "redux";
 import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
 import {connect} from "react-redux";
 import Creator from "../containers/Creator";
 import RunForm from "../components/forms/RunForm";
+import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
+import EntityList from "../containers/EntityList";
 
 
 class Runs extends Component {
@@ -48,6 +50,7 @@ class Runs extends Component {
     render() {
 
         const executions = this.props.runs;
+        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
             <div>
@@ -60,11 +63,11 @@ class Runs extends Component {
                         submitAction={(data) => { this.handleNewRunCreation(data) }}
                     />
                 </Creator>
-                <div>
-                    <List component="nav">
-                        {renderExecutions(executions, this.handleRunDeletion)}
-                    </List>
-                </div>
+
+                <EnhancedEntityList
+                    entities={executions}
+                    renderer={renderExecutions}
+                />
             </div>
         );
     }
@@ -81,7 +84,7 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         runs: state.runs,
-        currentProject: state.projects.get('currentProject')
+        currentProject: state.projects.currentProject
     }
 };
 
