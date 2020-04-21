@@ -53,6 +53,7 @@ class Suite extends Component {
         };
         this.editSuite = this.editSuite.bind(this);
         this.handleAddCase = this.handleAddCase.bind(this);
+        this.casesToRender = this.casesToRender.bind(this);
     }
 
     handleAddCase() {
@@ -74,9 +75,13 @@ class Suite extends Component {
 
     componentDidMount() {
         this.fetchCases()
-        .then(() => {
-            this.fetchSuite(this.props.match.params.suiteId)
-        })
+        this.fetchSuite(this.props.match.params.suiteId)
+    }
+
+    casesToRender(targetIds) {
+        const allCases = this.props.cases;
+        const cases = targetIds.map(cazeId => allCases[cazeId]);
+        return cases.filter(c => c != null)
     }
 
     render() {
@@ -85,13 +90,8 @@ class Suite extends Component {
         const suite = this.props.suites[id];
 
         if(suite) {
-            const caseIds = suite.cases;
-
-            console.log({targetIds: caseIds, allIds: this.props.cases})
-
-            const cases = caseIds.map(cazeId => {
-                return this.props.cases[cazeId]
-            });
+            const targetIds = suite.cases;
+            const cases = this.casesToRender(targetIds)
 
             return (
                 <div className={classes.root}>

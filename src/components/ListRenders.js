@@ -50,16 +50,17 @@ export const renderCases = (cases, handleDelete) => {
 
     console.log({cases: cases});
 
-    return _.map(cases, (c => (
-        <ExecutionRow
+    return _.map(cases, (c => {
+        console.log({c: c})
+        return (<ExecutionRow
             title={c.title}
             icon={<DescriptionIcon />}
             key={c.id}
             id={c.id}
             to={`/cases/${c.id}`}
             handleDelete={() => {handleDelete(c.id)}}
-        />
-    )));
+        />)
+    }));
 };
 
 export const renderExecutions = (executions, handleDelete) => {
