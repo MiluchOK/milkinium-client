@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
-import List from '@material-ui/core/List';
-import {renderExecutions, renderSuites} from "../components/ListRenders";
 import WithAddFab from '../containers/WithAddFab';
-import {bindActionCreators} from "redux";
+import { bindActionCreators } from "redux";
 import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Creator from "../containers/Creator";
 import RunForm from "../components/forms/RunForm";
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import EntityList from "../containers/EntityList";
+import DescriptionIcon from "@material-ui/icons/Description";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 class Runs extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.handleRunDeletion = this.handleRunDeletion.bind(this);
         this.handleNewRunCreation = this.handleNewRunCreation.bind(this);
     }
 
@@ -31,8 +31,10 @@ class Runs extends Component {
         console.log("Submit action.")
     }
 
-    handleRunDeletion() {
-        console.log("Deleting run.")
+    renderSecondaryActionComponent(runId){
+        return (<IconButton onClick={() => { this.handleRunDeletion(runId)} }>
+            <DeleteIcon />
+        </IconButton>)
     }
 
     handleNewRunCreation(data){
@@ -65,8 +67,12 @@ class Runs extends Component {
                 </Creator>
 
                 <EnhancedEntityList
-                    entities={executions}
-                    renderer={renderExecutions}
+                    entities={ executions }
+                    title={ execution => execution.title }
+                    id={ execution => execution.id }
+                    clickHandler={ execution => this.props.history.push(`/executions/${execution.id}`) }
+                    mainItemRenderer={ execution => <DescriptionIcon /> }
+                    secondaryActionRenderer={ execution => null }
                 />
             </div>
         );

@@ -18,14 +18,6 @@ export const createRun = (projectId, data) => {
     }
 };
 
-export const deleteRun = (runId) => {
-    return {
-        type: actionTypes.DELETE_RUN,
-        payload: httpClient.delete(`/v1/cases/${runId}`)
-            .then((res) => res.data)
-    }
-};
-
 export const addCasesToRun = (runId, caseIds) => {
     return {
         type: actionTypes.ADD_CASES_TO_RUN,

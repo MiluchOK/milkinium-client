@@ -3,9 +3,10 @@ import _ from 'lodash';
 import DescriptionIcon from '@material-ui/icons/Description';
 import CheckBox from "@material-ui/core/Checkbox";
 import NoResults from '../components/NoResults';
-import ExecutionRow from '../components/ExecutionRow';
+import EntityRow from './EntityRow';
 
-export const renderEntity = (entities) => {
+export const renderEntities = (entities, actions) => {
+
     if (entities === 0){
         return <NoResults/>
     }
@@ -13,8 +14,11 @@ export const renderEntity = (entities) => {
     return _.map(entities, (entity => {
         const props = entity.props;
         const component = entity.component;
-        return React.createElement(component, {...props})
-        // return <ExecutionRow
+        const onDelete = () => {
+            console.log('Oups')
+        }
+        return React.createElement(component, onDelete)
+        // return <EntityRow
         //     title={entity.title}
         //     icon={<DescriptionIcon />}
         //     key={entity.id}
@@ -31,7 +35,7 @@ export const renderSuites = (suites, handleDelete) => {
     }
 
     const el = _.map(suites, (c => (
-        <ExecutionRow
+        <EntityRow
             title={c.title}
             icon={<DescriptionIcon />}
             key={c.id}
@@ -52,7 +56,7 @@ export const renderCases = (cases, handleDelete) => {
 
     return _.map(cases, (c => {
         console.log({c: c})
-        return (<ExecutionRow
+        return (<EntityRow
             title={c.title}
             icon={<DescriptionIcon />}
             key={c.id}
@@ -69,7 +73,7 @@ export const renderExecutions = (executions, handleDelete) => {
     }
 
     return _.map(executions, (c => (
-        <ExecutionRow
+        <EntityRow
             title={c.title}
             icon={<DescriptionIcon />}
             key={c.id}

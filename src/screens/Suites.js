@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import List from '@material-ui/core/List';
+import { bindActionCreators } from 'redux';
 import WithAddFab from '../containers/WithAddFab';
-import {renderCases, renderSuites} from "../components/ListRenders";
+import DescriptionIcon from "@material-ui/icons/Description";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import RunForm from '../components/forms/RunForm';
 import EntityList from "../containers/EntityList";
-import {getSuites, createSuite, deleteSuite} from '../redux/actions/suitesActions';
+import { getSuites, createSuite, deleteSuite } from '../redux/actions/suitesActions';
 import Creator from '../containers/Creator';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 
@@ -45,6 +46,12 @@ class Suites extends Component {
         this.props.closeCreator()
     }
 
+    renderSecondaryActionComponent(suite){
+        return (<IconButton onClick={() => { this.handleSuiteDeletion(suite.id)} }>
+                <DeleteIcon />
+            </IconButton>)
+    }
+
     handleSuiteDeletion(caseId){
         this.props.deleteSuite(caseId)
             .then((data) => {
@@ -70,7 +77,13 @@ class Suites extends Component {
 
                 <EnhancedEntityList
                     entities={this.props.suites}
-                    renderer={renderSuites}
+                    title={ suite => suite.title }
+                    id={ suite => suite.id }
+                    clickHandler={suite => {
+                        this.props.history.push(`/suites/${suite.id}`)
+                    }}
+                    mainItemRenderer={suite => <DescriptionIcon />}
+                    secondaryActionRenderer={(suite) => this.renderSecondaryActionComponent(suite)}
                 />
             </div>
         );

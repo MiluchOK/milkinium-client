@@ -10,7 +10,7 @@ import List from "@material-ui/core/List";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {createCase, deleteCase, getCases} from "../../redux/actions/casesActions";
-import ExecutionRow from "../ExecutionRow";
+import EntityRow from "../EntityRow";
 import NoResults from "../NoResults";
 
 const styles = theme => ({
@@ -46,8 +46,8 @@ class RunForm extends Component {
             return <NoResults/>
         }
 
-        return _.map(cases.toJS(), (c => {
-            let EnhancedExecutionRow = WithCheckbox(ExecutionRow);
+        return _.map(cases, (c => {
+            let EnhancedExecutionRow = WithCheckbox(EntityRow);
             return <EnhancedExecutionRow
                 checked={this.state.selectedCaseIds.includes(c.id)}
                 handleChange={(event) => {
@@ -119,7 +119,7 @@ RunForm = reduxForm({
 const mapStateToProps = (state) => {
     return {
         cases: state.cases,
-        currentProject: state.projects.get('currentProject')
+        currentProject: state.projects.currentProject
     }
 };
 

@@ -5,9 +5,11 @@ import { getCases, createCase, deleteCase } from '../redux/actions/casesActions'
 import WithAddFab from '../containers/WithAddFab';
 import Creator from "../containers/Creator";
 import CaseForm from "../components/forms/CaseForm";
-import {renderCases} from "../components/ListRenders";
 import EntityList from "../containers/EntityList";
 import WithDefaultForEmptiness from '../containers/WithDefaultForEmptiness';
+import DescriptionIcon from "@material-ui/icons/Description";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 class Cases extends Component {
 
@@ -50,6 +52,12 @@ class Cases extends Component {
         })
     }
 
+    renderSecondaryActionComponent(caze){
+        return (<IconButton onClick={() => { this.handleCaseDeletion(caze.id)} }>
+            <DeleteIcon />
+        </IconButton>)
+    }
+
     render() {
 
         let creatorOpen = this.props.creatorOpen;
@@ -69,7 +77,11 @@ class Cases extends Component {
 
                 <EnhancedEntityList
                     entities={this.props.cases}
-                    renderer={renderCases}
+                    title={ caze => caze.title }
+                    id={ caze => caze.id }
+                    clickHandler={ caze => this.props.history.push(`/cases/${caze.id}`) }
+                    mainItemRenderer={ caze => <DescriptionIcon /> }
+                    secondaryActionRenderer={ caze => this.renderSecondaryActionComponent(caze) }
                 />
             </div>
         )
