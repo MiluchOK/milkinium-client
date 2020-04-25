@@ -54,9 +54,9 @@ class Suites extends Component {
 
     handleSuiteDeletion(caseId){
         this.props.deleteSuite(caseId)
-            .then((data) => {
-                this.fetchSuites();
-            })
+        .then((data) => {
+            this.fetchSuites();
+        })
     }
 
     render() {

@@ -4,9 +4,8 @@ import {bindActionCreators} from 'redux';
 import SuiteForm from '../components/forms/SuiteForm';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import { renderCases } from "../components/ListRenders";
 import LoadingIndicator from './../components/LoadingIndicator';
+import DescriptionIcon from "@material-ui/icons/Description";
 import AddIcon from '@material-ui/icons/Add';
 import {getCases} from '../redux/actions/casesActions';
 import {connect} from 'react-redux';
@@ -14,6 +13,8 @@ import compose from 'recompose/compose';
 import Creator from '../containers/Creator';
 import {getSuite, editSuite} from '../redux/actions/suitesActions';
 import CaseListForm from "../components/forms/CaseListForm";
+import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
+import EntityList from "../containers/EntityList";
 
 const styles = theme => ({
     icon: {
@@ -91,7 +92,8 @@ class Suite extends Component {
 
         if(suite) {
             const targetIds = suite.cases;
-            const cases = this.casesToRender(targetIds)
+            const cases = this.casesToRender(targetIds);
+            let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
             return (
                 <div className={classes.root}>
@@ -111,9 +113,14 @@ class Suite extends Component {
                             initialValues={suite}
                             submitAction={this.editSuite}
                         >
-                            <List>
-                                {renderCases(cases)}
-                            </List>
+                            <EnhancedEntityList
+                                entities={ cases }
+                                title={ caze => caze.title }
+                                id={ caze => caze.id }
+                                clickHandler={ () => {} }
+                                mainItemRenderer={ caze => <DescriptionIcon /> }
+                                secondaryActionRenderer={ caze => null }
+                            />
                         </SuiteForm>
                     </Paper>
 

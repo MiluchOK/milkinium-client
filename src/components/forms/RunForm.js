@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { runValidate } from "./validators";
-import _ from 'lodash';
 import withStyles from '@material-ui/core/styles/withStyles';
-import WithCheckbox from "../WithCheckbox";
+import Checkbox from '@material-ui/core/Checkbox';
 import { renderTextField } from '../TextField';
 import { Field, reduxForm } from 'redux-form';
 import Button from '../Button';
-import List from "@material-ui/core/List";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {createCase, deleteCase, getCases} from "../../redux/actions/casesActions";
-import EntityRow from "../EntityRow";
-import NoResults from "../NoResults";
+import WithDefaultForEmptiness from "../../containers/WithDefaultForEmptiness";
+import EntityList from "../../containers/EntityList";
 
 const styles = theme => ({
     form: {
@@ -36,35 +34,47 @@ class RunForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedCaseIds: []
+            selectedCaseIds: [],
+            something: 'lskfnds'
         };
         this.myCustomFunction = this.myCustomFunction.bind(this);
     }
 
-    renderCases(cases) {
-        if (cases.size === 0) {
-            return <NoResults/>
-        }
+    // renderCases(cases) {
+    //     if (cases.size === 0) {
+    //         return <NoResults/>
+    //     }
+    //
+    //     return _.map(cases, (c => {
+    //         let EnhancedExecutionRow = WithCheckbox(EntityRow);
+    //         return <EnhancedExecutionRow
+    //             checked={this.state.selectedCaseIds.includes(c.id)}
+    //             handleChange={(event) => {
+    //                 console.log(`Checking to: ${event.target.checked}`);
+    //                 let isChecked = event.target.checked;
+    //                 if ( isChecked ) {
+    //                     this.setState({selectedCaseIds: [...this.state.selectedCaseIds, c.id]})
+    //                 } else {
+    //                     this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== c.id)})
+    //                 }
+    //             }}
+    //             title={c.title}
+    //             key={c.id}
+    //             id={c.id}
+    //         />
+    //     }))
+    // };
 
-        return _.map(cases, (c => {
-            let EnhancedExecutionRow = WithCheckbox(EntityRow);
-            return <EnhancedExecutionRow
-                checked={this.state.selectedCaseIds.includes(c.id)}
-                handleChange={(event) => {
-                    console.log(`Checking to: ${event.target.checked}`);
-                    let isChecked = event.target.checked;
-                    if ( isChecked ) {
-                        this.setState({selectedCaseIds: [...this.state.selectedCaseIds, c.id]})
-                    } else {
-                        this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== c.id)})
-                    }
-                }}
-                title={c.title}
-                key={c.id}
-                id={c.id}
-            />
-        }))
-    };
+    toggleCase(caze) {
+        console.log({caze: caze})
+        if (this.state.selectedCaseIds.includes(caze.id)) {
+            console.log("Removing")
+            this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== caze.id)})
+        } else {
+            console.log("Adding")
+            this.setState({selectedCaseIds: [...this.state.selectedCaseIds, caze.id]})
+        }
+    }
 
     fetchCases(){
         if(this.props.currentProject){
@@ -82,7 +92,7 @@ class RunForm extends Component {
 
     render(){
         const { error, classes, cases } = this.props;
-        // const submitAction = this.props.submitAction; // this is supplied from top component
+        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
             <form className={classes.form} onSubmit={this.props.handleSubmit(this.myCustomFunction)}>
@@ -95,9 +105,14 @@ class RunForm extends Component {
                     onClick={() => {console.log('sdf')}}
                 />
                 {error && <strong style={{color:'red'}}>{error}</strong>}
-                <List component="nav">
-                    { this.renderCases(cases) }
-                </List>
+                <EnhancedEntityList
+                    entities={ cases }
+                    title={ caze => caze.title }
+                    id={ caze => caze.id }
+                    clickHandler={ caze => this.toggleCase(caze) }
+                    mainItemRenderer={ caze => <Checkbox checked={ this.state.selectedCaseIds.includes(caze.id) } /> }
+                    secondaryActionRenderer={ caze => null }
+                />
                 <div className={classes.submitContainer}>
                     <Button className={classes.submit} type="submit" color="primary" variant="contained">
                         Save
