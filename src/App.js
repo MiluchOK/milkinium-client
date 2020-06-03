@@ -10,7 +10,7 @@ import NavBarRoutes from './routes/navBarRoutes';
 import Profile from './screens/Profile';
 import Case from './screens/Case';
 import Suite from './screens/Suite';
-import Execution from './screens/Execution';
+import Execution from './screens/Run';
 import NewProjectScreen from './screens/NewProjectScreen';
 import _ from 'lodash';
 import { getProjects } from './redux/actions/projectsActions';

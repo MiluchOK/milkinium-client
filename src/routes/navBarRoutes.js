@@ -32,7 +32,7 @@ export default [
         component: (Suits)
     },
     {
-        name: 'Executions',
+        name: 'Runs',
         path: '/executions',
         icon: (<LinearIcon/>),
         component: (Executions)

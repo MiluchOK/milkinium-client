@@ -5,6 +5,7 @@ import users from './users';
 import cases from './casesReducer';
 import suites from './suitesReducer';
 import runs from './runsReducer';
+import tests from './testsReducer';
 import errors from './errorsReducer';
 import current_user from './currentUser';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   suites,
   users,
   runs,
+  tests,
   current_user,
   errors,
   form: formReducer

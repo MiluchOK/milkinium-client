@@ -25,3 +25,20 @@ export const addCasesToRun = (runId, caseIds) => {
             .then((res) => res.data)
     }
 };
+
+export const getTests = (runId) => {
+    return {
+        type: actionTypes.GET_TESTS,
+        payload: httpClient.get(`/v1/runs/${runId}/tests`)
+            .then(res => res.data)
+    }
+}
+
+export const getRun = (runId) => {
+    return {
+        type: actionTypes.GET_RUN,
+        payload: httpClient.get(`/v1/runs/${runId}`)
+            .then(res => res.data)
+    }
+}
+

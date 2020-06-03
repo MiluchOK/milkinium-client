@@ -18,21 +18,25 @@ class EntityList extends Component {
             clickHandler,
             mainItemRenderer,
             secondaryActionRenderer,
+            attendant,
             ...otherProps
         } = this.props;
 
         return _.map(entities, (c => {
             return (
-                <EntityRow
-                    {...otherProps}
-                    title={ title(c) }
-                    key={ id(c) }
-                    id={ id(c) }
-                    clickHandler={() => { clickHandler(c) }}
-                    mainItemIcon={ mainItemRenderer(c) }
-                    secondaryActionIcon={ secondaryActionRenderer(c) }
-                />)
-            }
+                <React.Fragment>
+                    <EntityRow
+                        {...otherProps}
+                        title={ title(c) }
+                        key={ id(c) }
+                        id={ id(c) }
+                        clickHandler={() => { clickHandler(c) }}
+                        mainItemIcon={ mainItemRenderer(c) }
+                        secondaryActionIcon={ secondaryActionRenderer(c) }
+                    />
+                    {attendant ? attendant(c) : null}
+                </React.Fragment>
+            )}
         ));
     }
 

@@ -9,10 +9,16 @@ class DrawerItem extends Component {
 
     render() {
 
-        const { path, icon, text, history } = this.props;
+        const { path, icon, text, history, selected } = this.props;
 
         return (
-            <ListItem button onClick={() => { history.push(path); }}>
+            <ListItem
+                button
+                selected={selected}
+                onClick={() => {
+                    history.push(path);
+                }}
+            >
                 <ListItemIcon> { icon } </ListItemIcon>
                 <ListItemText primary={ text }/>
             </ListItem>

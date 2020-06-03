@@ -5,7 +5,9 @@ import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { withRouter } from "react-router";
 import List, { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/List';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DrawerItem from './DrawerItem';
 import NavBarRoutes from '../routes/navBarRoutes';
 import { Typography } from '@material-ui/core';
@@ -38,11 +40,22 @@ const styles = theme => ({
         justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
+    },
+    logo: {
+        display: 'flex',
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
     }
 });
 
 
 class Drawer extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     render() {
 
@@ -57,7 +70,10 @@ class Drawer extends Component {
                 open={this.props.open}
             >
                 <div className={classes.toolbar}>
-                    <Typography>Milkinium</Typography>
+                    <div className={classes.logo}>
+                        <AccessTimeIcon />
+                        <Typography>Milkinium</Typography>
+                    </div>
                     <IconButton onClick={this.props.handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
@@ -66,6 +82,7 @@ class Drawer extends Component {
                 <List component="nav">
                     {NavBarRoutes.map((nav) => (
                         <DrawerItem
+                            selected={this.props.location.pathname === nav.path}
                             key={nav.name}
                             text={nav.name}
                             icon={nav.icon}
@@ -79,4 +96,4 @@ class Drawer extends Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Drawer);
+export default withStyles(styles, { withTheme: true })(withRouter(Drawer));

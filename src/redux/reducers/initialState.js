@@ -8,6 +8,8 @@ export default {
     current_user: {},
     cases: {},
     suites: {},
-    runs: [],
+    runs: {},
+    tests: {},
+    results: {},
     errors: [],
 };
