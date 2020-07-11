@@ -4,7 +4,7 @@ import actionTypes from '../actions/actionTypes';
 import { fromJS } from 'immutable';
 
 function addResults(state, testId, results) {
-    const updatedTest = {...state[testId], results: results}
+    const updatedTest = {...state[testId], results: results.reverse()}
     return {...state, [testId]: updatedTest}
 }
 

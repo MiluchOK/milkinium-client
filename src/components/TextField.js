@@ -27,19 +27,12 @@ export const renderTextField = ({
     </div>
 );
 
-export const renderCheckBox = ({
-    label,
-    input,
-    meta: { touched, invalid, error },
-    ...custom
-    }) => (
+export const renderCheckBox = ({ input, label }) => (
         <div name="imCheckbox">
-            <label>Foo</label>
+            <label>{label}</label>
             <CheckBox
-                checked={input}
-                tabIndex={-1}
-                disableRipple
-                fullWidth={true}
+                onChange={input.onChange}
+                checked={!!input.value}
                 margin={"normal"}
             />
         </div>

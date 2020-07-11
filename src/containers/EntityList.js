@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import List from "@material-ui/core/List";
+import Divider from '@material-ui/core/Divider';
 import _ from 'lodash';
 import EntityRow from "../components/EntityRow";
 
@@ -22,9 +23,12 @@ class EntityList extends Component {
             ...otherProps
         } = this.props;
 
-        return _.map(entities, (c => {
+        let index = 0
+        return _.map(entities, ((c) => {
+            index = index + 1
             return (
                 <React.Fragment>
+                    {index !== 1 ? <Divider /> : null}
                     <EntityRow
                         {...otherProps}
                         title={ title(c) }

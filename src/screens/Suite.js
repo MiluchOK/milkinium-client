@@ -3,10 +3,8 @@ import {withStyles} from '@material-ui/core/styles';
 import {bindActionCreators} from 'redux';
 import SuiteForm from '../components/forms/SuiteForm';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import LoadingIndicator from './../components/LoadingIndicator';
 import DescriptionIcon from "@material-ui/icons/Description";
-import AddIcon from '@material-ui/icons/Add';
 import {getCases} from '../redux/actions/casesActions';
 import {connect} from 'react-redux';
 import compose from 'recompose/compose';
@@ -15,6 +13,7 @@ import {getSuite, editSuite} from '../redux/actions/suitesActions';
 import CaseListForm from "../components/forms/CaseListForm";
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import EntityList from "../containers/EntityList";
+import WithAddFab from "../containers/WithAddFab";
 
 const styles = theme => ({
     icon: {
@@ -63,7 +62,7 @@ class Suite extends Component {
 
     editSuite(values){
         const suiteId = this.props.match.params.suiteId;
-        this.props.editSuite(suiteId, values)
+        return this.props.editSuite(suiteId, values)
     }
 
     fetchSuite(id) {
@@ -97,14 +96,21 @@ class Suite extends Component {
 
             return (
                 <div className={classes.root}>
-
                     <Creator
-                        open={this.state.creatorOpen}
+                        open={this.props.creatorOpen}
                         title={'Add Case To Suite'}
-                        handleClose={() => {this.setState({creatorOpen: false})}}
+                        handleClose={() => { this.props.closeCreator() }}
                     >
                         <CaseListForm
-                            cases={this.props.cases}
+                            cases={Object.values(this.props.cases)}
+                            selectedCaseIds={cases.map(c => c.id)}
+                            handleSubmit={(data) => {
+                                this.editSuite({cases: data})
+                                .then(() => {
+                                    this.fetchSuite(this.props.match.params.suiteId)
+                                    this.props.closeCreator()
+                                })
+                            }}
                         />
                     </Creator>
 
@@ -123,14 +129,6 @@ class Suite extends Component {
                             />
                         </SuiteForm>
                     </Paper>
-
-                    <Button variant="fab"
-                            onClick={this.handleAddCase}
-                            color="primary"
-                            aria-label="add"
-                            className={classes.fab}>
-                        <AddIcon />
-                    </Button>
                 </div>
             )
         }
@@ -157,7 +155,7 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default compose(
+export default WithAddFab(compose(
     withStyles(styles, {withTheme: true}),
     connect(mapStateToProps, matchDispatchToProps)
-)(Suite);
+)(Suite));

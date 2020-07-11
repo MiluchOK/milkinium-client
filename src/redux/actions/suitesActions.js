@@ -29,6 +29,7 @@ export const editSuite = (suiteId, data) => {
     return {
         type: actionTypes.EDIT_SUITE,
         payload: httpClient.put(`/v1/suites/${suiteId}`, data)
+        .then((res) => res.data)
     }
 }
 

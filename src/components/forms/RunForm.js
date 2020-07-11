@@ -34,44 +34,15 @@ class RunForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedCaseIds: [],
-            something: 'lskfnds'
+            selectedCaseIds: []
         };
-        this.myCustomFunction = this.myCustomFunction.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // renderCases(cases) {
-    //     if (cases.size === 0) {
-    //         return <NoResults/>
-    //     }
-    //
-    //     return _.map(cases, (c => {
-    //         let EnhancedExecutionRow = WithCheckbox(EntityRow);
-    //         return <EnhancedExecutionRow
-    //             checked={this.state.selectedCaseIds.includes(c.id)}
-    //             handleChange={(event) => {
-    //                 console.log(`Checking to: ${event.target.checked}`);
-    //                 let isChecked = event.target.checked;
-    //                 if ( isChecked ) {
-    //                     this.setState({selectedCaseIds: [...this.state.selectedCaseIds, c.id]})
-    //                 } else {
-    //                     this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== c.id)})
-    //                 }
-    //             }}
-    //             title={c.title}
-    //             key={c.id}
-    //             id={c.id}
-    //         />
-    //     }))
-    // };
-
     toggleCase(caze) {
-        console.log({caze: caze})
         if (this.state.selectedCaseIds.includes(caze.id)) {
-            console.log("Removing")
             this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== caze.id)})
         } else {
-            console.log("Adding")
             this.setState({selectedCaseIds: [...this.state.selectedCaseIds, caze.id]})
         }
     }
@@ -86,7 +57,7 @@ class RunForm extends Component {
         this.fetchCases()
     }
 
-    myCustomFunction(dataFromReduxForm) {
+    handleSubmit(dataFromReduxForm) {
         this.props.submitAction(Object.assign({selectedCaseIds: this.state.selectedCaseIds}, dataFromReduxForm))
     }
 
@@ -95,7 +66,7 @@ class RunForm extends Component {
         let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
-            <form className={classes.form} onSubmit={this.props.handleSubmit(this.myCustomFunction)}>
+            <form className={classes.form} onSubmit={this.props.handleSubmit(this.handleSubmit)}>
                 <Field
                     name="title"
                     label="Title"

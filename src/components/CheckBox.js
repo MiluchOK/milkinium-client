@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
-import { Form, Field, reduxForm } from 'redux-form'
-import { withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 
 
