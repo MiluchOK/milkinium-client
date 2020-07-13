@@ -16,6 +16,11 @@ const styles = theme => ({
         justifyContent: "center",
         backgroundColor: theme.palette.secondary.main
     },
+    title: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column"
+    }
 });
 
 function Transition(props) {
@@ -37,19 +42,29 @@ class Creator extends Component {
         return (
             <div>
                 <Dialog
+                    titleStyle={{textAlign: "center"}}
                     fullWidth={"70%"}
                     open={this.props.open}
                     onClose={this.props.handleClose}
                     transition={Transition}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">{this.props.title || ""}</DialogTitle>
-
+                    <DialogTitle
+                        id="form-dialog-title"
+                    className={classes.title}>
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexDirection: "column"
+                        }}>
+                            <Avatar className={classes.avatar}>
+                                <AssignmentIcon />
+                            </Avatar>
+                            {this.props.title || ""}
+                        </div>
+                    </DialogTitle>
 
                     <DialogContent>
-                        <Avatar className={classes.avatar}>
-                            <AssignmentIcon />
-                        </Avatar>
                         {this.props.children}
                     </DialogContent>
 

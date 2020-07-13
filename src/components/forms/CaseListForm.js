@@ -1,24 +1,10 @@
-import {renderChekableCases} from "../ListRenders";
-import List from "@material-ui/core/List/List";
-import { reduxForm, Field } from 'redux-form';
 import React from "react";
-import {renderCheckBox, renderTextField} from "../TextField";
-import EntityRow from "../EntityRow";
-import AddIcon from '@material-ui/icons/Add';
 import WithDefaultForEmptiness from "../../containers/WithDefaultForEmptiness";
 import EntityList from "../../containers/EntityList";
-import DescriptionIcon from "@material-ui/icons/Description";
 import Button from "../Button";
 import Checkbox from "@material-ui/core/Checkbox";
 
 class CaseListForm extends React.Component {
-
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         selectedCaseIds: []
-    //     }
-    // }
 
     state = {
         selectedCaseIds: this.props.selectedCaseIds
@@ -41,26 +27,24 @@ class CaseListForm extends React.Component {
                 e.preventDefault()
                 this.props.handleSubmit(this.state.selectedCaseIds)
             }}>
-                <EnhancedEntityList
-                    entities={ this.props.cases }
-                    title={ caze => caze.title }
-                    id={ caze => caze.id }
-                    clickHandler={ caze => this.toggleCase(caze) }
-                    mainItemRenderer={ caze => <Checkbox checked={ this.state.selectedCaseIds.includes(caze.id) } /> }
-                    secondaryActionRenderer={ caze => null }
-                />
-                <Button type="submit" color="primary" variant="contained">
-                    Add
-                </Button>
+                <div>
+                    <div style={{height: '600px', overflow: 'auto'}}>
+                        <EnhancedEntityList
+                            entities={ this.props.cases.sort((a, b) => this.state.selectedCaseIds.includes(a.id) ? -1 : 1) }
+                            title={ caze => caze.title }
+                            id={ caze => caze.id }
+                            clickHandler={ caze => this.toggleCase(caze) }
+                            mainItemRenderer={ caze => <Checkbox checked={ this.state.selectedCaseIds.includes(caze.id) } /> }
+                            secondaryActionRenderer={ caze => null }
+                        />
+                    </div>
+                    <Button type="submit" color="primary" variant="contained">
+                        Save
+                    </Button>
+                </div>
             </form>
         )
     }
 }
-
-CaseListForm = reduxForm({
-    // a unique name for the form
-    form: 'caseList',
-    enableReinitialize: true
-})(CaseListForm);
 
 export default CaseListForm;
