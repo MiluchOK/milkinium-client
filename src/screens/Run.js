@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { bindActionCreators } from "redux";
-import { getTests, getRun, } from '../redux/actions/runsActions';
+import { getTests, getRun, updateRun } from '../redux/actions/runsActions';
 import { getCase } from '../redux/actions/casesActions';
 import { getResults, addResult } from '../redux/actions/resultActions';
 import { withStyles } from "@material-ui/core/styles";
@@ -42,6 +42,10 @@ const styles = theme => ({
         overflowY: 'auto',
         maxHeight: '400px',
         minWidth: '270px'
+    },
+    actionsFooter: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 });
 
@@ -225,6 +229,16 @@ class Run extends Component {
                                                             />}
                         attendant={ (test) => this.renderAttendant(test) }
                     />
+
+                    <div className={classes.actionsFooter}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => this.props.updateRun(run.id,{completed: true})}
+                        >
+                            Complete
+                        </Button>
+                    </div>
                 </div>
             )
         } else {
@@ -239,7 +253,8 @@ function matchDispatchToProps(dispatch) {
         getRun: getRun,
         getCase: getCase,
         getResults: getResults,
-        addResult: addResult
+        addResult: addResult,
+        updateRun: updateRun,
     }, dispatch)
 }
 

@@ -18,6 +18,14 @@ export const createRun = (projectId, data) => {
     }
 };
 
+export const updateRun = (runId, data) => {
+    return {
+        type: actionTypes.UPDATE_RUN,
+        payload: httpClient.put(`/v1/runs/${runId}`, data)
+            .then(res => res.data)
+    }
+}
+
 export const addCasesToRun = (runId, caseIds) => {
     return {
         type: actionTypes.ADD_CASES_TO_RUN,

@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Creator from "../containers/Creator";
 import RunForm from "../components/forms/RunForm";
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
+import DoneIcon from '@material-ui/icons/Done';
 import EntityList from "../containers/EntityList";
 import DescriptionIcon from "@material-ui/icons/Description";
 import IconButton from "@material-ui/core/IconButton";
@@ -25,10 +26,6 @@ class Runs extends Component {
 
     componentDidMount() {
         this.fetchRuns(this.props.currentProject)
-    }
-
-    submitAction() {
-        console.log("Submit action.")
     }
 
     renderSecondaryActionComponent(runId){
@@ -51,7 +48,7 @@ class Runs extends Component {
 
     render() {
 
-        const executions = this.props.runs;
+        let executions = Object.values(this.props.runs);
         let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
@@ -67,12 +64,12 @@ class Runs extends Component {
                 </Creator>
 
                 <EnhancedEntityList
-                    entities={ executions }
+                    entities={ executions.sort((a, b) => a.completed ? 1 : -1) }
                     title={ execution => execution.title }
                     id={ execution => execution.id }
                     clickHandler={ execution => this.props.history.push(`/executions/${execution.id}`) }
                     mainItemRenderer={ execution => <DescriptionIcon /> }
-                    secondaryActionRenderer={ execution => null }
+                    secondaryActionRenderer={ execution => execution.completed ? <DoneIcon /> : null }
                 />
             </div>
         );
