@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import WithAddFab from '../containers/WithAddFab';
+import { PieChart } from 'react-minimal-pie-chart';
 import { bindActionCreators } from "redux";
 import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
 import { connect } from "react-redux";
@@ -46,6 +47,12 @@ class Runs extends Component {
         this.props.closeCreator();
     }
 
+    renderPie(execution){
+        const colors = ['#2756e3', '#c1a337', '#6A2135']
+        const data = Object.keys(execution.byStatus).map((k, index) => ({title: k, value: execution.byStatus[k], color: colors[index]}))
+        return <PieChart data={data} style={{ height: '24px', width: '24px' }} />
+    }
+
     render() {
 
         let executions = Object.values(this.props.runs);
@@ -69,7 +76,7 @@ class Runs extends Component {
                     id={ execution => execution.id }
                     clickHandler={ execution => this.props.history.push(`/executions/${execution.id}`) }
                     mainItemRenderer={ execution => <DescriptionIcon /> }
-                    secondaryActionRenderer={ execution => execution.completed ? <DoneIcon /> : null }
+                    secondaryActionRenderer={ execution => execution.completed ? <DoneIcon /> : this.renderPie(execution) }
                 />
             </div>
         );

@@ -5,6 +5,7 @@ import { getCase } from '../redux/actions/casesActions';
 import { getResults, addResult } from '../redux/actions/resultActions';
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import _ from 'lodash';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import Paper from '@material-ui/core/Paper';
@@ -179,9 +180,6 @@ class Run extends Component {
                             )}
                         />
                     </Paper>
-                    <Paper>
-
-                    </Paper>
                 </div>
             </Collapse>
         )
@@ -234,7 +232,10 @@ class Run extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => this.props.updateRun(run.id,{completed: true})}
+                            onClick={() => {
+                                this.props.updateRun(run.id, {completed: true})
+                                .then(() => this.props.history.push('/executions'))
+                            }}
                         >
                             Complete
                         </Button>
@@ -266,4 +267,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default withStyles(styles, {withTheme: true})(connect(mapStateToProps, matchDispatchToProps)(Run));
+export default withStyles(styles, {withTheme: true})(connect(mapStateToProps, matchDispatchToProps)(withRouter(Run)));
