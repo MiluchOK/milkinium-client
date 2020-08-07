@@ -6,7 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { withRouter } from "react-router";
-import List, { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/List';
+import logo from '../public/AH_Black.png';
+import List from '@material-ui/core/List';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DrawerItem from './DrawerItem';
 import NavBarRoutes from '../routes/navBarRoutes';
@@ -37,16 +38,22 @@ const styles = theme => ({
     toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'flexStart',
+        position: 'relative',
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
-    logo: {
-        display: 'flex',
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
+    logoImage: {
+        flex: '0 1 auto',
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        height: '50px',
+        width: '50px'
+    },
+    closeIcon: {
+        flex: '0 1 auto',
+        marginLeft: 'auto'
     }
 });
 
@@ -70,11 +77,8 @@ class Drawer extends Component {
                 open={this.props.open}
             >
                 <div className={classes.toolbar}>
-                    <div className={classes.logo}>
-                        <AccessTimeIcon />
-                        <Typography>Milkinium</Typography>
-                    </div>
-                    <IconButton onClick={this.props.handleDrawerClose}>
+                    <img src={logo} alt={`${this.props.title}'s picture`}  className={classes.logoImage} />
+                    <IconButton onClick={this.props.handleDrawerClose} className={classes.closeIcon}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </div>

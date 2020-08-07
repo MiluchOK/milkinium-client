@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import List, { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/List';
 import AppBar from '../components/AppBar';
 import Drawer from '../components/Drawer';
 
@@ -52,7 +51,7 @@ class NavBar extends React.Component {
         <AppBar
             open={this.state.open}
             handleDrawerOpen={this.handleDrawerOpen}
-            avatarImage={this.props.current_user.get("avatar") || "https://t4.ftcdn.net/jpg/00/78/73/53/240_F_78735333_o3qJe4bT5ciwldLIjVDulFKrDAV3jGYO.jpg"}
+            avatarImage={this.props.current_user.avatar || "https://t4.ftcdn.net/jpg/00/78/73/53/240_F_78735333_o3qJe4bT5ciwldLIjVDulFKrDAV3jGYO.jpg"}
         />
 
         <Drawer
@@ -74,8 +73,6 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-
 
 
 const mapStateToProps = (state) => {

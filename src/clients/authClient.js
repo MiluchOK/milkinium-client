@@ -1,7 +1,9 @@
 import httpClient from './httpClient';
 
+const TOKEN = 'milkinium_token'
+
 const retrieveToken = () => {
-  return localStorage.getItem('token');
+  return localStorage.getItem(TOKEN);
 };
 
 class AuthClient {
@@ -11,7 +13,7 @@ class AuthClient {
   }
 
   saveToken(token) {
-    localStorage.setItem('token', token);
+    localStorage.setItem(TOKEN, token);
     //TODO Find a better place for this call
     return httpClient.get('/v1/whoAmI');
   }
@@ -31,7 +33,7 @@ class AuthClient {
 
   logOut() {
     return new Promise((res) => {
-      localStorage.removeItem('token');
+      localStorage.removeItem(TOKEN);
       res();
     });
   }
