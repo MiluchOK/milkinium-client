@@ -8,10 +8,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { withRouter } from "react-router";
 import logo from '../public/AH_Black.png';
 import List from '@material-ui/core/List';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DrawerItem from './DrawerItem';
 import NavBarRoutes from '../routes/navBarRoutes';
-import { Typography } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -77,7 +75,7 @@ class Drawer extends Component {
                 open={this.props.open}
             >
                 <div className={classes.toolbar}>
-                    <img src={logo} alt={`${this.props.title}'s picture`}  className={classes.logoImage} />
+                    <img src={logo} className={classes.logoImage} />
                     <IconButton onClick={this.props.handleDrawerClose} className={classes.closeIcon}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>

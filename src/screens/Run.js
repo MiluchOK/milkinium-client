@@ -69,13 +69,11 @@ const StatusSetter = ({data, handleSelect}) => {
             </Button>
             <Menu
                 keepMounted
-                onClose={() => {
-                    setAnchorEl(null)
-                }}
+                onClose={() => setAnchorEl(null)}
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
             >
-                {statuses.map(status => {
+                {Object.keys(statuses).map(status => {
                     return ( <MenuItem
                             onClick={() => {
                                 setAnchorEl(null)

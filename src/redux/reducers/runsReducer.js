@@ -8,7 +8,7 @@ export default function stuff(state = initialState.runs, action) {
         case actionTypes.GET_RUNS_FULFILLED:
             return fromJS(_.keyBy(action.payload.runs, 'id')).toJS();
         case actionTypes.GET_RUN_FULFILLED:
-            return {...state, [action.payload['id']]: action.payload };
+            return {...state, [action.payload['id']]: { ...state[action.payload['id']], ...action.payload } };
         default:
             return state
     }

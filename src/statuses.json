@@ -1,1 +1,14 @@
-["pass", "fail", "progress", "pending"]
+{
+  "pass":  {
+    "color": "#6ADC65"
+  },
+  "fail":  {
+    "color": "#FF0000"
+  },
+  "progress":  {
+    "color": "#FFFF00"
+  },
+  "pending":  {
+    "color": "#C0C0C0"
+  }
+}
