@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
 import { connect } from "react-redux";
 import Creator from "../containers/Creator";
-import statuses from "../statuses.json";
+import statuses from "../statuses.js";
 import RunForm from "../components/forms/RunForm";
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import DoneIcon from '@material-ui/icons/Done';
@@ -30,12 +30,6 @@ class Runs extends Component {
         this.fetchRuns(this.props.currentProject)
     }
 
-    renderSecondaryActionComponent(runId){
-        return (<IconButton onClick={() => { this.handleRunDeletion(runId)} }>
-            <DeleteIcon />
-        </IconButton>)
-    }
-
     handleNewRunCreation(data){
         const projectId = this.props.currentProject;
         this.props.createRun(projectId, data)
@@ -49,9 +43,7 @@ class Runs extends Component {
     }
 
     renderPie(execution){
-        console.log({e: execution})
         const data = Object.keys(execution.byStatus).map((k) => ({title: k, value: execution.byStatus[k], color: statuses[k]['color']}))
-        console.log({d: data})
         return <PieChart data={data} style={{ height: '24px', width: '24px' }} />
     }
 

@@ -10,7 +10,7 @@ import _ from 'lodash';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import Paper from '@material-ui/core/Paper';
 import EntityList from "../containers/EntityList";
-import statuses from "../statuses.json";
+import statuses from "../statuses.js";
 import {Button, Menu, MenuItem} from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -35,14 +35,18 @@ const styles = theme => ({
     attendant: {
         padding: '5%',
         display: 'flex',
-        flexWrap: 'wrap',
+        justifyContent: 'space-evenly'
     },
     resultHistory: {
-        flexGrow: 1,
-        margin: '10px',
+        flex: '0 0 45%',
+        padding: '20px',
+        justifyContent: 'spaceBetween',
         overflowY: 'auto',
-        maxHeight: '400px',
+        maxHeight: '500px',
         minWidth: '270px'
+    },
+    cardTitle: {
+        margin: theme.spacing(3)
     },
     actionsFooter: {
         display: 'flex',
@@ -59,9 +63,7 @@ const StatusSetter = ({data, handleSelect}) => {
 
     return(
         <div>
-            <Button onClick={(event) => {
-                setAnchorEl(event.currentTarget)
-            }}>
+            <Button onClick={(event) => { setAnchorEl(event.currentTarget) }}>
                 <TestStatus
                     resultLabel={last_status_label}
                     displayName={last_status_label}
@@ -149,7 +151,12 @@ class Run extends Component {
                         className={classes.resultHistory}
                         elevation={5}
                     >
-                        <Typography variant={'h5'}>Steps</Typography>
+                        <Typography
+                            variant={'h5'}
+                            className={classes.cardTitle}
+                        >
+                            Steps
+                        </Typography>
                         <EnhancedEntityList
                             entities={ steps }
                             title={ step => step.body }
@@ -163,13 +170,18 @@ class Run extends Component {
                         className={classes.resultHistory}
                         elevation={5}
                     >
-                        <Typography variant={'h5'}> History </Typography>
+                        <Typography
+                            variant={'h5'}
+                            className={classes.cardTitle}
+                        >
+                            History
+                        </Typography>
                         <EnhancedEntityList
                             entities={ test.results }
-                            title={ result => 'set status to' }
+                            title={ () => 'set status to' }
                             id={ result => result.id }
                             clickHandler={ result => { console.log(result) } }
-                            mainItemRenderer={ result => <Avatar /> }
+                            mainItemRenderer={ () => <Avatar /> }
                             secondaryActionRenderer={ result => (
                                 <TestStatus
                                     resultLabel={result.status.label}

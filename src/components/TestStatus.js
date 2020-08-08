@@ -12,19 +12,12 @@ const styles = theme => ({
     },
 });
 
-const statusColors = {
-    pass: 'success',
-    fail: 'danger',
-    progress: 'warning',
-    pending: 'info'
-};
-
 const TestStatus = ({classes, resultLabel, displayName}) => {
     return(
         <div className={classes.statusContainer}>
             <StatusBullet
                 className={classes.status}
-                color={statusColors[resultLabel]}
+                color={resultLabel}
                 size="sm"
             />
             {displayName}
