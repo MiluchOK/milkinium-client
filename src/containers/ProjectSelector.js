@@ -1,41 +1,40 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
-import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import CheckBox from '../components/CheckBox';
 import { selectProject } from '../redux/actions/projectsActions'
 
-const styles = theme => ({
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-    },
-});
+const ProjectSelector = props => {
 
-class ProjectSelector extends Component {
+    const { allProjects, currentProject, selectProject } = props
 
-    render() {
+    const sorted_projects = Object.entries(allProjects)
+        .sort((a, b) => (a[1].name < b[1].name) ? 1 : -1)
+    const first_project = sorted_projects[0]
 
-        const projects = this.props.allProjects;
-        const currentProject = this.props.currentProject;
-
-        return (
-            <form>
-                <Field
-                    name="projects"
-                    id="projects"
-                    component={CheckBox}
-                    data={projects}
-                    label="Projects"
-                    onChange={(e, newValue) => {this.props.selectProject(newValue)}}
-                    type="string"
-                    defaultValue={currentProject}
-                    margin="none"
-                />
-            </form>
-        );
+    if (!currentProject) {
+        selectProject(first_project[0])
     }
+
+
+    console.log(`Current project: ${currentProject}`)
+
+    return (
+        <form>
+            <Field
+                name="projects"
+                id="projects"
+                component={CheckBox}
+                data={allProjects}
+                label="Projects"
+                onChange={(e, newValue) => {selectProject(newValue)}}
+                type="string"
+                defaultValue={currentProject}
+                margin="none"
+            />
+        </form>
+    );
 }
 
 const mapStateToProps = (state) => {
@@ -51,9 +50,4 @@ function matchDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-ProjectSelector = connect(mapStateToProps, matchDispatchToProps)(ProjectSelector);
-ProjectSelector = withStyles(styles)(ProjectSelector);
-export default ProjectSelector = reduxForm({
-    // a unique name for the form
-    form: 'projectSelector'
-})(ProjectSelector);
+export default reduxForm({form: 'projectSelector'})(connect(mapStateToProps, matchDispatchToProps)(ProjectSelector));
