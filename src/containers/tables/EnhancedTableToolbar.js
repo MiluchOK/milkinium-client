@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import AddIcon from '@material-ui/icons/Add';
 
 const useToolbarStyles = makeStyles((theme) => ({
     root: {
@@ -27,11 +27,14 @@ const useToolbarStyles = makeStyles((theme) => ({
     title: {
         flex: '1 1 100%',
     },
+    addButton: {
+
+    }
 }));
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, title, onDelete } = props;
+    const { numSelected, title, onDelete, onClick, onAdd } = props;
 
     return (
         <Toolbar
@@ -56,9 +59,9 @@ const EnhancedTableToolbar = (props) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Tooltip title="Filter list">
-                    <IconButton aria-label="filter list">
-                        <FilterListIcon />
+                <Tooltip title={`Add ${title}`}>
+                    <IconButton onClick={onAdd} className={classes.addButton} color="primary" aria-label={`Add ${title}`}>
+                        <AddIcon />
                     </IconButton>
                 </Tooltip>
             )}

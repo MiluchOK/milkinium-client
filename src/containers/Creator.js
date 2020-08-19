@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1
+        paddingLeft: theme.spacing.unit*2,
+        paddingRight: theme.spacing.unit*2,
+        paddingTop: theme.spacing.unit*4,
+        paddingBottom: theme.spacing.unit*4,
     },
     avatar: {
         justifyContent: "center",
@@ -21,37 +24,32 @@ const styles = theme => ({
         alignItems: "center",
         flexDirection: "column"
     }
-});
+}));
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
-class Creator extends Component {
+export default function Creator(props) {
 
-    constructor(props) {
-        super(props);
-        // this.state = {
-        //     open: false,
-        // };
-    }
+    const classes = useStyles();
+    const { open, handleClose, title } = props
 
-    render() {
-
-        const { classes } = this.props;
-        return (
-            <React.Fragment>
-                <Dialog
-                    titleStyle={{textAlign: "center"}}
-                    fullWidth={"70%"}
-                    open={this.props.open}
-                    onClose={this.props.handleClose}
-                    transition={Transition}
-                    aria-labelledby="form-dialog-title"
-                >
+    return (
+        <React.Fragment>
+            <Dialog
+                titleStyle={{textAlign: "center"}}
+                fullWidth={"70%"}
+                open={open}
+                onClose={handleClose}
+                transition={Transition}
+                aria-labelledby="form-dialog-title"
+                className={classes.root}
+            >
+                <div className={classes.root}>
                     <DialogTitle
                         id="form-dialog-title"
-                    className={classes.title}>
+                        className={classes.title}>
                         <div style={{
                             display: "flex",
                             alignItems: "center",
@@ -60,18 +58,15 @@ class Creator extends Component {
                             <Avatar className={classes.avatar}>
                                 <AssignmentIcon />
                             </Avatar>
-                            {this.props.title || ""}
+                            {title || ""}
                         </div>
                     </DialogTitle>
 
                     <DialogContent>
-                        {this.props.children}
+                        {props.children}
                     </DialogContent>
-
-                </Dialog>
-            </React.Fragment>
-        )
-    }
+                </div>
+            </Dialog>
+        </React.Fragment>
+    )
 }
-
-export default withStyles(styles)(Creator);

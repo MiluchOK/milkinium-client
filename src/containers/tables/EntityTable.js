@@ -3,13 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableFooter from '@material-ui/core/TableFooter';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Checkbox from '@material-ui/core/Checkbox';
 import CardHeader from '@material-ui/core/CardHeader';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
@@ -29,9 +27,6 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: 'space-between',
         margin: theme.spacing.unit*2
-    },
-    divider: {
-        marginBottom: theme.spacing.unit * 2
     },
     visuallyHidden: {
         border: 0,
@@ -131,25 +126,18 @@ export default function EntityTable(props) {
         title,
         entities,
         handleDelete,
+        handleAdd,
         ...otherProps
     } = props;
 
     return (
         <React.Fragment>
-            <div className={classes.head}>
-                <CardHeader title={title} />
-                <Button variant='contained' className={classes.addButton} color='primary' onClick={props.addNew}>
-                    <AddIcon /> {props.addButtonTitle}
-                </Button>
-            </div>
-
-            <Divider className={classes.divider}/>
-
             <Paper className={classes.paper}>
                 <EnhancedTableToolbar
                     numSelected={selected.length}
                     title={title}
                     onDelete={() => handleDelete(selected)}
+                    onAdd={() => handleAdd()}
                 />
                 <TableContainer>
                     <Table className={classes.table} aria-label="simple table">
