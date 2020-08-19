@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { getCases, createCase, deleteCase } from '../redux/actions/casesActions';
 import Creator from "../containers/Creator";
 import CaseForm from "../components/forms/CaseForm";
-import EntityTable from "../containers/EntityTable";
+import EntityTable from "../containers/tables/EntityTable";
 import WithDefaultForEmptiness from '../containers/WithDefaultForEmptiness';
 import {withStyles} from "@material-ui/core/styles";
 
@@ -50,7 +50,7 @@ class Cases extends Component {
         this.fetchCases()
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps) {
         if(prevProps.currentProject !== this.props.currentProject){
             this.fetchCases();
         }
@@ -73,7 +73,6 @@ class Cases extends Component {
     }
 
     toggleCreator(){
-        console.log("Trigger toggle")
         this.setState({creatorOpen: !this.state.creatorOpen})
     }
 
@@ -103,13 +102,16 @@ class Cases extends Component {
                     entities={tableData}
                     title={'Test Cases'}
                     addButtonTitle={'New Test Case'}
-                    addNew={() => {
-                        this.toggleCreator()
+                    addNew={() => this.toggleCreator()}
+                    handleDelete={(element_ids) => {
+                        element_ids.forEach(element_id => {
+                            this.handleCaseDeletion(element_id)
+                        })
                     }}
                     columns={[
-                        {key: 'id', label: 'ID'},
-                        {key: 'title', label: 'Title'},
-                        {key: 'stepsCount', label: 'Steps Count'}
+                        {key: 'id', label: 'ID', numeric: false},
+                        {key: 'title', label: 'Title', numeric: false},
+                        {key: 'stepsCount', label: 'Steps Count', numeric: true}
                     ]}
                 />
             </div>
