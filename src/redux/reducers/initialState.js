@@ -12,4 +12,5 @@ export default {
     tests: {},
     results: {},
     errors: [],
+    loaders: {}
 };

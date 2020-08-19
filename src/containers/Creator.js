@@ -31,16 +31,16 @@ class Creator extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-        };
+        // this.state = {
+        //     open: false,
+        // };
     }
 
     render() {
 
         const { classes } = this.props;
         return (
-            <div>
+            <React.Fragment>
                 <Dialog
                     titleStyle={{textAlign: "center"}}
                     fullWidth={"70%"}
@@ -69,7 +69,7 @@ class Creator extends Component {
                     </DialogContent>
 
                 </Dialog>
-            </div>
+            </React.Fragment>
         )
     }
 }

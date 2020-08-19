@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import WithAddFab from '../containers/WithAddFab';
 import { PieChart } from 'react-minimal-pie-chart';
 import { bindActionCreators } from "redux";
+import actionTypes from '../redux/actions/actionTypes';
 import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
 import { connect } from "react-redux";
 import Creator from "../containers/Creator";
@@ -11,8 +12,6 @@ import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import DoneIcon from '@material-ui/icons/Done';
 import EntityList from "../containers/EntityList";
 import DescriptionIcon from "@material-ui/icons/Description";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 
 class Runs extends Component {
@@ -65,6 +64,7 @@ class Runs extends Component {
                 </Creator>
 
                 <EnhancedEntityList
+                    loading={ this.props.runsLoading }
                     entities={ executions.sort((a, b) => a.completed ? 1 : -1) }
                     title={ execution => execution.title }
                     id={ execution => execution.id }
@@ -88,7 +88,8 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         runs: state.runs,
-        currentProject: state.projects.currentProject
+        currentProject: state.projects.currentProject,
+        runsLoading: state.loaders[actionTypes.GET_RUNS]
     }
 };
 

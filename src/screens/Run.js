@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import { bindActionCreators } from "redux";
+import actionTypes from '../redux/actions/actionTypes';
 import { getTests, getRun, updateRun } from '../redux/actions/runsActions';
 import { getCase } from '../redux/actions/casesActions';
 import { getResults, addResult } from '../redux/actions/resultActions';
@@ -158,6 +159,7 @@ class Run extends Component {
                             Steps
                         </Typography>
                         <EnhancedEntityList
+                            loading = { this.props.stepsLoading }
                             entities={ steps }
                             title={ step => step.body }
                             id={ step => step.id }
@@ -177,6 +179,7 @@ class Run extends Component {
                             History
                         </Typography>
                         <EnhancedEntityList
+                            loading={ this.props.resultsLoading }
                             entities={ test.results }
                             title={ () => 'set status to' }
                             id={ result => result.id }
@@ -273,7 +276,10 @@ const mapStateToProps = (state) => {
     return {
         tests: state.tests,
         runs: state. runs,
-        cases: state.cases
+        cases: state.cases,
+        runLoading: state.loaders[actionTypes.GET_RUN],
+        stepsLoading: state.loaders[actionTypes.GET_CASE],
+        resultsLoading: state.loaders[actionTypes.GET_RESULTS]
     }
 };
 

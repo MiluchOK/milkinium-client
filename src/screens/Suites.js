@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import actionTypes from '../redux/actions/actionTypes';
 import WithAddFab from '../containers/WithAddFab';
 import DescriptionIcon from "@material-ui/icons/Description";
 import IconButton from '@material-ui/core/IconButton';
@@ -76,12 +77,11 @@ class Suites extends Component {
                 </Creator>
 
                 <EnhancedEntityList
+                    loading={this.props.suitesLoading}
                     entities={this.props.suites}
                     title={ suite => suite.title }
                     id={ suite => suite.id }
-                    clickHandler={suite => {
-                        this.props.history.push(`/suites/${suite.id}`)
-                    }}
+                    clickHandler={suite => this.props.history.push(`/suites/${suite.id}`)}
                     mainItemRenderer={suite => <DescriptionIcon />}
                     secondaryActionRenderer={(suite) => this.renderSecondaryActionComponent(suite)}
                 />
@@ -101,7 +101,8 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         suites: state.suites,
-        currentProject: state.projects.currentProject
+        currentProject: state.projects.currentProject,
+        suitesLoading: state.loaders[actionTypes.GET_SUITES]
     }
 };
 

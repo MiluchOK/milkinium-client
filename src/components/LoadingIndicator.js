@@ -6,9 +6,7 @@ class LoadingIndicator extends Component {
     render() {
         
         return(
-            <div>
-                <CircularProgress  />
-            </div>
+            <CircularProgress  />
         )
     }
 }

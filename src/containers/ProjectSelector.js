@@ -17,9 +17,6 @@ const ProjectSelector = props => {
         selectProject(first_project[0])
     }
 
-
-    console.log(`Current project: ${currentProject}`)
-
     return (
         <form>
             <Field

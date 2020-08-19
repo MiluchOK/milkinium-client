@@ -1,22 +1,42 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import actionTypes from '../redux/actions/actionTypes';
 import { bindActionCreators } from 'redux';
 import { getCases, createCase, deleteCase } from '../redux/actions/casesActions';
-import WithAddFab from '../containers/WithAddFab';
 import Creator from "../containers/Creator";
 import CaseForm from "../components/forms/CaseForm";
-import EntityList from "../containers/EntityList";
+import EntityTable from "../containers/EntityTable";
 import WithDefaultForEmptiness from '../containers/WithDefaultForEmptiness';
-import DescriptionIcon from "@material-ui/icons/Description";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {withStyles} from "@material-ui/core/styles";
+
+let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
+
+
+const styles = theme => ({
+    newCaseButton: {
+        display: 'flex',
+        flexGrow: 1,
+        justifyContent: 'flex-end',
+        margin: theme.spacing.unit
+    },
+    main: {
+        flexGrow: 1
+    }
+});
+
 
 class Cases extends Component {
+
+    state = {
+        creatorOpen: false
+    }
 
     constructor(props) {
         super(props);
         this.handleCaseDeletion = this.handleCaseDeletion.bind(this);
         this.handleNewCaseCreation = this.handleNewCaseCreation.bind(this);
+        this.toggleCreator = this.toggleCreator.bind(this);
     }
 
     fetchCases(){
@@ -39,49 +59,58 @@ class Cases extends Component {
     handleNewCaseCreation(data){
         const projectId = this.props.currentProject;
         this.props.createCase(projectId, data)
-        .then((data) => {
+        .then(() => {
             this.fetchCases();
         })
-        this.props.closeCreator()
+        this.toggleCreator()
     }
 
     handleCaseDeletion(caseId){
         this.props.deleteCase(caseId)
-        .then((data) => {
+        .then(() => {
             this.fetchCases();
         })
     }
 
-    renderSecondaryActionComponent(caze){
-        return (<IconButton onClick={() => { this.handleCaseDeletion(caze.id)} }>
-            <DeleteIcon />
-        </IconButton>)
+    toggleCreator(){
+        console.log("Trigger toggle")
+        this.setState({creatorOpen: !this.state.creatorOpen})
+    }
+
+    isCreatorOpen(){
+        return this.state.creatorOpen
     }
 
     render() {
 
-        let creatorOpen = this.props.creatorOpen;
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
+        const { classes } = this.props;
+        const tableData = _.map(this.props.cases, caze => ({...caze, ...{stepsCount: caze.steps.length}}))
 
         return (
-            <div>
+            <div className={classes.main}>
                 <Creator
-                    open={creatorOpen}
+                    open={this.isCreatorOpen()}
                     title={'New Entity'}
-                    handleClose={() => {this.props.closeCreator()}}
+                    handleClose={this.toggleCreator}
                 >
                     <CaseForm
                         submitAction={(data) => { this.handleNewCaseCreation(data) }}
                     />
                 </Creator>
 
-                <EnhancedEntityList
-                    entities={this.props.cases}
-                    title={ caze => caze.title }
-                    id={ caze => caze.id }
-                    clickHandler={ caze => this.props.history.push(`/cases/${caze.id}`) }
-                    mainItemRenderer={ caze => <DescriptionIcon /> }
-                    secondaryActionRenderer={ caze => this.renderSecondaryActionComponent(caze) }
+                <EnhancedEntityTable
+                    loading={this.props.casesLoading}
+                    entities={tableData}
+                    title={'Test Cases'}
+                    addButtonTitle={'New Test Case'}
+                    addNew={() => {
+                        this.toggleCreator()
+                    }}
+                    columns={[
+                        {key: 'id', label: 'ID'},
+                        {key: 'title', label: 'Title'},
+                        {key: 'stepsCount', label: 'Steps Count'}
+                    ]}
                 />
             </div>
         )
@@ -99,9 +128,10 @@ function matchDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     return {
         cases: state.cases,
-        currentProject: state.projects.currentProject
+        currentProject: state.projects.currentProject,
+        casesLoading: state.loaders[actionTypes.GET_CASES]
     }
 };
 
-export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Cases));
+export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(Cases));
 

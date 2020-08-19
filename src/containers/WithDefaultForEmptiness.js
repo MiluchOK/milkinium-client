@@ -1,18 +1,40 @@
 import React from "react";
+import { makeStyles } from '@material-ui/core/styles';
+import LoadingIndicator from "../components/LoadingIndicator";
 import _ from 'lodash';
 
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    image: {
+        objectFit: 'contain'
+    }
+});
+
 export default function WithDefaultForEmptiness(WrappedComponent) {
-    class NewComponent extends React.Component {
-        render() {
-            // const image = 'https://res.cloudinary.com/teepublic/image/private/s--PaFhJf03--/t_Preview/b_rgb:fffffe,c_limit,f_jpg,h_630,q_90,w_630/v1556300984/production/designs/4723244_0.jpg'
-            const image = 'https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png'
-            if ( _.isEmpty(this.props.entities) ) {
-                return <img src={image} style={{width: '100%'}}/>
-            } else {
-                return <WrappedComponent {...this.props} />
-            }
+    return function NewComponent (props) {
+        const classes = useStyles()
+        const image = 'https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png'
+        if( props.loading ) {
+            return (
+                <div className={classes.container}>
+                    <LoadingIndicator />
+                </div>
+            )
+        }
+
+        if ( _.isEmpty(props.entities) ) {
+            return (
+                <div className={classes.container}>
+                    <img src={image} className={classes.item}/>
+                </div>
+            )
+        } else {
+            return <WrappedComponent {...props} />
         }
     }
-
-    return (NewComponent);
 }

@@ -7,6 +7,7 @@ import suites from './suitesReducer';
 import runs from './runsReducer';
 import tests from './testsReducer';
 import errors from './errorsReducer';
+import loaders from './loadingReducer';
 import current_user from './currentUser';
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   tests,
   current_user,
   errors,
+  loaders,
   form: formReducer
 });
 

@@ -11,7 +11,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     zIndex: 1,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     position: 'relative',
     display: 'flex',
   },
@@ -26,7 +26,7 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    minHeight: '100vh'
+    // minHeight: '100vh'
   },
 });
 

@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
     main: {
-        width: 'auto',
+        // width: 'auto',
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,

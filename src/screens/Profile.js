@@ -13,10 +13,10 @@ class Profile extends Component {
             <MiddleBox>
                 <div>
                     <div>
-                        Email: {this.props.current_user.get("email") || "John Doe"}
+                        Email: {this.props.current_user.email || "John Doe"}
                     </div>
                     <div>
-                        Name: {this.props.current_user.get("name") || "John Doe"}
+                        Name: {this.props.current_user.name || "John Doe"}
                     </div>
                 </div>
             </MiddleBox>
