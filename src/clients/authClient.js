@@ -1,5 +1,3 @@
-import httpClient from './httpClient';
-
 const TOKEN = 'milkinium_token'
 
 const retrieveToken = () => {
@@ -14,8 +12,6 @@ class AuthClient {
 
   saveToken(token) {
     localStorage.setItem(TOKEN, token);
-    //TODO Find a better place for this call
-    return httpClient.get('/v1/whoAmI');
   }
 
   getToken() {

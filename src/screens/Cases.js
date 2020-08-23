@@ -9,8 +9,7 @@ import CaseForm from "../components/forms/CaseForm";
 import EntityTable from "../containers/tables/EntityTable";
 import WithDefaultForEmptiness from '../containers/WithDefaultForEmptiness';
 import {withStyles} from "@material-ui/core/styles";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
+import ScreenHeader from "../components/ScreenHeader";
 
 let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
 
@@ -24,10 +23,7 @@ const styles = theme => ({
     },
     main: {
         flexGrow: 1
-    },
-    divider: {
-        marginBottom: theme.spacing.unit * 2
-    },
+    }
 });
 
 
@@ -102,11 +98,7 @@ class Cases extends Component {
                     />
                 </Creator>
 
-                <div className={classes.head}>
-                    <CardHeader title={'Test Cases'} />
-                </div>
-
-                <Divider className={classes.divider}/>
+                <ScreenHeader title={'Test Cases'}/>
 
                 <EnhancedEntityTable
                     loading={this.props.casesLoading}

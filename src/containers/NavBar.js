@@ -51,7 +51,7 @@ class NavBar extends React.Component {
         <AppBar
             open={this.state.open}
             handleDrawerOpen={this.handleDrawerOpen}
-            avatarImage={this.props.current_user.avatar || "https://t4.ftcdn.net/jpg/00/78/73/53/240_F_78735333_o3qJe4bT5ciwldLIjVDulFKrDAV3jGYO.jpg"}
+            avatarImage={this.props.current_user.avatar}
         />
 
         <Drawer

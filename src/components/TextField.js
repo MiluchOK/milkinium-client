@@ -9,23 +9,23 @@ import CheckBox from "@material-ui/core/Checkbox/Checkbox";
 export const renderTextField = ({
     label,
     input,
-    meta: { touched, invalid, error },
+    meta: { touched, invalid, error, dirty },
     ...custom
-    }) => (
-    <div>
+    }) => {
+    return <div>
         <TextField
-        label={label}
-        placeholder={label}
-        fullWidth={true}
-        required={true}
-        margin={"normal"}
-        error={touched && invalid}
-        helperText={touched && error}
-        {...input}
-        {...custom}
-    />
+            label={label}
+            placeholder={label}
+            fullWidth={true}
+            required={true}
+            margin={"normal"}
+            error={touched && invalid}
+            helperText={touched && error}
+            {...input}
+            {...custom}
+        />
     </div>
-);
+};
 
 export const renderCheckBox = ({ input, label }) => (
         <div name="imCheckbox">

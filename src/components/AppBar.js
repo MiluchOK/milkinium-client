@@ -42,7 +42,6 @@ const styles = theme => ({
     avatar: {
         width: 40,
         height: 40,
-        justifyContent: 'flex-end',
         marginRight: 20
     },
     projectName: {

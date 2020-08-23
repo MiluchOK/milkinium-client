@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import log from 'loglevel';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { renderTextField , renderDeletableTextField} from '../TextField';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { renderTextField } from '../TextField';
+import { Field, reduxForm } from 'redux-form';
 import Button from '../Button';
 
 const styles = theme => ({
