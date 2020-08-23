@@ -3,7 +3,7 @@ import { runValidate } from "./validators";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Checkbox from '@material-ui/core/Checkbox';
 import { renderTextField } from '../TextField';
-import { Field, reduxForm } from 'redux-form';
+import { Form, Field, reduxForm } from 'redux-form';
 import Button from '../Button';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -58,15 +58,15 @@ class RunForm extends Component {
     }
 
     handleSubmit(dataFromReduxForm) {
-        this.props.submitAction(Object.assign({selectedCaseIds: this.state.selectedCaseIds}, dataFromReduxForm))
+        return this.props.submitAction(Object.assign({selectedCaseIds: this.state.selectedCaseIds}, dataFromReduxForm))
     }
 
     render(){
-        const { error, classes, cases } = this.props;
+        const { error, classes, cases, invalid, submitting, pristine } = this.props;
         let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
         return (
-            <form className={classes.form} onSubmit={this.props.handleSubmit(this.handleSubmit)}>
+            <Form className={classes.form} onSubmit={this.props.handleSubmit(this.handleSubmit)}>
                 <Field
                     name="title"
                     label="Title"
@@ -85,11 +85,15 @@ class RunForm extends Component {
                     secondaryActionRenderer={ caze => null }
                 />
                 <div className={classes.submitContainer}>
-                    <Button className={classes.submit} type="submit" color="primary" variant="contained">
+                    <Button className={classes.submit}
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={invalid || submitting || pristine}>
                         Save
                     </Button>
                 </div>
-            </form>
+            </Form>
         )
     }
 };

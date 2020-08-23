@@ -15,12 +15,6 @@ let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
 
 
 const styles = theme => ({
-    newCaseButton: {
-        display: 'flex',
-        flexGrow: 1,
-        justifyContent: 'flex-end',
-        margin: theme.spacing.unit
-    },
     main: {
         flexGrow: 1
     }

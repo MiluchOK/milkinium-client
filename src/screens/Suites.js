@@ -1,19 +1,29 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionTypes from '../redux/actions/actionTypes';
-import WithAddFab from '../containers/WithAddFab';
-import DescriptionIcon from "@material-ui/icons/Description";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import RunForm from '../components/forms/RunForm';
-import EntityList from "../containers/EntityList";
 import { getSuites, createSuite, deleteSuite } from '../redux/actions/suitesActions';
 import Creator from '../containers/Creator';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
+import ScreenHeader from "../components/ScreenHeader";
+import EntityTable from "../containers/tables/EntityTable";
+import {withStyles} from "@material-ui/core/styles";
 
+let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
+
+const styles = theme => ({
+    main: {
+        flexGrow: 1
+    }
+});
 
 class Suites extends Component {
+
+    state = {
+        creatorOpen: false
+    }
 
     constructor(props) {
         super(props);
@@ -40,21 +50,15 @@ class Suites extends Component {
 
     handleNewSuiteCreation(data){
         const projectId = this.props.currentProject;
-        this.props.createSuite(projectId, {title: data.title, cases: data.selectedCaseIds})
-        .then((data) => {
-            this.fetchSuites();
-        });
-        this.props.closeCreator()
+        return this.props.createSuite(projectId, {title: data.title, cases: data.selectedCaseIds})
     }
 
-    renderSecondaryActionComponent(suite){
-        return (<IconButton onClick={() => { this.handleSuiteDeletion(suite.id)} }>
-                <DeleteIcon />
-            </IconButton>)
+    toggleCreator = () => {
+        this.setState({creatorOpen: !this.state.creatorOpen})
     }
 
-    handleSuiteDeletion(caseId){
-        this.props.deleteSuite(caseId)
+    handleSuiteDeletion(suiteId){
+        this.props.deleteSuite(suiteId)
         .then((data) => {
             this.fetchSuites();
         })
@@ -62,28 +66,43 @@ class Suites extends Component {
 
     render() {
 
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
+        const tableData = _.map(this.props.suites, suite => ({...suite, ...{casesCount: suite.cases.length}}))
+        const { classes } = this.props
 
         return (
-            <div>
+            <div className={classes.main}>
                 <Creator
-                    open={this.props.creatorOpen}
+                    open={this.state.creatorOpen}
                     title={'New Suite'}
-                    handleClose={() => { this.props.closeCreator() }}
+                    handleClose={this.toggleCreator}
                 >
                     <RunForm
-                            submitAction={(data) => {this.handleNewSuiteCreation(data)}}
+                        submitAction={(data) => {
+                            return this.handleNewSuiteCreation(data)
+                            .then(() => {
+                                this.toggleCreator()
+                                return this.fetchSuites();
+                            })
+                        }}
                     />
                 </Creator>
-
-                <EnhancedEntityList
+                <ScreenHeader title={'Test Suites'}/>
+                <EnhancedEntityTable
                     loading={this.props.suitesLoading}
-                    entities={this.props.suites}
-                    title={ suite => suite.title }
-                    id={ suite => suite.id }
-                    clickHandler={suite => this.props.history.push(`/suites/${suite.id}`)}
-                    mainItemRenderer={suite => <DescriptionIcon />}
-                    secondaryActionRenderer={(suite) => this.renderSecondaryActionComponent(suite)}
+                    entities={tableData}
+                    title={'Test Cases'}
+                    addButtonTitle={'New Test Case'}
+                    handleAdd={() => this.toggleCreator()}
+                    handleDelete={(element_ids) => {
+                        element_ids.forEach(element_id => {
+                            this.handleSuiteDeletion(element_id)
+                        })
+                    }}
+                    columns={[
+                        {key: 'id', label: 'ID', numeric: false},
+                        {key: 'title', label: 'Title', numeric: false},
+                        {key: 'casesCount', label: 'Cases Count', numeric: true}
+                    ]}
                 />
             </div>
         );
@@ -91,11 +110,7 @@ class Suites extends Component {
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({
-        getSuites: getSuites,
-        createSuite: createSuite,
-        deleteSuite: deleteSuite,
-    }, dispatch)
+    return bindActionCreators({ getSuites, createSuite, deleteSuite }, dispatch)
 }
 
 const mapStateToProps = (state) => {
@@ -107,4 +122,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Suites));
+export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(Suites));
