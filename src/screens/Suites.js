@@ -90,12 +90,13 @@ class Suites extends Component {
                 <EnhancedEntityTable
                     loading={this.props.suitesLoading}
                     entities={tableData}
-                    title={'Test Cases'}
-                    addButtonTitle={'New Test Case'}
+                    title={'Test Suites'}
+                    addButtonTitle={'New Test Suite'}
                     handleAdd={() => this.toggleCreator()}
-                    handleDelete={(element_ids) => {
-                        element_ids.forEach(element_id => {
-                            this.handleSuiteDeletion(element_id)
+                    handleDelete={(elementIds) => {
+                        console.log({elementIds: elementIds})
+                        elementIds.forEach(elementId => {
+                            this.handleSuiteDeletion(elementId)
                         })
                     }}
                     columns={[

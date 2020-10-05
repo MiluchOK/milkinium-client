@@ -6,7 +6,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -34,7 +33,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, title, onDelete, onClick, onAdd } = props;
+    const { numSelected, title, massActions, onAdd } = props;
 
     return (
         <Toolbar
@@ -53,11 +52,13 @@ const EnhancedTableToolbar = (props) => {
             )}
 
             {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete" onClick={onDelete}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
+                massActions.map(action => (
+                    <Tooltip title={action.title}>
+                        <IconButton aria-label="delete" onClick={action.targetAction}>
+                            {action.icon}
+                        </IconButton>
+                    </Tooltip>
+                ))
             ) : (
                 <Tooltip title={`Add ${title}`}>
                     <IconButton onClick={onAdd} className={classes.addButton} color="primary" aria-label={`Add ${title}`}>
@@ -71,7 +72,7 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
-    onDelete: PropTypes.func.isRequired
+    massActions: PropTypes.func.isRequired
 };
 
 export default EnhancedTableToolbar

@@ -1,20 +1,33 @@
 import React, {Component} from 'react';
-import WithAddFab from '../containers/WithAddFab';
+import _ from 'lodash';
 import { PieChart } from 'react-minimal-pie-chart';
 import { bindActionCreators } from "redux";
 import actionTypes from '../redux/actions/actionTypes';
-import { getRuns, createRun, addCasesToRun } from "../redux/actions/runsActions";
+import { getRuns, createRun, addCasesToRun, updateRun } from "../redux/actions/runsActions";
 import { connect } from "react-redux";
 import Creator from "../containers/Creator";
 import statuses from "../statuses.js";
 import RunForm from "../components/forms/RunForm";
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
+import EntityTable from "../containers/tables/EntityTable";
 import DoneIcon from '@material-ui/icons/Done';
-import EntityList from "../containers/EntityList";
-import DescriptionIcon from "@material-ui/icons/Description";
+import ScreenHeader from "../components/ScreenHeader";
+import EnhancedUUID from "../components/EnhancedUUID";
+import {withStyles} from "@material-ui/core/styles";
 
+let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
+
+const styles = theme => ({
+    main: {
+        flexGrow: 1
+    }
+});
 
 class Runs extends Component {
+
+    state = {
+        creatorOpen: false
+    }
 
     constructor(props) {
         super(props);
@@ -25,20 +38,30 @@ class Runs extends Component {
         return this.props.getRuns(projectId)
     }
 
+    toggleCreator = () => {
+        this.setState({creatorOpen: !this.state.creatorOpen})
+    }
+
     componentDidMount() {
         this.fetchRuns(this.props.currentProject)
     }
 
     handleNewRunCreation(data){
         const projectId = this.props.currentProject;
-        this.props.createRun(projectId, data)
+        return this.props.createRun(projectId, data)
         .then((responseData) => {
             return this.props.addCasesToRun(responseData.action.payload.id, data.selectedCaseIds);
         })
         .then(() => {
             return this.fetchRuns(projectId);
-        });
-        this.props.closeCreator();
+        })
+        .then(() => {
+            this.toggleCreator();
+        })
+    }
+
+    handleRunCompletion(runId){
+        return this.props.updateRun(runId, { completed: true }).then(() => this.fetchRuns(this.props.currentProject))
     }
 
     renderPie(execution){
@@ -48,29 +71,54 @@ class Runs extends Component {
 
     render() {
 
-        let executions = Object.values(this.props.runs);
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
+        const { classes, history } = this.props
+
+        const tableData = _.map(this.props.runs, run => ({...run, ...{
+            id: run.id,
+            testsCount: run.tests.length,
+            status: this.renderPie(run),
+            completed: run.completed ? <DoneIcon /> : null
+        }}))
+
+        console.log({tableData})
 
         return (
-            <div>
+            <div className={classes.main}>
                 <Creator
-                    open={this.props.creatorOpen}
+                    open={this.state.creatorOpen}
                     title={'New Run'}
-                    handleClose={() => { this.props.closeCreator() }}
+                    handleClose={this.toggleCreator}
                 >
                     <RunForm
-                        submitAction={(data) => { this.handleNewRunCreation(data) }}
+                        submitAction={(data) => this.handleNewRunCreation(data)}
                     />
                 </Creator>
 
-                <EnhancedEntityList
-                    loading={ this.props.runsLoading }
-                    entities={ executions.sort((a, b) => a.completed ? 1 : -1) }
-                    title={ execution => execution.title }
-                    id={ execution => execution.id }
-                    clickHandler={ execution => this.props.history.push(`/executions/${execution.id}`) }
-                    mainItemRenderer={ execution => <DescriptionIcon /> }
-                    secondaryActionRenderer={ execution => execution.completed ? <DoneIcon /> : this.renderPie(execution) }
+                <ScreenHeader title={'Test Runs'}/>
+                <EnhancedEntityTable
+                    handleRowClick={(event, entity) => {
+                        history.push(`/executions/${entity.id}`);
+                        console.log({entity})
+                    }}
+                    loading={this.props.runsLoading}
+                    entities={tableData}
+                    title={'Test Runs'}
+                    addButtonTitle={'New Test Run'}
+                    handleAdd={() => this.toggleCreator()}
+                    massActions={[
+                        {
+                            icon: <DoneIcon />,
+                            title: 'CompleteRun',
+                            targetAction: (ids) => ids.forEach((id) => this.handleRunCompletion(id))
+                        }
+                    ]}
+                    columns={[
+                        {key: 'id', label: 'ID', numeric: false, sorter: 'id'},
+                        {key: 'title', label: 'Title', numeric: false, sorter: 'title'},
+                        {key: 'testsCount', label: 'Tests Count', numeric: true, sorter: 'testsCount'},
+                        {key: 'status', label: 'Status', numeric: false, sorter: 'completed'},
+                        {key: 'completed', label: 'Completed', numeric: false, sorter: 'completed'},
+                    ]}
                 />
             </div>
         );
@@ -79,9 +127,10 @@ class Runs extends Component {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        getRuns: getRuns,
-        createRun: createRun,
-        addCasesToRun: addCasesToRun
+        getRuns,
+        createRun,
+        addCasesToRun,
+        updateRun,
     }, dispatch)
 }
 
@@ -93,6 +142,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default WithAddFab(connect(mapStateToProps, matchDispatchToProps)(Runs));
+export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(Runs));
 
 

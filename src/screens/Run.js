@@ -262,14 +262,7 @@ class Run extends Component {
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({
-        getTests: getTests,
-        getRun: getRun,
-        getCase: getCase,
-        getResults: getResults,
-        addResult: addResult,
-        updateRun: updateRun,
-    }, dispatch)
+    return bindActionCreators({ getTests, getRun, getCase, getResults, addResult, updateRun }, dispatch)
 }
 
 const mapStateToProps = (state) => {

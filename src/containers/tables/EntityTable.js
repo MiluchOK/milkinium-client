@@ -1,19 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
 import Checkbox from '@material-ui/core/Checkbox';
-import CardHeader from '@material-ui/core/CardHeader';
 import TableContainer from '@material-ui/core/TableContainer';
+import DeleteIcon from '@material-ui/icons/Delete';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider'
 import EnhancedTableToolbar from './EnhancedTableToolbar'
 import EnhancedTableHead from "./EnhancedTableHead";
+import EnhancedUUID from "../../components/EnhancedUUID";
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -68,6 +67,11 @@ export default function EntityTable(props) {
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
+
+    // const handleCellClick = (rowIndex, columnIndex, event) =>
+    // {
+        // console.log(`Clicked row: ${rowIndex} and column: ${columnIndex}`);
+    // }
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -126,9 +130,25 @@ export default function EntityTable(props) {
         title,
         entities,
         handleDelete,
+        massActions,
         handleAdd,
         ...otherProps
     } = props;
+
+    let allActions = [...massActions]
+
+    if (handleDelete) {
+        allActions = [...allActions, {
+            icon: <DeleteIcon />,
+            title: 'Delete',
+            targetAction: handleDelete
+        }]
+    }
+
+    allActions = allActions.map(action => {
+        return { ...action, targetAction: () => action.targetAction(selected) }
+    })
+
 
     return (
         <React.Fragment>
@@ -136,7 +156,7 @@ export default function EntityTable(props) {
                 <EnhancedTableToolbar
                     numSelected={selected.length}
                     title={title}
-                    onDelete={() => handleDelete(selected)}
+                    massActions={allActions}
                     onAdd={() => handleAdd()}
                 />
                 <TableContainer>
@@ -154,9 +174,13 @@ export default function EntityTable(props) {
                         <TableBody>
                             {stableSort(entities, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((entity) => {
+                                .map(((entity, rowIndex) => {
                                     const isItemSelected = isSelected(entity.id);
-                                    return (<TableRow key={entity.id}>
+                                    return (<TableRow
+                                            key={entity.id}
+                                            onClick={(event) => props.handleRowClick(event, entity)}
+                                            hover
+                                    >
                                         <TableCell padding="checkbox">
                                             <Checkbox
                                                 checked={isItemSelected}
@@ -165,11 +189,15 @@ export default function EntityTable(props) {
                                                 }}
                                             />
                                         </TableCell>
-                                        {columns.map(column => (
-                                            <TableCell>{entity[column.key]}</TableCell>
-                                        ))}
+                                        {columns.map((column, columnIndex) => {
+                                            let value = entity[column.key]
+                                            if (column.key === 'id') {
+                                                value = <EnhancedUUID uuid={value} handleClick={() => { console.log(`Navigate to ${value}`) }}/>
+                                            }
+                                            return <TableCell>{value}</TableCell>
+                                        })}
                                     </TableRow>)
-                                })
+                                }))
                             }
                         </TableBody>
                     </Table>
@@ -186,4 +214,12 @@ export default function EntityTable(props) {
             </Paper>
         </React.Fragment>
     )
+}
+
+EntityTable.defaultProps = {
+    massActions: []
+}
+
+EntityTable.propTypes = {
+    massActions: PropTypes.array
 }

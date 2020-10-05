@@ -100,7 +100,7 @@ class Cases extends Component {
                     title={'Test Cases'}
                     addButtonTitle={'New Test Case'}
                     handleAdd={() => this.toggleCreator()}
-                    handleDelete={(element_ids) => {
+                    handleMassAction={(element_ids) => {
                         element_ids.forEach(element_id => {
                             this.handleCaseDeletion(element_id)
                         })
