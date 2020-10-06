@@ -67,7 +67,7 @@ class Suites extends Component {
     render() {
 
         const tableData = _.map(this.props.suites, suite => ({...suite, ...{casesCount: suite.cases.length}}))
-        const { classes } = this.props
+        const { classes, history } = this.props
 
         return (
             <div className={classes.main}>
@@ -93,6 +93,7 @@ class Suites extends Component {
                     title={'Test Suites'}
                     addButtonTitle={'New Test Suite'}
                     handleAdd={() => this.toggleCreator()}
+                    handleRowClick={(event, entity) => history.push(`/suites/${entity.id}`)}
                     handleDelete={(elementIds) => {
                         console.log({elementIds: elementIds})
                         elementIds.forEach(elementId => {

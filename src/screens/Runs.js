@@ -96,10 +96,7 @@ class Runs extends Component {
 
                 <ScreenHeader title={'Test Runs'}/>
                 <EnhancedEntityTable
-                    handleRowClick={(event, entity) => {
-                        history.push(`/executions/${entity.id}`);
-                        console.log({entity})
-                    }}
+                    handleRowClick={(event, entity) => history.push(`/executions/${entity.id}`)}
                     loading={this.props.runsLoading}
                     entities={tableData}
                     title={'Test Runs'}

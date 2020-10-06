@@ -192,7 +192,7 @@ export default function EntityTable(props) {
                                         {columns.map((column, columnIndex) => {
                                             let value = entity[column.key]
                                             if (column.key === 'id') {
-                                                value = <EnhancedUUID uuid={value} handleClick={() => { console.log(`Navigate to ${value}`) }}/>
+                                                value = <EnhancedUUID uuid={value} />
                                             }
                                             return <TableCell>{value}</TableCell>
                                         })}

@@ -77,7 +77,7 @@ class Cases extends Component {
 
     render() {
 
-        const { classes } = this.props;
+        const { classes, history } = this.props;
         const tableData = _.map(this.props.cases, caze => ({...caze, ...{stepsCount: caze.steps.length}}))
 
         return (
@@ -100,6 +100,7 @@ class Cases extends Component {
                     title={'Test Cases'}
                     addButtonTitle={'New Test Case'}
                     handleAdd={() => this.toggleCreator()}
+                    handleRowClick={(event, entity) => history.push(`/cases/${entity.id}`)}
                     handleMassAction={(element_ids) => {
                         element_ids.forEach(element_id => {
                             this.handleCaseDeletion(element_id)
