@@ -35,6 +35,16 @@ const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const { numSelected, title, massActions, onAdd } = props;
 
+    let defaultActions = <Tooltip title={`Add ${title}`}>
+        <IconButton onClick={onAdd} className={classes.addButton} color="primary" aria-label={`Add ${title}`}>
+            <AddIcon />
+        </IconButton>
+    </Tooltip>
+
+    if (!onAdd) {
+        defaultActions = null
+    }
+
     return (
         <Toolbar
             className={clsx(classes.root, {
@@ -52,6 +62,7 @@ const EnhancedTableToolbar = (props) => {
             )}
 
             {numSelected > 0 ? (
+                // Something is selected
                 massActions.map(action => (
                     <Tooltip title={action.title}>
                         <IconButton aria-label="delete" onClick={action.targetAction}>
@@ -60,11 +71,8 @@ const EnhancedTableToolbar = (props) => {
                     </Tooltip>
                 ))
             ) : (
-                <Tooltip title={`Add ${title}`}>
-                    <IconButton onClick={onAdd} className={classes.addButton} color="primary" aria-label={`Add ${title}`}>
-                        <AddIcon />
-                    </IconButton>
-                </Tooltip>
+                // Nothing is selected
+                defaultActions
             )}
         </Toolbar>
     );

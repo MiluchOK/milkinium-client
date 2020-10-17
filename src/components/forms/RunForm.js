@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { runValidate } from "./validators";
 import withStyles from '@material-ui/core/styles/withStyles';
-import Checkbox from '@material-ui/core/Checkbox';
-import { renderTextField } from '../TextField';
-import { Form, Field, reduxForm } from 'redux-form';
+// import { renderTextField } from '../TextField';
+// import { Form, Field, reduxForm } from 'redux-form';
+import DoneIcon from '@material-ui/icons/Done';
 import Button from '../Button';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {createCase, deleteCase, getCases} from "../../redux/actions/casesActions";
 import WithDefaultForEmptiness from "../../containers/WithDefaultForEmptiness";
-import EntityList from "../../containers/EntityList";
+import EntityTable from "../../containers/tables/EntityTable";
+import DeleteIcon from "@material-ui/icons/Delete";
+import TextField from "@material-ui/core/TextField";
 
 const styles = theme => ({
     form: {
@@ -28,83 +30,58 @@ const styles = theme => ({
     }
 });
 
+let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
 
-class RunForm extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedCaseIds: []
-        };
-        this.handleSubmit = this.handleSubmit.bind(this);
+function RunForm(props) {
+
+    const [title, setTitle] = useState('');
+
+    useEffect(() => {
+        props.getCases(props.currentProject);
+    }, [])
+
+    const handleCreate = (selectedIds) => {
+        props.submitAction({selectedCaseIds: selectedIds, title: title})
     }
 
-    toggleCase(caze) {
-        if (this.state.selectedCaseIds.includes(caze.id)) {
-            this.setState({selectedCaseIds: this.state.selectedCaseIds.filter(id => id !== caze.id)})
-        } else {
-            this.setState({selectedCaseIds: [...this.state.selectedCaseIds, caze.id]})
-        }
-    }
+    const { error, cases } = props;
+    const tableData = Object.values(cases).map(caze => ({
+        id: caze.id,
+        title: caze.title
+    }))
 
-    fetchCases(){
-        if(this.props.currentProject){
-            this.props.getCases(this.props.currentProject);
-        }
-    }
-
-    componentDidMount() {
-        this.fetchCases()
-    }
-
-    handleSubmit(dataFromReduxForm) {
-        return this.props.submitAction(Object.assign({selectedCaseIds: this.state.selectedCaseIds}, dataFromReduxForm))
-    }
-
-    render(){
-        const { error, classes, cases, invalid, submitting, pristine } = this.props;
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
-
-        return (
-            <Form className={classes.form} onSubmit={this.props.handleSubmit(this.handleSubmit)}>
-                <Field
-                    name="title"
-                    label="Title"
-                    component={renderTextField}
-                    type='text'
-                    editState={false}
-                    onClick={() => {console.log('sdf')}}
-                />
-                {error && <strong style={{color:'red'}}>{error}</strong>}
-                <EnhancedEntityList
-                    entities={ cases }
-                    title={ caze => caze.title }
-                    id={ caze => caze.id }
-                    clickHandler={ caze => this.toggleCase(caze) }
-                    mainItemRenderer={ caze => <Checkbox checked={ this.state.selectedCaseIds.includes(caze.id) } /> }
-                    secondaryActionRenderer={ caze => null }
-                />
-                <div className={classes.submitContainer}>
-                    <Button className={classes.submit}
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            disabled={invalid || submitting || pristine}>
-                        Save
-                    </Button>
-                </div>
-            </Form>
-        )
-    }
+    return (
+        <React.Fragment>
+            <TextField
+                label="Title"
+                fullWidth={true}
+                required={true}
+                margin={"normal"}
+                type='text'
+                onChange={(event) => setTitle(event.target.value)}
+                editState={false}
+            />
+            {error && <strong style={{color:'red'}}>{error}</strong>}
+            <EnhancedEntityTable
+                loading={false}
+                massActions={[
+                    {
+                        icon: <DoneIcon />,
+                        title: 'Create',
+                        targetAction: (selected) => { handleCreate(selected) }
+                    }
+                ]}
+                entities={tableData}
+                title={'Test Cases'}
+                handleRowClick={(event, entity) => console.log(`Clicked entity ${entity}`)}
+                columns={[
+                    {key: 'title', label: 'Title', numeric: false}
+                ]}
+            />
+        </React.Fragment>
+    )
 };
-
-
-RunForm = reduxForm({
-    // a unique name for the form
-    form: 'run',
-    runValidate,
-    enableReinitialize: true,
-})(RunForm);
 
 const mapStateToProps = (state) => {
     return {

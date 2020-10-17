@@ -68,11 +68,6 @@ export default function EntityTable(props) {
         setOrderBy(property);
     };
 
-    // const handleCellClick = (rowIndex, columnIndex, event) =>
-    // {
-        // console.log(`Clicked row: ${rowIndex} and column: ${columnIndex}`);
-    // }
-
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -149,6 +144,7 @@ export default function EntityTable(props) {
         return { ...action, targetAction: () => action.targetAction(selected) }
     })
 
+    const isAddable = Boolean(handleAdd)
 
     return (
         <React.Fragment>
@@ -157,7 +153,7 @@ export default function EntityTable(props) {
                     numSelected={selected.length}
                     title={title}
                     massActions={allActions}
-                    onAdd={() => handleAdd()}
+                    onAdd={isAddable ? () => handleAdd() : null}
                 />
                 <TableContainer>
                     <Table className={classes.table} aria-label="simple table">
