@@ -6,17 +6,20 @@ import { getCase } from '../redux/actions/casesActions';
 import { getResults, addResult } from '../redux/actions/resultActions';
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import ListIcon from '@material-ui/icons/List';
 import { withRouter } from "react-router-dom";
 import _ from 'lodash';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import CheckIcon from '@material-ui/icons/Check';
-import Typography from '@material-ui/core/Typography';
+import {Typography, LinearProgress, CardContent, Card} from '@material-ui/core';
 import LoadingIndicator from "../components/LoadingIndicator";
 import EntityTable from "../containers/tables/EntityTable";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {PieChart} from "react-minimal-pie-chart";
-import Card from "../components/Card";
+import InfoCard from "../components/InfoCard";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
     root: {
@@ -51,8 +54,13 @@ const styles = theme => ({
         justifyContent: 'center'
     },
     pie: {
-        // maxHeight: '250px',
-        maxWidth: '25%'
+        maxWidth: '400px',
+    },
+    infoCard: {
+        maxWidth: '400px'
+    },
+    progressIndicator: {
+        marginTop: '20px'
     }
 });
 
@@ -104,18 +112,39 @@ class Run extends Component {
             {title: 'Two', value: 20, color: 'blue'}
         ] // runPieTransformation(run)
 
+        const processedTests = _.filter(tests, test => test.id === 1)
+
         return(
             <div className={classes.root}>
                 <Typography variant="h5">Run: {run.title}</Typography>
                 <div className={classes.pie}>
                     <Card>
-                        <PieChart data={pieData} />
+                        <CardHeader title={'Test results by status'}/>
+                        <Divider />
+                        <CardContent>
+                            <PieChart data={pieData} />
+                        </CardContent>
                     </Card>
                 </div>
-                <div>
-                    <Card>
-                        {`Total tests ${tests.length}`}
-                    </Card>
+                <div className={classes.infoCard}>
+                    <InfoCard
+                        title={'Total tests'}
+                        body={Object.keys(tests).length}
+                        avatarIcon={<ListIcon />}
+                    />
+                </div>
+                <div className={classes.infoCard}>
+                    <InfoCard
+                        title={'Tests processed'}
+                        body={processedTests.length}
+                        avatarIcon={<ListIcon />}
+                    >
+                        <LinearProgress
+                            className={classes.progressIndicator}
+                            value={processedTests * (100 / Object.keys(tests).length)}
+                            variant="determinate"
+                        />
+                    </InfoCard>
                 </div>
                 <Card>
                     <EnhancedEntityTable
@@ -147,18 +176,6 @@ class Run extends Component {
                         ]}
                     />
                 </Card>
-                {/*<div className={classes.actionsFooter}>*/}
-                {/*    <Button*/}
-                {/*        color="primary"*/}
-                {/*        variant="contained"*/}
-                {/*        onClick={() => {*/}
-                {/*            this.props.updateRun(run.id, {completed: true})*/}
-                {/*            .then(() => this.props.history.push('/executions'))*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        Complete*/}
-                {/*    </Button>*/}
-                {/*</div>*/}
             </div>
         )
     }
@@ -173,9 +190,7 @@ const mapStateToProps = (state) => {
         tests: state.tests,
         runs: state. runs,
         cases: state.cases,
-        runLoading: state.loaders[actionTypes.GET_RUN],
-        // stepsLoading: state.loaders[actionTypes.GET_CASE],
-        // resultsLoading: state.loaders[actionTypes.GET_RESULTS]
+        runLoading: state.loaders[actionTypes.GET_RUN]
     }
 };
 
