@@ -14,6 +14,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import ScreenHeader from "../components/ScreenHeader";
 import EnhancedUUID from "../components/EnhancedUUID";
 import {withStyles} from "@material-ui/core/styles";
+import {runPieTransformation} from "../utils";
 
 let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
 
@@ -65,7 +66,8 @@ class Runs extends Component {
     }
 
     renderPie(execution){
-        const data = Object.keys(execution.byStatus).map((k) => ({title: k, value: execution.byStatus[k], color: statuses[k]['color']}))
+        // const data = Object.keys(execution.byStatus).map((k) => ({title: k, value: execution.byStatus[k], color: statuses[k]['color']}))
+        const data = runPieTransformation(execution)
         return <PieChart data={data} style={{ height: '24px', width: '24px' }} />
     }
 

@@ -34,16 +34,13 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const { numSelected, title, massActions, onAdd } = props;
+    let { defaultActions } = props;
 
-    let defaultActions = <Tooltip title={`Add ${title}`}>
+    defaultActions = defaultActions || <Tooltip title={`Add ${title}`}>
         <IconButton onClick={onAdd} className={classes.addButton} color="primary" aria-label={`Add ${title}`}>
             <AddIcon />
         </IconButton>
     </Tooltip>
-
-    if (!onAdd) {
-        defaultActions = null
-    }
 
     return (
         <Toolbar
@@ -80,7 +77,8 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
-    massActions: PropTypes.func.isRequired
+    massActions: PropTypes.func.isRequired,
+    defaultActions: PropTypes.node
 };
 
 export default EnhancedTableToolbar

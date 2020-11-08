@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { runValidate } from "./validators";
 import withStyles from '@material-ui/core/styles/withStyles';
-// import { renderTextField } from '../TextField';
-// import { Form, Field, reduxForm } from 'redux-form';
 import DoneIcon from '@material-ui/icons/Done';
-import Button from '../Button';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {createCase, deleteCase, getCases} from "../../redux/actions/casesActions";
+import { createCase, deleteCase, getCases } from "../../redux/actions/casesActions";
 import WithDefaultForEmptiness from "../../containers/WithDefaultForEmptiness";
 import EntityTable from "../../containers/tables/EntityTable";
-import DeleteIcon from "@material-ui/icons/Delete";
 import TextField from "@material-ui/core/TextField";
 
 const styles = theme => ({
@@ -65,6 +60,7 @@ function RunForm(props) {
             {error && <strong style={{color:'red'}}>{error}</strong>}
             <EnhancedEntityTable
                 loading={false}
+                defaultActions={<React.Fragment />} // TODO this is technically a hack lol
                 massActions={[
                     {
                         icon: <DoneIcon />,

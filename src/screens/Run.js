@@ -9,17 +9,14 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import _ from 'lodash';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
-import Paper from '@material-ui/core/Paper';
-import EntityList from "../containers/EntityList";
-import statuses from "../statuses.js";
-import {Button, Menu, MenuItem} from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import CheckIcon from '@material-ui/icons/Check';
 import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
 import LoadingIndicator from "../components/LoadingIndicator";
-import Avatar from "@material-ui/core/Avatar";
-import TestStatus from "../components/TestStatus";
+import EntityTable from "../containers/tables/EntityTable";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import {PieChart} from "react-minimal-pie-chart";
+import Card from "../components/Card";
 
 const styles = theme => ({
     root: {
@@ -52,45 +49,15 @@ const styles = theme => ({
     actionsFooter: {
         display: 'flex',
         justifyContent: 'center'
+    },
+    pie: {
+        // maxHeight: '250px',
+        maxWidth: '25%'
     }
 });
 
-const StatusSetter = ({data, handleSelect}) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+let EnhancedEntityTable = WithDefaultForEmptiness(EntityTable);
 
-
-    const results = data.results || [{status: {label: 'neutral'}}]
-    const last_status_label = _.get(results, '[0].status.label', 'pending')
-
-    return(
-        <div>
-            <Button onClick={(event) => { setAnchorEl(event.currentTarget) }}>
-                <TestStatus
-                    resultLabel={last_status_label}
-                    displayName={last_status_label}
-                />
-            </Button>
-            <Menu
-                keepMounted
-                onClose={() => setAnchorEl(null)}
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-            >
-                {Object.keys(statuses).map(status => {
-                    return ( <MenuItem
-                            onClick={() => {
-                                setAnchorEl(null)
-                                handleSelect(status)
-                            }}
-                    >
-                        {status}
-                    </MenuItem>
-                    )
-                })}
-            </Menu>
-        </div>
-    )
-}
 
 class Run extends Component {
 
@@ -103,7 +70,6 @@ class Run extends Component {
         super(props);
         this.fetchTests = this.fetchTests.bind(this);
         this.currentRunId = this.currentRunId.bind(this);
-        this.fetchResults = this.fetchResults.bind(this);
     }
 
     currentRunId() {
@@ -118,146 +84,83 @@ class Run extends Component {
         return this.props.getRun(this.currentRunId())
     }
 
-    fetchResults(tests) {
-        tests.forEach(test => this.props.getResults(test.id))
-    }
-
     componentDidMount() {
         this.fetchRun()
         this.fetchTests()
-        .then(result => {
-            this.fetchResults(result.action.payload.tests)
-        })
-    }
-
-    isTestExpanded(testId){
-        return this.state.expandedTests.includes(testId)
-    }
-
-    renderAttendant(test) {
-
-        const { classes } = this.props
-
-        if ( !('results' in test) ) {
-            return null
-        }
-
-        const steps = _.get(this.props.cases, [test.case, 'steps'], [])
-
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
-        return (
-            <Collapse in={this.isTestExpanded(test.id)} timeout="auto" unmountOnExit>
-                <div className={classes.attendant}>
-                    <Paper
-                        className={classes.resultHistory}
-                        elevation={5}
-                    >
-                        <Typography
-                            variant={'h5'}
-                            className={classes.cardTitle}
-                        >
-                            Steps
-                        </Typography>
-                        <EnhancedEntityList
-                            loading = { this.props.stepsLoading }
-                            entities={ steps }
-                            title={ step => step.body }
-                            id={ step => step.id }
-                            clickHandler={ step => console.log(`Clicked: ${step}`) }
-                            mainItemRenderer={ step => null }
-                            secondaryActionRenderer={ step => null }
-                        />
-                    </Paper>
-                    <Paper
-                        className={classes.resultHistory}
-                        elevation={5}
-                    >
-                        <Typography
-                            variant={'h5'}
-                            className={classes.cardTitle}
-                        >
-                            History
-                        </Typography>
-                        <EnhancedEntityList
-                            loading={ this.props.resultsLoading }
-                            entities={ test.results }
-                            title={ () => 'set status to' }
-                            id={ result => result.id }
-                            clickHandler={ result => { console.log(result) } }
-                            mainItemRenderer={ () => <Avatar /> }
-                            secondaryActionRenderer={ result => (
-                                <TestStatus
-                                    resultLabel={result.status.label}
-                                    displayName={result.status.label}
-                                />
-                            )}
-                        />
-                    </Paper>
-                </div>
-            </Collapse>
-        )
-    }
-
-    onTestClick(test){
-        if(this.state.expandedTests.includes(test.id)){
-            this.setState({expandedTests: this.state.expandedTests.filter(t => t !== test.id)})
-        } else {
-            this.setState({expandedTests: [...this.state.expandedTests, test.id]})
-            this.props.getCase(test.case)
-        }
     }
 
     render() {
-
-        const { tests, classes } = this.props;
+        const { tests, classes, history } = this.props;
         const run = this.props.runs[this.currentRunId()];
-        let EnhancedEntityList = WithDefaultForEmptiness(EntityList);
 
-        if(run) {
-            return(
-                <div className={classes.root}>
-                    <Typography variant="h5">Run {run.title}</Typography>
+        if (!run) {
+            return <LoadingIndicator />
+        }
 
-                    <EnhancedEntityList
-                        entities={ _.map(tests, t => t ) }
-                        title={ test => test.title }
-                        id={ test => test.id }
-                        clickHandler={ (test) => { this.onTestClick(test) } }
-                        mainItemRenderer={ test => this.isTestExpanded(test.id) ? <ExpandLess /> : <ExpandMore /> }
-                        secondaryActionRenderer={ test => <StatusSetter
-                                                                data={test}
-                                                                handleSelect={(status) => {
-                                                                    this.props.addResult(test.id, {
-                                                                        test_id: test.id,
-                                                                        status: {
-                                                                            label: status
-                                                                        }
-                                                                    })
-                                                                    .then(() => {
-                                                                        return this.props.getResults(test.id)
-                                                                    })
-                                                                }}
-                                                            />}
-                        attendant={ (test) => this.renderAttendant(test) }
-                    />
+        const tableData =  _.map(tests, test => ({...test}))
+        console.log({run})
+        const pieData = [
+            {title: 'One', value: 10, color: 'red'},
+            {title: 'Two', value: 20, color: 'blue'}
+        ] // runPieTransformation(run)
 
-                    <div className={classes.actionsFooter}>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => {
+        return(
+            <div className={classes.root}>
+                <Typography variant="h5">Run: {run.title}</Typography>
+                <div className={classes.pie}>
+                    <Card>
+                        <PieChart data={pieData} />
+                    </Card>
+                </div>
+                <div>
+                    <Card>
+                        {`Total tests ${tests.length}`}
+                    </Card>
+                </div>
+                <Card>
+                    <EnhancedEntityTable
+                        loading={this.props.casesLoading}
+                        entities={tableData}
+                        title={'Tests'}
+                        defaultActions={<Tooltip title={`Complete`}>
+                            <IconButton onClick={() => {
                                 this.props.updateRun(run.id, {completed: true})
                                 .then(() => this.props.history.push('/executions'))
                             }}
-                        >
-                            Complete
-                        </Button>
-                    </div>
-                </div>
-            )
-        } else {
-            return(<LoadingIndicator />)
-        }
+                                        className={classes.addButton}
+                                        color="primary"
+                                        aria-label={`complete`}>
+                                <CheckIcon />
+                            </IconButton>
+                        </Tooltip>}
+                        addButtonTitle={'New Test Case'}
+                        handleAdd={() => this.toggleCreator()}
+                        handleRowClick={(event, entity) => history.push(`/runs/${entity.id}`)}
+                        handleMassAction={(element_ids) => {
+                            element_ids.forEach(element_id => {
+                                this.handleCaseDeletion(element_id)
+                            })
+                        }}
+                        columns={[
+                            {key: 'id', label: 'ID', numeric: false},
+                            {key: 'title', label: 'Title', numeric: false}
+                        ]}
+                    />
+                </Card>
+                {/*<div className={classes.actionsFooter}>*/}
+                {/*    <Button*/}
+                {/*        color="primary"*/}
+                {/*        variant="contained"*/}
+                {/*        onClick={() => {*/}
+                {/*            this.props.updateRun(run.id, {completed: true})*/}
+                {/*            .then(() => this.props.history.push('/executions'))*/}
+                {/*        }}*/}
+                {/*    >*/}
+                {/*        Complete*/}
+                {/*    </Button>*/}
+                {/*</div>*/}
+            </div>
+        )
     }
 }
 
@@ -271,8 +174,8 @@ const mapStateToProps = (state) => {
         runs: state. runs,
         cases: state.cases,
         runLoading: state.loaders[actionTypes.GET_RUN],
-        stepsLoading: state.loaders[actionTypes.GET_CASE],
-        resultsLoading: state.loaders[actionTypes.GET_RESULTS]
+        // stepsLoading: state.loaders[actionTypes.GET_CASE],
+        // resultsLoading: state.loaders[actionTypes.GET_RESULTS]
     }
 };
 

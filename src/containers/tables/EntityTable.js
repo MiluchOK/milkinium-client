@@ -127,6 +127,7 @@ export default function EntityTable(props) {
         handleDelete,
         massActions,
         handleAdd,
+        defaultActions,
         ...otherProps
     } = props;
 
@@ -148,11 +149,13 @@ export default function EntityTable(props) {
 
     return (
         <React.Fragment>
-            <Paper className={classes.paper}>
+            {/*<Paper className={classes.paper}>*/}
+
                 <EnhancedTableToolbar
                     numSelected={selected.length}
                     title={title}
                     massActions={allActions}
+                    defaultActions={defaultActions ? defaultActions : null}
                     onAdd={isAddable ? () => handleAdd() : null}
                 />
                 <TableContainer>
@@ -207,7 +210,7 @@ export default function EntityTable(props) {
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
-            </Paper>
+            {/*</Paper>*/}
         </React.Fragment>
     )
 }
