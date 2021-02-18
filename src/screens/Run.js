@@ -25,6 +25,7 @@ const styles = theme => ({
     root: {
         backgroundColor: theme.palette.background.paper,
         flexGrow: 1,
+
     },
     statusContainer: {
         display: 'flex',
@@ -38,6 +39,11 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'space-evenly'
     },
+    infoCardsBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
     resultHistory: {
         flex: '0 0 45%',
         padding: '20px',
@@ -45,6 +51,10 @@ const styles = theme => ({
         overflowY: 'auto',
         maxHeight: '500px',
         minWidth: '270px'
+    },
+    quickInfoBox: {
+        display: 'flex',
+        justifyContent: 'space-around'
     },
     cardTitle: {
         margin: theme.spacing(3)
@@ -56,8 +66,11 @@ const styles = theme => ({
     pie: {
         maxWidth: '400px',
     },
+    pieCard: {
+        margin: '20px'
+    },
     infoCard: {
-        maxWidth: '400px'
+        minWidth: '400px'
     },
     progressIndicator: {
         marginTop: '20px'
@@ -117,34 +130,43 @@ class Run extends Component {
         return(
             <div className={classes.root}>
                 <Typography variant="h5">Run: {run.title}</Typography>
-                <div className={classes.pie}>
-                    <Card>
-                        <CardHeader title={'Test results by status'}/>
-                        <Divider />
-                        <CardContent>
-                            <PieChart data={pieData} />
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className={classes.infoCard}>
-                    <InfoCard
-                        title={'Total tests'}
-                        body={Object.keys(tests).length}
-                        avatarIcon={<ListIcon />}
-                    />
-                </div>
-                <div className={classes.infoCard}>
-                    <InfoCard
-                        title={'Tests processed'}
-                        body={processedTests.length}
-                        avatarIcon={<ListIcon />}
-                    >
-                        <LinearProgress
-                            className={classes.progressIndicator}
-                            value={processedTests * (100 / Object.keys(tests).length)}
-                            variant="determinate"
-                        />
-                    </InfoCard>
+                <div className={classes.quickInfoBox}>
+                    <div className={classes.pie}>
+                        <Card className={classes.pieCard}>
+                            <CardContent>
+                                <Typography
+                                    color="textSecondary"
+                                    gutterBottom
+                                    variant="h6"
+                                >
+                                    {'Test results by status'}
+                                </Typography>
+                                <PieChart data={pieData} />
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className={classes.infoCardsBox}>
+                        <div className={classes.infoCard}>
+                            <InfoCard
+                                title={'Total tests'}
+                                body={Object.keys(tests).length}
+                                avatarIcon={<ListIcon />}
+                            />
+                        </div>
+                        <div className={classes.infoCard}>
+                            <InfoCard
+                                title={'Tests processed'}
+                                body={processedTests.length}
+                                avatarIcon={<ListIcon />}
+                            >
+                                <LinearProgress
+                                    className={classes.progressIndicator}
+                                    value={processedTests * (100 / Object.keys(tests).length)}
+                                    variant="determinate"
+                                />
+                            </InfoCard>
+                        </div>
+                    </div>
                 </div>
                 <Card>
                     <EnhancedEntityTable

@@ -7,10 +7,8 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Dashboard from '../screens/Dashboard';
 import Executions from '../screens/Runs';
-import Feed from '../screens/Feed';
 import Cases from '../screens/Cases';
 import Suits from '../screens/Suites';
-import Settings from '../screens/Settings';
 
 export default [
     {
@@ -36,17 +34,5 @@ export default [
         path: '/executions',
         icon: (<LinearIcon/>),
         component: (Executions)
-    },
-    {
-        name: 'Feed',
-        path: '/feed',
-        icon: (<FeedIcon/>),
-        component: (Feed)
-    },
-    {
-        name: 'Settings',
-        path: '/setting',
-        icon: (<SettingsIcon />),
-        component: (Settings)
     }
 ]
