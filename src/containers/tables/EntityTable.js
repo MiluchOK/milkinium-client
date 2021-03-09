@@ -184,6 +184,7 @@ export default function EntityTable(props) {
                                             <Checkbox
                                                 checked={isItemSelected}
                                                 onClick={(event) => {
+                                                    event.stopPropagation()
                                                     handleCheck(event, entity.id)
                                                 }}
                                             />
