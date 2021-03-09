@@ -6,5 +6,5 @@ export const truncateUUID = (uuid) => {
 }
 
 export const runPieTransformation = (run) => {
-    return Object.keys(run.byStatus).map((k) => ({title: k, value: run.byStatus[k], color: statuses[k]['color']}))
+    return Object.keys(run.byStatus).map((k) => ({title: k, value: run.byStatus[k.toLowerCase()], color: statuses[k.toLowerCase()]['color']}))
 }

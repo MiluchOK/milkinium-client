@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import ListIcon from '@material-ui/icons/List';
 import { withRouter } from "react-router-dom";
+import StatusSetter from "../containers/StatusSetter";
 import _ from 'lodash';
 import WithDefaultForEmptiness from "../containers/WithDefaultForEmptiness";
 import CheckIcon from '@material-ui/icons/Check';
@@ -118,11 +119,15 @@ class Run extends Component {
             return <LoadingIndicator />
         }
 
-        const tableData =  _.map(tests, test => ({...test}))
+        const tableData =  _.map(tests, test => ({...test, status: <StatusSetter data={test} handleSelect={(status) => {
+            //TODO implement the status selection
+            console.log(`Selecting ${status}`)
+        }} />}))
         console.log({run})
+        console.log({tableData})
         const pieData = [
-            {title: 'One', value: 10, color: 'red'},
-            {title: 'Two', value: 20, color: 'blue'}
+            {status: 'One', value: 10, color: 'red'},
+            {status: 'Two', value: 20, color: 'blue'}
         ] // runPieTransformation(run)
 
         const processedTests = _.filter(tests, test => test.id === 1)
@@ -141,7 +146,16 @@ class Run extends Component {
                                 >
                                     {'Test results by status'}
                                 </Typography>
-                                <PieChart data={pieData} />
+                                <PieChart data={pieData}
+                                          lineWidth={15}
+                                          paddingAngle={5}
+                                          label={({ dataEntry }) => dataEntry.status}
+                                          labelStyle={(index) => ({
+                                              fill: pieData[index].color,
+                                              fontSize: '5px',
+                                              fontFamily: 'sans-serif',
+                                          })}
+                                />
                             </CardContent>
                         </Card>
                     </div>
@@ -194,7 +208,8 @@ class Run extends Component {
                         }}
                         columns={[
                             {key: 'id', label: 'ID', numeric: false},
-                            {key: 'title', label: 'Title', numeric: false}
+                            {key: 'title', label: 'Title', numeric: false},
+                            {key: 'status', label: 'Status', numeric: false}
                         ]}
                     />
                 </Card>

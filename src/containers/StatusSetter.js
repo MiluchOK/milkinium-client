@@ -28,7 +28,10 @@ const StatusSetter = (props) => {
         <div>
             {
                 loading ? <LoadingIndicator size={'small'}/> :
-                    <Button onClick={(event) => { setAnchorEl(event.currentTarget) }}>
+                    <Button onClick={(event) => {
+                        event.stopPropagation()
+                        setAnchorEl(event.currentTarget)
+                    }}>
                         <TestStatus
                             resultLabel={last_status_label}
                             displayName={last_status_label}
@@ -44,7 +47,8 @@ const StatusSetter = (props) => {
                 {Object.keys(statuses).map(status => {
                     return ( <MenuItem
                             key={status}
-                            onClick={() => {
+                            onClick={(event) => {
+                                event.stopPropagation()
                                 setAnchorEl(null)
                                 handleSelect(status)
                             }}
